@@ -40,22 +40,30 @@
         </nav>
     {% endblock %}
     </header>
-    {% block scripts %}
-    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdn.bootcss.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js"></script>
-    {% endblock %}
-{% endblock %}
-
-{% block content %}
+    {% block content %}
 <div class="container"></div>
 {% endblock %}
 
 {% block footer %}
     <footer>
-    <nav class="navbar navbar-default navbar-fixed-bottom">
+    <nav class="navbar navbar-default navbar-fixed-bottom copyright">
       <div class="container">
-
+        <div class="row">
+            <div class="col-sm-12">
+                    <span>Copyright © {{ moment(current_time).format('YYYY') }}
+                        <a href="https://pdf-lib.org/">材料价格网</a>
+                    </span> |
+                    <span>京公网安备11010802014853</span>
+                </div>
+        </div>
       </div>
     </nav>
     </footer>
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js"></script>
+    {{ moment.include_moment() }}
+{% endblock %}
 {% endblock %}
