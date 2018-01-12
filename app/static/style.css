@@ -1,3 +1,7 @@
+body{
+    font-family: 'Consolas', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
+    font-size: 14px;
+}
 .navbar.page-header.navbar-static-top{
     margin: 0;
 }
@@ -17,4 +21,16 @@ header.container-fluid{
     border-radius: 4px 4px 0 0;
     -webkit-box-shadow: none;
     box-shadow: none;
+}
+ul.nav.navbar-nav.navbar-right li,.header_login span{
+    display: inline-block;
+}
+.header_login{
+    margin-right: 15px;
+}
+.header_login span{
+    width: 3rem;
+    height: 2rem;
+    position: relative;
+    vertical-align: middle;
 }
