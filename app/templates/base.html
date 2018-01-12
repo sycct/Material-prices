@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    {% block head %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="description" content={% block description %}{% endblock%}>
+    <meta name="keywords" content={% block keywords %}{% endblock %}>
+    <title>{% block title %}{% endblock %} - 材料价格</title>
+    <link href="{{ url_for('static',filename='favicon.ico') }}" rel="shortcut icon" type="image/x-icon">
+    <link href="{{ url_for('static',filename='favicon.ico') }}" rel="icon" type="image/x-icon">
+    {% block styles %}{% endblock %}
+    {% endblock %}
+</head>
+<body>
+    {% block body %}
+    {% block scripts %}{% endblock %}
+    {% endblock %}
+    {% block footer %}
+
+    {% endblock %}
+</body>
+</html>
