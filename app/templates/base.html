@@ -12,7 +12,7 @@
     <link href="{{ url_for('static',filename='favicon.ico') }}" rel="icon" type="image/x-icon">
     {% block styles %}
         <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet"/>
-    <link href="static/style.css" rel="stylesheet">
+        <link href="static/style.css" rel="stylesheet">
     {% endblock %}
     {% endblock %}
 </head>
@@ -46,7 +46,7 @@
                             </ul>
                         </li>
                         <li class="header_login">
-                            <span><a href="/login.html">登 陆</a></span>
+                            <span><a href="/login">登 陆</a></span>
                         </li>
                     </ul>
                 </div>
@@ -61,7 +61,7 @@
               <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
-                            <span>Copyright © {{ moment(current_time).format('YYYY') }}
+                            <span>Copyright © {% block Year %}{% endblock %}
                                 <a href="https://pdf-lib.org/">材料价格网</a>
                             </span> |
                             <span>京公网安备11010802014853</span>
