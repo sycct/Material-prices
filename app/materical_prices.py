@@ -10,7 +10,6 @@ from flask.ext.sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 moment=Moment(app)
 bootstrap=Bootstrap(app)
-app.config['SECRET_KEY']='mLZXlBhl7hoV39xt6PUsJI8N3UUF8r575E77953YH7hIDOv12Yw9kua4nU75xybyyFDfSM6ZO4UPW4UO69e98lisAItyUTkI2TbplZTsDdfdM9ZG'
 
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN']=True
 
