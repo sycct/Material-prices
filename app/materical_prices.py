@@ -6,30 +6,33 @@ from flask.ext.wtf import Form
 from wtforms import StringField,SubmitField
 from wtforms.validators import Required
 from flask.ext.sqlalchemy import SQLAlchemy
+import os
 
 app = Flask(__name__)
 moment=Moment(app)
 bootstrap=Bootstrap(app)
 
+app.config['SQLALCHEMY_DATABASE_URI']=os.environ.get(
+        'TEST_DATABASE_URL') or 'mysql://MaterialDBA:pdf-lib.org&huang_huang118@159.138.0.104:3306/Material_Testing'
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN']=True
 
 db=SQLAlchemy(app)
 
-@app.route('/')
-def index():
-    return render_template('index.html',
-                           current_time=datetime.utcnow())
-@app.route('/login')
-def login():
-    return  render_template('login.html')
-
-@app.errorhandler(404)
-def page_not_found(e):
-    return render_template('404.html'),404
-
-@app.errorhandler(500)
-def internal_server_error(e):
-    return render_template('500.html'),500
+# @app.route('/')
+# def index():
+#     return render_template('index.html',
+#                            current_time=datetime.utcnow())
+# @app.route('/login')
+# def login():
+#     return  render_template('login.html')
+#
+# @app.errorhandler(404)
+# def page_not_found(e):
+#     return render_template('404.html'),404
+#
+# @app.errorhandler(500)
+# def internal_server_error(e):
+#     return render_template('500.html'),500
 
 if __name__ == '__main__':
     app.run()
