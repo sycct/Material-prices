@@ -11,4 +11,4 @@ class LoginForm(Form):
                                                                      'class': 'form-control form-control-solid placeholder-no-fix',
                                                                      'autocomplete': 'off'})
     remember_me = BooleanField('Keep me logged in')
-    submit = SubmitField('Log In',render_kw={'class':'btn green uppercase'})
+    submit = SubmitField('登 陆',render_kw={'class':'btn green uppercase'})

@@ -5,3 +5,10 @@
 {% block Year %}
     {{ moment(current_time).format('YYYY') }}
 {% endblock %}
+
+Hello,
+{% if current_user.is_authenticated %}
+    {{ current_user.username }}
+{% else %}
+    Stranger
+{% endif %}
