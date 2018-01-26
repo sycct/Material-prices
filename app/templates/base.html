@@ -45,9 +45,13 @@
                                 <li><a href="http://pdflibr.com/Note">黄兵的记事本</a></li>
                             </ul>
                         </li>
+                        {% if current_user.is_authenticated %}
+                        <li class="header_login"><span><a href="{{ url_for('auth.logout') }}">退出</a></span> </li>
+                        {% else %}
                         <li class="header_login">
-                            <span><a href="/login">登 陆</a></span>
+                            <span><a href="{{ url_for('auth.login') }}">登 陆</a></span>
                         </li>
+                        {% endif %}
                     </ul>
                 </div>
             </nav>
