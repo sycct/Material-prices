@@ -221,7 +221,18 @@ var Login = function() {
             },
 
             submitHandler: function(form) {
-                form.submit();
+                form.submit(function () {
+                    var submitData=$('.register-form').serialise();
+                    $.ajax({
+                        type:form.method,
+                        url:form.action,
+                        dataType:"json",
+                        data:submitData,
+                        success:function (data) {
+                            alert("Success!")
+                        }
+                    })
+                });
             }
         });
 
