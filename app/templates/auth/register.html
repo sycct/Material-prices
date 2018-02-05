@@ -1,9 +1,12 @@
 {% extends "auth.html" %}
 
+{% import "bootstrap/wtf.html" as wtf %}
+
 {% block content %}
     <div class="content">
         <!-- BEGIN REGISTRATION FORM -->
         <form class="register-form" action="{{ url_for('auth.register') }}" method="post">
+            {{ form.hidden_tag() }}
             <h3 class="font-green">注 册</h3>
             <p class="hint"> 新输入您的个人信息: </p>
             <div class="form-group">
