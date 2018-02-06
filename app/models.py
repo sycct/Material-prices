@@ -80,6 +80,33 @@ class Follow(db.Model):
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
 
+class CH_REGION(db.Model):
+    __tablename__ = 'CH_REGION'
+    ID = db.Column(db.Integer, primary_key=True)
+    PARENT_ID = db.Column(db.Integer)
+    REGION_ID = db.Column(db.Integer)
+    REGION_PARENT_ID = db.Column(db.Integer)
+    REGION_NAME = db.Column(db.String(100))
+    REGION_TYPE = db.Column(db.Integer)
+    ZIPCODE = db.Column(db.String(50))
+    QUHAO = db.Column(db.String(50))
+    Status = db.Column(db.Boolean)
+
+    def to_json(self):
+        json_country = {
+            'ID': self.ID,
+            'PARENT_ID': self.PARENT_ID,
+            'REGION_ID': self.REGION_ID,
+            'REGION_PARENT_ID': self.REGION_PARENT_ID,
+            'REGION_NAME':self.REGION_NAME,
+            'REGION_TYPE':self.REGION_TYPE,
+            'ZIPCODE':self.ZIPCODE,
+            'QUHAO':self.QUHAO,
+            'Status':self.Status
+        }
+
+        return json_country
+
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
@@ -237,7 +264,7 @@ class User(UserMixin, db.Model):
 
     @property
     def followed_posts(self):
-        return Post.query.join(Follow, Follow.followed_id == Post.author_id)\
+        return Post.query.join(Follow, Follow.followed_id == Post.author_id) \
             .filter(Follow.follower_id == self.id)
 
     def to_json(self):
@@ -277,6 +304,7 @@ class AnonymousUser(AnonymousUserMixin):
 
     def is_administrator(self):
         return False
+
 
 login_manager.anonymous_user = AnonymousUser
 

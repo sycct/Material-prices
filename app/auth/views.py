@@ -1,11 +1,12 @@
-from flask import render_template, redirect, request, url_for, flash
+from flask import render_template, redirect, request, url_for, flash, Response, jsonify
 from flask_login import login_user, logout_user, login_required
 from . import auth
-from ..models import User
+from ..models import User, CH_REGION
 from .forms import LoginForm, RegistrationForm, PasswordResetForm, PasswordResetRequestForm
 from app import db
 from ..email import send_email
 from flask_login import current_user
+import json
 
 
 @auth.route('/login', methods=['GET', 'POST'])
@@ -33,6 +34,7 @@ def logout():
 def register():
     form = RegistrationForm()
     name = '用户注册'
+    ch_region = CH_REGION.query.filter_by(REGION_TYPE=1).all()
     if form.validate_on_submit():
         user = User(email=form.email.data,
                     username=form.username.data,
@@ -42,7 +44,15 @@ def register():
         send_email(user.email, 'Confirm Your Account', 'auth/email/confirm', user=user, token=token)
         flash('You can now login.')
         return redirect(url_for('auth.login'))
-    return render_template('auth/register.html', form=form, name=name)
+    return render_template('auth/register.html', form=form, name=name, ch_region=ch_region)
+
+
+@auth.route('/country', methods=['GET', 'POST'])
+def country():
+    ID = request.values.get('country', 0)
+    city = CH_REGION.query.filter_by(PARENT_ID=ID).all()
+
+    return Response(city)
 
 
 @auth.route('/confirm/<token>')
