@@ -51,8 +51,11 @@ def register():
 def country():
     ID = request.values.get('country', 0)
     city = CH_REGION.query.filter_by(PARENT_ID=ID).all()
-
-    return Response(city)
+    list = []
+    for item in city:
+        data = [item.ID, item.REGION_NAME]
+        list.append(data)
+    return json.dumps(list)
 
 
 @auth.route('/confirm/<token>')
