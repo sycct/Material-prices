@@ -91,27 +91,17 @@ class CH_REGION(db.Model):
     ZIPCODE = db.Column(db.String(50))
     QUHAO = db.Column(db.String(50))
     Status = db.Column(db.Boolean)
-
-    def to_json(self):
-        json_country = {
-            'ID': self.ID,
-            'PARENT_ID': self.PARENT_ID,
-            'REGION_ID': self.REGION_ID,
-            'REGION_PARENT_ID': self.REGION_PARENT_ID,
-            'REGION_NAME':self.REGION_NAME,
-            'REGION_TYPE':self.REGION_TYPE,
-            'ZIPCODE':self.ZIPCODE,
-            'QUHAO':self.QUHAO,
-            'Status':self.Status
-        }
-
-        return json_country
+    users=db.relationship('User',backref='CH_REGION')
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(64), unique=True, index=True)
     username = db.Column(db.String(64), unique=True, index=True)
+    fullname=db.Column(db.String(64))
+    address=db.Column(db.String(64))
+    province=db.Column(db.BigInteger,db.ForeignKey('CH_REGION.ID'))
+    city=db.Column(db.Integer,db.ForeignKey('CH_REGION.ID'))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     password_hash = db.Column(db.String(128))
     confirmed = db.Column(db.Boolean, default=False)

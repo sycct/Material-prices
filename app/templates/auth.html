@@ -68,8 +68,8 @@
 
     <div class="copyright"> 2014 © Metronic. Admin Dashboard Template.</div>
     <!--[if lt IE 9]>
-        <script src="/static/global/plugins/respond.min.js"></script>
-        <script src="/static/global/plugins/excanvas.min.js"></script>
+        <script src="{{ url_for('static',filename='global/plugins/respond.min.js') }}"></script>
+        <script src="{{ url_for('static',filename='global/plugins/excanvas.min.js') }}"></script>
     <![endif]-->
 
     {% block scripts %}
