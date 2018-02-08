@@ -116,7 +116,7 @@ var Login = function () {
     var handleRegister = function () {
         if (jQuery().select2 && $('#country_list').size() > 0) {
             $("#country_list").select2({
-                placeholder: '<i class="fa fa-map-marker"></i>&nbsp;Select a Country',
+                placeholder: '<i class="fa fa-map-marker"></i>&nbsp;Select a Province',
                 width: 'auto',
                 escapeMarkup: function (m) {
                     return m;
@@ -124,7 +124,8 @@ var Login = function () {
             });
 
             $('#country_list').change(function () {
-                $('.register-form').validate().element($(this)); //revalidate the chosen dropdown value and show error or success message for the input
+                //revalidate the chosen dropdown value and show error or success message for the input
+                $('.register-form').validate().element($(this));
                 var ID = $(this).val();
                 $.ajax({
                     type: "POST",
@@ -132,31 +133,23 @@ var Login = function () {
                     dataType: 'json',
                     data: {country: ID},
                     success: function (data) {
-                        $('#select2-city_list-container').empty();
-                        //var html = '';
+                        $('#city_list').empty();
                         var itemList = [];
-                        $.each(data, function (Index, CityName) {
-                            itemList.push({id: CityName['0'], text: CityName['1']})
-                            //html += '<option value=' + CityName['0'] + '>' + CityName['1'] + '</option>'
-                            console.log(itemList)
-                        });
+                        for (var i = 0; i < data.length; i++) {
+                            itemList.push({id: data[i][0], text: data[i][1]})
+                        }
+                        $("#city_list").change();
                         $('#city_list').select2({
                             placeholder: '<i class="fa fa-map-marker"></i>&nbsp;Select a City',
                             width: 'auto',
                             data: itemList
                         });
-                         $("#city_list").change();
-                        /*$.each(data, function (Index, CityName) {
-                            itemList.push({id: CityName['0'], text: CityName['1']})
-                            //html += '<option value=' + CityName['0'] + '>' + CityName['1'] + '</option>'
-                        });*/
-                        //$('#city_list').html(html);
                     }
                 });
             });
         }
 
-     if (jQuery().select2 && $('#city_list').size() > 0) {
+        if (jQuery().select2 && $('#city_list').size() > 0) {
             $("#city_list").select2({
                 placeholder: '<i class="fa fa-map-marker"></i>&nbsp;Select a City',
                 width: 'auto',
@@ -164,107 +157,103 @@ var Login = function () {
                     return m;
                 },
             });
-
-            $('#city_list').change(function () {
-                $('.register-form').validate().element($(this));
-            })
         }
 
-    $('.register-form').validate({
-        errorElement: 'span', //default input error message container
-        errorClass: 'help-block', // default input error message class
-        focusInvalid: false, // do not focus the last invalid input
-        ignore: "",
-        rules: {
+        $('.register-form').validate({
+            errorElement: 'span', //default input error message container
+            errorClass: 'help-block', // default input error message class
+            focusInvalid: false, // do not focus the last invalid input
+            ignore: "",
+            rules: {
 
-            fullname: {
-                required: true
-            },
-            email: {
-                required: true,
-                email: true
-            },
-            address: {
-                required: true
-            },
-            city: {
-                required: true
-            },
-            country: {
-                required: true
+                fullname: {
+                    required: true
+                },
+                email: {
+                    required: true,
+                    email: true
+                },
+                address: {
+                    required: true
+                },
+                city: {
+                    required: true
+                },
+                country: {
+                    required: true
+                },
+
+                username: {
+                    required: true
+                },
+                password: {
+                    required: true
+                },
+                rpassword: {
+                    equalTo: "#register_password"
+                },
+
+                tnc: {
+                    required: true
+                }
             },
 
-            username: {
-                required: true
-            },
-            password: {
-                required: true
-            },
-            rpassword: {
-                equalTo: "#register_password"
+            messages: { // custom messages for radio buttons and checkboxes
+                tnc: {
+                    required: "Please accept TNC first."
+                }
             },
 
-            tnc: {
-                required: true
+            invalidHandler: function (event, validator) { //display error alert on form submit
+
+            },
+
+            highlight: function (element) { // hightlight error inputs
+                $(element)
+                    .closest('.form-group').addClass('has-error'); // set error class to the control group
+            },
+
+            success: function (label) {
+                label.closest('.form-group').removeClass('has-error');
+                label.remove();
+            },
+
+            errorPlacement: function (error, element) {
+                if (element.attr("name") == "tnc") { // insert checkbox errors after the container
+                    error.insertAfter($('#register_tnc_error'));
+                } else if (element.closest('.input-icon').size() === 1) {
+                    error.insertAfter(element.closest('.input-icon'));
+                } else {
+                    error.insertAfter(element);
+                }
+            },
+
+            submitHandler: function (form) {
+                form.submit();
             }
-        },
+        });
 
-        messages: { // custom messages for radio buttons and checkboxes
-            tnc: {
-                required: "Please accept TNC first."
+        $('.register-form input').keypress(function (e) {
+            if (e.which == 13) {
+                if ($('.register-form').validate().form()) {
+                    $('.register-form').submit();
+                }
+                return false;
             }
-        },
-
-        invalidHandler: function (event, validator) { //display error alert on form submit
-
-        },
-
-        highlight: function (element) { // hightlight error inputs
-            $(element)
-                .closest('.form-group').addClass('has-error'); // set error class to the control group
-        },
-
-        success: function (label) {
-            label.closest('.form-group').removeClass('has-error');
-            label.remove();
-        },
-
-        errorPlacement: function (error, element) {
-            if (element.attr("name") == "tnc") { // insert checkbox errors after the container
-                error.insertAfter($('#register_tnc_error'));
-            } else if (element.closest('.input-icon').size() === 1) {
-                error.insertAfter(element.closest('.input-icon'));
-            } else {
-                error.insertAfter(element);
-            }
-        },
-
-        submitHandler: function (form) {
-            form.submit();
-        }
-    });
-
-    $('.register-form input').keypress(function (e) {
-        if (e.which == 13) {
-            if ($('.register-form').validate().form()) {
-                $('.register-form').submit();
-            }
-            return false;
-        }
-    });
-}
-
-return {
-    //main function to initiate the module
-    init: function () {
-
-        handleLogin();
-        handleForgetPassword();
-        handleRegister();
-
+        });
     }
 
-};
+    return {
+        //main function to initiate the module
+        init: function () {
+
+            handleLogin();
+            handleForgetPassword();
+            handleRegister();
+
+        }
+
+    };
 
 }
 ();

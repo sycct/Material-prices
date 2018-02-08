@@ -21,11 +21,6 @@
                 <label class="control-label visible-ie8 visible-ie9">Address</label>
                 <input class="form-control placeholder-no-fix" type="text" placeholder="Address" name="address"/></div>
             <div class="form-group">
-                <label class="control-label visible-ie8 visible-ie9">City/Town</label>
-                <select name="city" class="form-control" id="city_list">
-                </select>
-            </div>
-            <div class="form-group">
                 <label class="control-label visible-ie8 visible-ie9">Country</label>
                 <select name="country" id="country_list" class="form-control">
                     <option value="" selected>请选择省份</option>
@@ -33,6 +28,10 @@
                         <option value="{{ o.ID }}">{{ o.REGION_NAME }}</option>
                     {% endfor %}
                 </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label visible-ie8 visible-ie9">City/Town</label>
+                <select name="city" class="form-control" id="city_list"></select>
             </div>
             <p class="hint"> Enter your account details below: </p>
             <div class="form-group">
