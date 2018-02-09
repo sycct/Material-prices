@@ -11,16 +11,17 @@
             <p class="hint"> 新输入您的个人信息: </p>
             <div class="form-group">
                 <label class="control-label visible-ie8 visible-ie9">Full Name</label>
-
-                <input class="form-control placeholder-no-fix" type="text" placeholder="Full Name" name="fullname"/>
+                {{ form.fullname(class='form-control placeholder-no-fix',placeholder="Full Name") }}
             </div>
             <div class="form-group">
                 <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
                 <label class="control-label visible-ie8 visible-ie9">Email</label>
-                <input class="form-control placeholder-no-fix" type="text" placeholder="Email" name="email"/></div>
+                {{ form.email(class='form-control placeholder-no-fix',placeholder="Email") }}
+            </div>
             <div class="form-group">
                 <label class="control-label visible-ie8 visible-ie9">Address</label>
-                <input class="form-control placeholder-no-fix" type="text" placeholder="Address" name="address"/></div>
+                {{ form.address(class='form-control placeholder-no-fix',placeholder="Address") }}
+            </div>
             <div class="form-group">
                 <label class="control-label visible-ie8 visible-ie9">Country</label>
                 <select name="country" id="country_list" class="form-control">
@@ -41,7 +42,8 @@
                        name="username"/></div>
             <div class="form-group">
                 <label class="control-label visible-ie8 visible-ie9">Password</label>
-                <input class="form-control placeholder-no-fix" type="password" autocomplete="off" id="register_password"
+                <input class="form-control placeholder-no-fix" type="password" autocomplete="off"
+                       id="register_password"
                        placeholder="Password" name="password"/></div>
             <div class="form-group">
                 <label class="control-label visible-ie8 visible-ie9">Re-type Your Password</label>
@@ -57,8 +59,7 @@
             </div>
             <div class="form-actions">
                 <a href="{{ url_for('auth.login') }}" id="register-back-btn" class="btn btn-default">Back</a>
-                <button type="submit" id="register-submit-btn" class="btn btn-success uppercase pull-right">Submit
-                </button>
+                {{ form.submit(class='btn btn-success uppercase pull-right', id="register-submit-btn") }}
             </div>
         </form>
         <!-- END REGISTRATION FORM -->

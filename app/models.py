@@ -80,28 +80,15 @@ class Follow(db.Model):
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
 
 
-class CH_REGION(db.Model):
-    __tablename__ = 'CH_REGION'
-    ID = db.Column(db.Integer, primary_key=True)
-    PARENT_ID = db.Column(db.Integer)
-    REGION_ID = db.Column(db.Integer)
-    REGION_PARENT_ID = db.Column(db.Integer)
-    REGION_NAME = db.Column(db.String(100))
-    REGION_TYPE = db.Column(db.Integer)
-    ZIPCODE = db.Column(db.String(50))
-    QUHAO = db.Column(db.String(50))
-    Status = db.Column(db.Boolean)
-    users=db.relationship('User',backref='CH_REGION')
-
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(64), unique=True, index=True)
     username = db.Column(db.String(64), unique=True, index=True)
-    fullname=db.Column(db.String(64))
-    address=db.Column(db.String(64))
-    province=db.Column(db.BigInteger,db.ForeignKey('CH_REGION.ID'))
-    city=db.Column(db.Integer,db.ForeignKey('CH_REGION.ID'))
+    fullname = db.Column(db.String(64))
+    address = db.Column(db.String(64))
+    province_region_id = db.Column(db.Integer, db.ForeignKey('CH_REGION.ID'))
+    city_region_id = db.Column(db.Integer, db.ForeignKey('CH_REGION.ID'))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     password_hash = db.Column(db.String(128))
     confirmed = db.Column(db.Boolean, default=False)
@@ -286,6 +273,24 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return '<User %r>' % self.username
+
+
+class CH_REGION(db.Model):
+    __tablename__ = 'CH_REGION'
+    ID = db.Column(db.Integer, primary_key=True)
+    PARENT_ID = db.Column(db.Integer)
+    REGION_ID = db.Column(db.Integer)
+    REGION_PARENT_ID = db.Column(db.Integer)
+    REGION_NAME = db.Column(db.String(100))
+    REGION_TYPE = db.Column(db.Integer)
+    ZIPCODE = db.Column(db.String(50))
+    QUHAO = db.Column(db.String(50))
+    Status = db.Column(db.Boolean)
+    city_region = db.relationship('User', foreign_keys=[User.city_region_id],
+                                  backref=db.backref('city_regions', lazy='joined'),
+                                  lazy='dynamic')
+    province_region = db.relationship('User', foreign_keys=[User.province_region_id],
+                                      backref=db.backref('province_regions', lazy='joined'), lazy='dynamic')
 
 
 class AnonymousUser(AnonymousUserMixin):

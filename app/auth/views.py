@@ -1,4 +1,4 @@
-from flask import render_template, redirect, request, url_for, flash, Response, jsonify
+from flask import render_template, redirect, request, url_for, flash
 from flask_login import login_user, logout_user, login_required
 from . import auth
 from ..models import User, CH_REGION
@@ -35,10 +35,17 @@ def register():
     form = RegistrationForm()
     name = '用户注册'
     ch_region = CH_REGION.query.filter_by(REGION_TYPE=1).all()
+    city_region_id = request.values.get('city', 0)
+    print(city_region_id)
     if form.validate_on_submit():
+        print("aa")
         user = User(email=form.email.data,
                     username=form.username.data,
-                    password=form.password.data)
+                    password=form.password.data,
+                    fullname=form.fullname.data,
+                    address=form.address.data,
+                    province_region_id=request.values.get('country', 0),
+                    city_region_id=request.values.get('city', 0))
         db.session.add(user)
         token = user.generate_confirmation_token()
         send_email(user.email, 'Confirm Your Account', 'auth/email/confirm', user=user, token=token)
