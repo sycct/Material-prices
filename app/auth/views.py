@@ -14,9 +14,10 @@ def login():
     form = LoginForm()
     title = '登陆'
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
-        if user is not None and user.verify_password(form.passwrod.data):
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is not None and user.verify_password(form.password.data):
             login_user(user, form.remember_me.data)
+            print("a")
             return redirect(request.args.get('next') or url_for('main.index'))
         flash('Invalid username or password.')
     return render_template("auth/login.html", form=form, name=title)
@@ -32,13 +33,11 @@ def logout():
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
-    form = RegistrationForm()
+    form = RegistrationForm(request.form)
     name = '用户注册'
     ch_region = CH_REGION.query.filter_by(REGION_TYPE=1).all()
     city_region_id = request.values.get('city', 0)
-    print(city_region_id)
     if form.validate_on_submit():
-        print("aa")
         user = User(email=form.email.data,
                     username=form.username.data,
                     password=form.password.data,
