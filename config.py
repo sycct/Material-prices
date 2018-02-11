@@ -29,18 +29,18 @@ class Config:
 class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get(
-        'DEV_DATABASE_URL') or 'mysql://MaterialDBA:pdf-lib.org&huang_huang118@159.138.0.104:3306/Material_Development'
+        'DEV_DATABASE_URL') or 'mysql://'
 
 
 class TestingConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = os.environ.get(
-        'TEST_DATABASE_URL') or 'mysql://MaterialDBA:pdf-lib.org&huang_huang118@159.138.0.104:3306/Material_Testing'
+        'TEST_DATABASE_URL') or 'mysql://'
 
 
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get(
-        'TEST_DATABASE_URL') or 'mysql://MaterialDBA:pdf-lib.org&huang_huang118@159.138.0.104:3306/Material_Production'
+        'TEST_DATABASE_URL') or 'mysql://'
 
 
 config = {
