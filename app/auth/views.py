@@ -36,7 +36,6 @@ def register():
     form = RegistrationForm(request.form)
     name = '用户注册'
     ch_region = CH_REGION.query.filter_by(REGION_TYPE=1).all()
-    city_region_id = request.values.get('city', 0)
     if form.validate_on_submit():
         user = User(email=form.email.data,
                     username=form.username.data,
