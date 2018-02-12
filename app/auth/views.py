@@ -17,7 +17,6 @@ def login():
         user = User.query.filter_by(username=form.username.data).first()
         if user is not None and user.verify_password(form.password.data):
             login_user(user, form.remember_me.data)
-            print("a")
             return redirect(request.args.get('next') or url_for('main.index'))
         flash('Invalid username or password.')
     return render_template("auth/login.html", form=form, name=title)
@@ -68,7 +67,7 @@ def country():
 def confirm(token):
     if current_user.confirmed:
         return redirect(url_for('main.index'))
-    if current_user.confirmend(token):
+    if current_user.confirm(token):
         flash('You have confirmed you account.Thanks!')
     else:
         flash('The confirmation link is invalid or has expired.')
@@ -104,32 +103,39 @@ def resend_confirmation():
 def password_reset_request():
     title = '忘记密码'
     if not current_user.is_anonymous:
+        # 验证密码是否为登录状态，如果是，则终止重置密码
         return redirect(url_for('main.index'))
     form = PasswordResetRequestForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
+            # 如果用户存在
             token = user.generate_reset_token()
+            # 调用User模块中的generate_reset_token函数生成验证信息
             send_email(user.email, 'Reset Your Password',
                        'auth/email/reset_password',
                        user=user, token=token,
                        next=request.args.get('next'))
+            # 调用send_email函数，渲染邮件内容之后发送重置密码邮件
         flash('An email with instructions to reset your password has been '
               'sent to you.')
         return redirect(url_for('auth.login'))
-    return render_template('auth/reset_password.html', form=form, name=title)
+    return render_template('auth/reset_password.html', form=form, name=title,token=None)
 
 
 @auth.route('/reset/<token>', methods=['GET', 'POST'])
 def password_reset(token):
+    name = "重设密码"
     if not current_user.is_anonymous:
         return redirect(url_for('main.index'))
     form = PasswordResetForm()
     if form.validate_on_submit():
         if User.reset_password(token, form.password.data):
+            # 修改密码
             db.session.commit()
+            # 加入数据库的session，这里不需要.commit()，在配置文件中已经配置了自动保存
             flash('Your password has been updated.')
             return redirect(url_for('auth.login'))
         else:
             return redirect(url_for('main.index'))
-    return render_template('auth/reset_password.html', form=form)
+    return render_template('auth/reset_password.html', form=form, name=name, token=token)

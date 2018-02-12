@@ -22,8 +22,8 @@ class RegistrationForm(FlaskForm):
                              validators=[DataRequired(), EqualTo('password2', message='Password must match.')])
     password2 = PasswordField('Confirm password', validators=[DataRequired()])
     address = StringField('Address', validators=[DataRequired()])
-    province_region_id = StringField('',default=0)
-    city_region_id = StringField('',default=0)
+    province_region_id = StringField('', default=0)
+    city_region_id = StringField('', default=0)
     submit = SubmitField('Submit')
 
     def validate_email(self, field):
@@ -37,12 +37,13 @@ class RegistrationForm(FlaskForm):
 
 class PasswordResetRequestForm(FlaskForm):
     email = StringField('Email',
-                        validators=[DataRequired(), Length(1, 64), Email()])
-    submit = SubmitField('Reset Password')
+                        validators=[DataRequired(), Length(1, 64), Email()],
+                        render_kw={'class': 'form-control form-control-solid placeholder-no-fix'})
+    submit = SubmitField('Reset Password', render_kw={'class': 'btn green uppercase'})
 
 
 class PasswordResetForm(FlaskForm):
-    password = PasswordField('New Password',
+    password = PasswordField('',
                              validators=[DataRequired(), EqualTo('password2', message='Passwords must match')])
-    password2 = PasswordField('Confirm password', validators=[DataRequired()])
-    submit = SubmitField('Reset Password')
+    password2 = PasswordField('', validators=[DataRequired()],render_kw={'class':'form-control form-control-solid placeholder-no-fix'})
+    submit = SubmitField('Reset Password', render_kw={'class': 'btn green uppercase'})

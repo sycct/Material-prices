@@ -46,7 +46,7 @@
                             </ul>
                         </li>
                         {% if current_user.is_authenticated %}
-                        <li class="header_login"><span><a href="{{ url_for('auth.logout') }}">退出</a></span> </li>
+                        <li class="header_login"><span><a href="{{ url_for('auth.logout') }}">退 出</a></span> </li>
                         {% else %}
                         <li class="header_login">
                             <span><a href="{{ url_for('auth.login') }}">登 陆</a></span>
