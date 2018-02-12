@@ -18,7 +18,7 @@ def login():
         if user is not None and user.verify_password(form.password.data):
             login_user(user, form.remember_me.data)
             return redirect(request.args.get('next') or url_for('main.index'))
-        flash('Invalid username or password.')
+        flash(u'Invalid username or password.','danger')
     return render_template("auth/login.html", form=form, name=title)
 
 
@@ -95,7 +95,7 @@ def unconfirmed():
 def resend_confirmation():
     token = current_user.generate_confirmation_token()
     send_email(current_user.email, 'Confirm Your Account', 'auth/email/confirm', user=current_user, token=token)
-    flash('A new confirmation email has been sent to you by email.')
+    flash(u'A new confirmation email has been sent to you by email.','success')
     return redirect(url_for('main.index'))
 
 
@@ -117,8 +117,8 @@ def password_reset_request():
                        user=user, token=token,
                        next=request.args.get('next'))
             # 调用send_email函数，渲染邮件内容之后发送重置密码邮件
-        flash('An email with instructions to reset your password has been '
-              'sent to you.')
+        flash(u'An email with instructions to reset your password has been '
+              'sent to you.','info')
         return redirect(url_for('auth.login'))
     return render_template('auth/reset_password.html', form=form, name=title,token=None)
 
@@ -134,7 +134,7 @@ def password_reset(token):
             # 修改密码
             db.session.commit()
             # 加入数据库的session，这里不需要.commit()，在配置文件中已经配置了自动保存
-            flash('Your password has been updated.')
+            flash(u'Your password has been updated.','success')
             return redirect(url_for('auth.login'))
         else:
             return redirect(url_for('main.index'))

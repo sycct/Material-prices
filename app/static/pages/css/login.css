@@ -164,6 +164,10 @@ Login page
   display: inline-block;
   margin-top: 5px; }
 
+.alter_clear{
+  padding: 0;
+}
+
 /* footer copyright */
 .login .copyright {
   text-align: center;
