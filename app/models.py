@@ -316,7 +316,7 @@ class ClassificationCatalog(db.Model):
 class MaterialClassificationBrand(db.Model):
     __tablename__ = 'material_brand'
     b_id = db.Column(db.Integer, primary_key=True)
-    b_name = db.Column(db.VARCHAR(50),index=True)
+    b_name = db.Column(db.VARCHAR(50), index=True)
     b_rel_id = db.Column(db.Integer, db.ForeignKey('material_item.i_id'))
     material_product = db.relationship('MaterialProduct', backref='MaterialClassificationBrand')
 
@@ -330,6 +330,7 @@ class MaterialItem(db.Model):
     material_brand = db.relationship('MaterialClassificationBrand', backref='MaterialItem')
     material_product = db.relationship('MaterialProduct', backref='MaterialItem')
     i_fk_i = db.relationship('MaterialItem')
+    i_ref_pn = db.relationship('MaterialProductName', backfref='MaterialItem')
 
 
 # 具体产品
@@ -341,6 +342,53 @@ class MaterialProduct(db.Model):
     p_fk_p = db.Column(db.Integer, db.ForeignKey('material_product.p_id'), default=None, index=True)
     p_fk_i = db.Column(db.Integer, db.ForeignKey('material_item.i_id'), default=None, index=True)
     p_rel_p = db.relationship('MaterialProduct')
+    p_rel_pp = db.relationship('MaterialProductProperty', backref='material_product')
+
+
+# 产品属性
+class MaterialProductProperty(db.Model):
+    __tablename__ = 'material_product_pro'
+    pp_id = db.Column(db.Integer, primary_key=True)
+    pp_fk_p = db.Column(db.Integer, db.ForeignKey('material_product.p_id'), index=True)
+    pp_fk_pv = db.Column(db.Integer, db.ForeignKey('material_product_value.pv_id'), index=True)
+    pp_fk_pn = db.Column(db.Integer, db.ForeignKey('material_pro_name.pro_id'), index=True)
+
+
+# 产品sku
+class MaterialProductSKU(db.Model):
+    __tablename_ = 'material_product_sku'
+    ps_id = db.Column(db.Integer, primary_key=True)
+    pd_fk_id = db.Column(db.Integer, db.ForeignKey('material_product.p_id'), default=None, index=True)
+    pd_num = db.Column(db.Integer, default=None)
+    pd_price = db.Column(db.DECIMAL(10, 4), default=None)
+    pd_name = db.Column(db.VARCHAR(50), default=None)
+    pd_properties = db.Column(db.VARCHAR(300), default=None)
+
+
+# 产品名称
+class MaterialProductName(db.Model):
+    __tablename_ = 'material_pro_name'
+    pro_id = db.Column(db.Integer, primary_key=True)
+    pro_name = db.Column(db.VARCHAR(50))
+    pro_fk_id = db.Column(db.Integer, db.ForeignKey('material_item.i_id'), index=True)
+    pro_has_otherName = db.Column(db.CHAR(2), default=0)
+    pro_has_color = db.Column(db.CHAR(2), default=0)
+    pro_has_enum = db.Column(db.CHAR(2), default=0)
+    pro_has_input = db.Column(db.CHAR(2), default=0)
+    pro_is_key = db.Column(db.CHAR(2), default=0)
+    pro_is_sale = db.Column(db.CHAR(2), default=0)
+    pro_is_must = db.Column(db.CHAR(2), default=0)
+    pn_rel_pv = db.relationship('MaterialProductValue', backref='material_pro_name')
+    pn_rel_pp = db.relationship('MaterialProductProperty', backref='material_pro_name')
+
+
+# 材料值表
+class MaterialProductValue(db.Model):
+    __tablename__ = 'material_product_value'
+    pv_id = db.Column(db.Integer, primary_key=True)
+    pv_name = db.Column(db.VARCHAR(50))
+    pv_fk_pid = db.Column(db.Integer, db.ForeignKey('material_pro_name.pro_id'), index=True)
+    pv_rel_pp = db.relationship('MaterialProductProperty', backref='material_product_value')
 
 
 class AnonymousUser(AnonymousUserMixin):
