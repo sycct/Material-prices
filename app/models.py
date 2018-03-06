@@ -293,6 +293,43 @@ class CH_REGION(db.Model):
                                       backref=db.backref('province_regions', lazy='joined'), lazy='dynamic')
 
 
+# 材料类别
+class MaterialClassification(db.Model):
+    __tablename__ = 'material_classification'
+    id = db.Column(db.Integer, primary_key=True)
+    classification_name = db.Column(db.String(64), index=True, unique=True)
+    classification_icon = db.Column(db.String(64))
+    classification_since = db.Column(db.DateTime, default=datetime.utcnow)
+    classification_catalog = db.relationship('ClassificationCatalog', backref='MaterialClassification', lazy='dynamic')
+
+
+# 类别目录
+class ClassificationCatalog(db.Model):
+    __tablename__ = 'classification_catalog'
+    id = db.Column(db.Integer, primary_key=True)
+    catalog_name = db.Column(db.String(64), index=True)
+    classification_id = db.Column(db.Integer, db.ForeignKey('material_classification.id'))
+    catalog_since = db.Column(db.DateTime, default=datetime.utcnow)
+
+
+# 材料品牌
+class MaterialClassificationBrand(db.Model):
+    __tablename__ = 'material_brand'
+    b_id = db.Column(db.Integer, primary_key=True)
+    b_name = db.Column(db.VARCHAR(50))
+    b_rel_id = db.Column(db.Integer, db.ForeignKey('material_item.i_id'))
+
+
+# 材料项目
+class MaterialItem(db.Model):
+    __tablename__ = 'material_item'
+    i_id = db.Column(db.Integer, primary_key=True)
+    i_name = db.Column(db.UnicodeText(50))
+    i_parent_id = db.Column(db.Integer, db.ForeignKey('material_item.i_id'))
+    material_brand = db.relationship('MaterialClassificationBrand', backref='MaterialItem')
+    i_fk_i = db.relationship('MaterialItem')
+
+
 class AnonymousUser(AnonymousUserMixin):
     def can(self, permissions):
         return False
