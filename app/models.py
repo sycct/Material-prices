@@ -316,8 +316,9 @@ class ClassificationCatalog(db.Model):
 class MaterialClassificationBrand(db.Model):
     __tablename__ = 'material_brand'
     b_id = db.Column(db.Integer, primary_key=True)
-    b_name = db.Column(db.VARCHAR(50))
+    b_name = db.Column(db.VARCHAR(50),index=True)
     b_rel_id = db.Column(db.Integer, db.ForeignKey('material_item.i_id'))
+    material_product = db.relationship('MaterialProduct', backref='MaterialClassificationBrand')
 
 
 # 材料项目
@@ -327,7 +328,19 @@ class MaterialItem(db.Model):
     i_name = db.Column(db.UnicodeText(50))
     i_parent_id = db.Column(db.Integer, db.ForeignKey('material_item.i_id'))
     material_brand = db.relationship('MaterialClassificationBrand', backref='MaterialItem')
+    material_product = db.relationship('MaterialProduct', backref='MaterialItem')
     i_fk_i = db.relationship('MaterialItem')
+
+
+# 具体产品
+class MaterialProduct(db.Model):
+    __tablename__ = 'material_product'
+    p_id = db.Column(db.Integer, primary_key=True)
+    p_name = db.Column(db.VARCHAR(50), default=None)
+    b_name = db.Column(db.VARCHAR(50), db.ForeignKey('material_brand.b_name'), default=None, index=True)
+    p_fk_p = db.Column(db.Integer, db.ForeignKey('material_product.p_id'), default=None, index=True)
+    p_fk_i = db.Column(db.Integer, db.ForeignKey('material_item.i_id'), default=None, index=True)
+    p_rel_p = db.relationship('MaterialProduct')
 
 
 class AnonymousUser(AnonymousUserMixin):
