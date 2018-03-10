@@ -330,7 +330,7 @@ class MaterialItem(db.Model):
     material_brand = db.relationship('MaterialClassificationBrand', backref='MaterialItem')
     material_product = db.relationship('MaterialProduct', backref='MaterialItem')
     i_fk_i = db.relationship('MaterialItem')
-    i_ref_pn = db.relationship('MaterialProductName', backfref='MaterialItem')
+    i_ref_pn = db.relationship('MaterialProductName', backref='MaterialItem')
 
 
 # 具体产品
@@ -356,7 +356,7 @@ class MaterialProductProperty(db.Model):
 
 # 产品sku
 class MaterialProductSKU(db.Model):
-    __tablename_ = 'material_product_sku'
+    __tablename__ = 'material_product_sku'
     ps_id = db.Column(db.Integer, primary_key=True)
     pd_fk_id = db.Column(db.Integer, db.ForeignKey('material_product.p_id'), default=None, index=True)
     pd_num = db.Column(db.Integer, default=None)
@@ -367,7 +367,7 @@ class MaterialProductSKU(db.Model):
 
 # 产品名称
 class MaterialProductName(db.Model):
-    __tablename_ = 'material_pro_name'
+    __tablename__ = 'material_pro_name'
     pro_id = db.Column(db.Integer, primary_key=True)
     pro_name = db.Column(db.VARCHAR(50))
     pro_fk_id = db.Column(db.Integer, db.ForeignKey('material_item.i_id'), index=True)

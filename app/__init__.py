@@ -35,6 +35,10 @@ def create_app(config_name):
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
+    # 注册后台路由页面
+    from .manage import manage as manage_blueprint
+    app.register_blueprint(manage_blueprint, url_prefix='/manage')
+
     # 跳转到认证页面
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
