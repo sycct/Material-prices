@@ -485,4 +485,14 @@ class Comment(db.Model):
         return Comment(body=body)
 
 
+#页面相关内容（包括描述、标题等内容）
+class PageRelated(db.Model):
+    __tablename__='page_related'
+    id=db.Column(db.Integer,primary_key=True)
+    title=db.Column(db.String(64),index=True)
+    description=db.Column(db.String(64))
+    #页面功能
+    page_features=db.Column(db.String(64))
+
+
 db.event.listen(Comment.body, 'set', Comment.on_changed_body)

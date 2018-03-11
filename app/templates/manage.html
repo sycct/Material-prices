@@ -22,31 +22,30 @@
 {% block styles %}
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet"/>
-    <link href="{{ url_for('static',filename='global/plugins/font-awesome/css/font-awesome.min.css') }}"
-          rel="stylesheet"/>
-    <link href="{{ url_for('static',filename='global/plugins/simple-line-icons/simple-line-icons.min.css') }}"
-          rel="stylesheet"/>
+    <link href="{{ url_for('static',filename='global/plugins/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('static',filename='global/plugins/simple-line-icons/simple-line-icons.min.css') }}" rel="stylesheet"/>
     <link href="{{ url_for('static',filename='global/plugins/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet"/>
     <link href="{{ url_for('static',filename='global/plugins/uniform/css/uniform.default.css') }}" rel="stylesheet"/>
-    <link href="{{ url_for('static',filename='global/plugins/bootstrap-switch/css/bootstrap-switch.min.css') }}"
-          rel="stylesheet"/>
+    <link href="{{ url_for('static',filename='global/plugins/bootstrap-switch/css/bootstrap-switch.min.css') }}" rel="stylesheet"/>
     <!-- END GLOBAL MANDATORY STYLES -->
     <!-- BEGIN PAGE LEVEL PLUGINS -->
-    <link href="{{ url_for('static',filename='global/plugins/bootstrap-daterangepicker/daterangepicker.min.css') }}"
-          rel="stylesheet"/>
+    <link href="{{ url_for('static',filename='global/plugins/bootstrap-daterangepicker/daterangepicker.min.css') }}" rel="stylesheet"/>
     <link href="{{ url_for('static',filename='global/plugins/morris/morris.css') }}" rel="stylesheet"/>
     <link href="{{ url_for('static',filename='global/plugins/fullcalendar/fullcalendar.min.css') }}" rel="stylesheet"/>
     <link href="{{ url_for('static',filename='global/plugins/jqvmap/jqvmap/jqvmap.css') }}" rel="stylesheet"/>
     <!-- END PAGE LEVEL PLUGINS -->
+    <!-- BEGIN PAGE LEVEL STYLES -->
+    {% block page_level_styles %}
+        {{ super() }}
+    {% endblock %}
+    <!--END PAGE LEVEL STYLES -->
     <!-- BEGIN THEME GLOBAL STYLES -->
-    <link href="{{ url_for('static',filename='global/css/components.min.css') }}" rel="stylesheet"
-          id="style_components"/>
+    <link href="{{ url_for('static',filename='global/css/components.min.css') }}" rel="stylesheet" id="style_components"/>
     <link href="{{ url_for('static',filename='global/css/plugins.min.css') }}" rel="stylesheet"/>
     <!-- END THEME GLOBAL STYLES -->
     <!-- BEGIN THEME LAYOUT STYLES -->
     <link href="{{ url_for('static',filename='layouts/layout/css/layout.min.css') }}" rel="stylesheet"/>
-    <link href="{{ url_for('static',filename='layouts/layout/css/themes/darkblue.min.css') }}" rel="stylesheet"
-          id="style_color"/>
+    <link href="{{ url_for('static',filename='layouts/layout/css/themes/darkblue.min.css') }}" rel="stylesheet" id="style_color"/>
     <link href="{{ url_for('static',filename='layouts/layout/css/custom.min.css') }}" rel="stylesheet"/>
     <!-- END THEME LAYOUT STYLES -->
     <link href="{{ url_for('static',filename='favicon.ico') }}" rel="shortcut icon" type="image/x-icon">
@@ -54,7 +53,7 @@
     <!-- END HEAD -->
 {% endblock %}
 
-{% block body_attribs %} class="page-header-fixed page-sidebar-closed-hide-logo page-content-white" {% endblock %}
+{% block body_attribs %} class="page-header-fixed page-sidebar-closed-hide-logo page-content-white {{ bg_style }}" {% endblock %}
 
 {% block body %}
     <!-- BEGIN HEADER -->
@@ -64,8 +63,8 @@
             <!-- BEGIN LOGO -->
             <div class="page-logo">
                 <a href="index.html">
-                    <img src="{{ url_for('static',filename='layouts/layout/img/logo.png') }}" alt="logo"
-                         class="logo-default"/> </a>
+                    <img src="{{ url_for('static',filename='layouts/layout/img/logo.png') }}" alt="logo" class="logo-default"/>
+                </a>
                 <div class="menu-toggler sidebar-toggler"></div>
             </div>
             <!-- END LOGO -->
@@ -1670,7 +1669,7 @@
                             <i class="fa fa-circle"></i>
                         </li>
                         <li>
-                            <span>Dashboard</span>
+                            <span>{{ pageName }}</span>
                         </li>
                     </ul>
                     <div class="page-toolbar">
@@ -1684,8 +1683,8 @@
                 </div>
                 <!-- END PAGE BAR -->
                 <!-- BEGIN PAGE TITLE-->
-                <h3 class="page-title"> Dashboard
-                    <small>dashboard & statistics</small>
+                <h3 class="page-title"> {{ description }}
+                    <small>{{ pageFeatures }}</small>
                 </h3>
                 <!-- END PAGE TITLE-->
                 <!-- END PAGE HEADER-->
