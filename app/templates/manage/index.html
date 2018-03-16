@@ -2,3 +2,46 @@
 
 {% block content %}
 {% endblock %}
+
+{% block page_level_scripts %}
+    <script src="{{ url_for('static',filename='pages/scripts/dashboard.min.js') }}"></script>
+{% endblock %}
+
+{% block page_level_styles_plugins %}
+    <link href="{{ url_for('static',filename='global/plugins/bootstrap-daterangepicker/daterangepicker.min.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('static',filename='global/plugins/morris/morris.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('static',filename='global/plugins/fullcalendar/fullcalendar.min.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('static',filename='global/plugins/jqvmap/jqvmap/jqvmap.css') }}" rel="stylesheet"/>
+{% endblock %}
+
+{% block page_level_scripts_plugins %}
+    <script src="{{ url_for('static',filename='global/plugins/moment.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/bootstrap-daterangepicker/daterangepicker.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/morris/morris.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/morris/raphael-min.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/counterup/jquery.waypoints.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/counterup/jquery.counterup.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/amcharts/amcharts/amcharts.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/amcharts/amcharts/serial.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/amcharts/amcharts/pie.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/amcharts/amcharts/radar.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/amcharts/amcharts/themes/light.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/amcharts/amcharts/themes/patterns.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/amcharts/amcharts/themes/chalk.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/amcharts/ammap/ammap.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/amcharts/ammap/maps/js/worldLow.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/amcharts/amstockcharts/amstock.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/fullcalendar/fullcalendar.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/flot/jquery.flot.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/flot/jquery.flot.resize.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/flot/jquery.flot.categories.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/jquery-easypiechart/jquery.easypiechart.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/jquery.sparkline.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/jqvmap/jqvmap/jquery.vmap.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/jqvmap/jqvmap/maps/jquery.vmap.russia.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/jqvmap/jqvmap/maps/jquery.vmap.world.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/jqvmap/jqvmap/maps/jquery.vmap.europe.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/jqvmap/jqvmap/maps/jquery.vmap.germany.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/jqvmap/jqvmap/maps/jquery.vmap.usa.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/jqvmap/jqvmap/data/jquery.vmap.sampledata.js') }}"></script>
+ {% endblock %}

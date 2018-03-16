@@ -29,14 +29,13 @@
     <link href="{{ url_for('static',filename='global/plugins/bootstrap-switch/css/bootstrap-switch.min.css') }}" rel="stylesheet"/>
     <!-- END GLOBAL MANDATORY STYLES -->
     <!-- BEGIN PAGE LEVEL PLUGINS -->
-    <link href="{{ url_for('static',filename='global/plugins/bootstrap-daterangepicker/daterangepicker.min.css') }}" rel="stylesheet"/>
-    <link href="{{ url_for('static',filename='global/plugins/morris/morris.css') }}" rel="stylesheet"/>
-    <link href="{{ url_for('static',filename='global/plugins/fullcalendar/fullcalendar.min.css') }}" rel="stylesheet"/>
-    <link href="{{ url_for('static',filename='global/plugins/jqvmap/jqvmap/jqvmap.css') }}" rel="stylesheet"/>
+    {% block page_level_styles_plugins %}
+        {{ super() }}
+    {% endblock %}
     <!-- END PAGE LEVEL PLUGINS -->
     <!-- BEGIN PAGE LEVEL STYLES -->
     {% block page_level_styles %}
-        {{ super() }}
+{#        {{ super() }}#}
     {% endblock %}
     <!--END PAGE LEVEL STYLES -->
     <!-- BEGIN THEME GLOBAL STYLES -->
@@ -2313,41 +2312,17 @@
         <script src="{{ url_for('static',filename='global/plugins/bootstrap-switch/js/bootstrap-switch.min.js') }}"></script>
         <!-- END CORE PLUGINS -->
         <!-- BEGIN PAGE LEVEL PLUGINS -->
-        <script src="{{ url_for('static',filename='global/plugins/moment.min.js') }}"></script>
-        <script src="{{ url_for('static',filename='global/plugins/bootstrap-daterangepicker/daterangepicker.min.js') }}"></script>
-        <script src="{{ url_for('static',filename='global/plugins/morris/morris.min.js') }}"></script>
-        <script src="{{ url_for('static',filename='global/plugins/morris/raphael-min.js') }}"></script>
-        <script src="{{ url_for('static',filename='global/plugins/counterup/jquery.waypoints.min.js') }}"></script>
-        <script src="{{ url_for('static',filename='global/plugins/counterup/jquery.counterup.min.js') }}"></script>
-        <script src="{{ url_for('static',filename='global/plugins/amcharts/amcharts/amcharts.js') }}"></script>
-        <script src="{{ url_for('static',filename='global/plugins/amcharts/amcharts/serial.js') }}"></script>
-        <script src="{{ url_for('static',filename='global/plugins/amcharts/amcharts/pie.js') }}"></script>
-        <script src="{{ url_for('static',filename='global/plugins/amcharts/amcharts/radar.js') }}"></script>
-        <script src="{{ url_for('static',filename='global/plugins/amcharts/amcharts/themes/light.js') }}"></script>
-        <script src="{{ url_for('static',filename='global/plugins/amcharts/amcharts/themes/patterns.js') }}"></script>
-        <script src="{{ url_for('static',filename='global/plugins/amcharts/amcharts/themes/chalk.js') }}"></script>
-        <script src="{{ url_for('static',filename='global/plugins/amcharts/ammap/ammap.js') }}"></script>
-        <script src="{{ url_for('static',filename='global/plugins/amcharts/ammap/maps/js/worldLow.js') }}"></script>
-        <script src="{{ url_for('static',filename='global/plugins/amcharts/amstockcharts/amstock.js') }}"></script>
-        <script src="{{ url_for('static',filename='global/plugins/fullcalendar/fullcalendar.min.js') }}"></script>
-        <script src="{{ url_for('static',filename='global/plugins/flot/jquery.flot.min.js') }}"></script>
-        <script src="{{ url_for('static',filename='global/plugins/flot/jquery.flot.resize.min.js') }}"></script>
-        <script src="{{ url_for('static',filename='global/plugins/flot/jquery.flot.categories.min.js') }}"></script>
-        <script src="{{ url_for('static',filename='global/plugins/jquery-easypiechart/jquery.easypiechart.min.js') }}"></script>
-        <script src="{{ url_for('static',filename='global/plugins/jquery.sparkline.min.js') }}"></script>
-        <script src="{{ url_for('static',filename='global/plugins/jqvmap/jqvmap/jquery.vmap.js') }}"></script>
-        <script src="{{ url_for('static',filename='global/plugins/jqvmap/jqvmap/maps/jquery.vmap.russia.js') }}"></script>
-        <script src="{{ url_for('static',filename='global/plugins/jqvmap/jqvmap/maps/jquery.vmap.world.js') }}"></script>
-        <script src="{{ url_for('static',filename='global/plugins/jqvmap/jqvmap/maps/jquery.vmap.europe.js') }}"></script>
-        <script src="{{ url_for('static',filename='global/plugins/jqvmap/jqvmap/maps/jquery.vmap.germany.js') }}"></script>
-        <script src="{{ url_for('static',filename='global/plugins/jqvmap/jqvmap/maps/jquery.vmap.usa.js') }}"></script>
-        <script src="{{ url_for('static',filename='global/plugins/jqvmap/jqvmap/data/jquery.vmap.sampledata.js') }}"></script>
+         {% block page_level_scripts_plugins %}
+             {{ super() }}
+         {% endblock %}
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN THEME GLOBAL SCRIPTS -->
         <script src="{{ url_for('static',filename='global/scripts/app.min.js') }}"></script>
         <!-- END THEME GLOBAL SCRIPTS -->
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
-        <script src="{{ url_for('static',filename='pages/scripts/dashboard.min.js') }}"></script>
+        {% block page_level_scripts %}
+            {{ super() }}
+        {% endblock %}
         <!-- END PAGE LEVEL SCRIPTS -->
         <!-- BEGIN THEME LAYOUT SCRIPTS -->
         <script src="{{ url_for('static',filename='layouts/layout/scripts/layout.min.js') }}"></script>

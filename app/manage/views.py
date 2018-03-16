@@ -29,3 +29,9 @@ def user(username):
         abort(404)
     return render_template('manage/user.html', name=description, user=user, pageName=page_name, description=description,
                            pageFeatures=page_features, bg_style=bg_style)
+
+
+@manage.route('/file_upload')
+@login_required
+def file_upload():
+    return;
