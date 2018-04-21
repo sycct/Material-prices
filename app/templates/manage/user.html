@@ -152,7 +152,7 @@
                                     <!-- CHANGE AVATAR TAB -->
                                     <div class="tab-pane" id="tab_1_2">
                                         <p> 请上传小于3M的文件。 </p>
-                                        <form action="#" role="form">
+                                        <form action="/manage/file_upload" role="form" enctype=multipart/form-data method="post">
                                             <div class="form-group">
                                                 <div class="fileinput fileinput-new" data-provides="fileinput">
                                                     <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
@@ -163,7 +163,7 @@
                                                         <span class="btn default btn-file">
                                                             <span class="fileinput-new"> 选择图片 </span>
                                                             <span class="fileinput-exists"> Change </span>
-                                                            <input type="file" name="...">
+                                                            <input type="file" name="file">
                                                         </span>
                                                         <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remove </a>
                                                     </div>
@@ -174,7 +174,7 @@
                                                 </div>
                                             </div>
                                             <div class="margin-top-10">
-                                                <a href="javascript:;" class="btn green"> Submit </a>
+                                                <button class="btn green" type="submit">Submit</button>
                                                 <a href="javascript:;" class="btn default"> Cancel </a>
                                             </div>
                                         </form>

@@ -1,9 +1,11 @@
 from flask import render_template, redirect, request, url_for, flash, abort
 from ..decorators import permission_required, admin_required
-from ..models import Permission
 from . import manage
 from flask_login import login_user, logout_user, login_required
 from ..models import User
+from config import Config
+from werkzeug.utils import secure_filename
+import os
 
 
 @manage.route('/index', methods=['GET', 'POST'])
@@ -31,7 +33,18 @@ def user(username):
                            pageFeatures=page_features, bg_style=bg_style)
 
 
-@manage.route('/file_upload')
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in Config.ALLOWED_EXTENSIONS
+
+
+@manage.route('/file_upload', methods=['GET', 'POST'])
 @login_required
-def file_upload():
-    return;
+def upload_file():
+    if request.method == 'POST':
+        file = request.files['file']
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(os.environ.get['UPLOAD_FOLDER'], filename))
+            return redirect(url_for('uploaded_file', filename=filename))
+    return 'ok'
