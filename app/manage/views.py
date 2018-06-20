@@ -1,7 +1,7 @@
 from flask import render_template, redirect, request, url_for, flash, abort
-from ..decorators import permission_required, admin_required
+from ..decorators import admin_required
 from . import manage
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_required
 from ..models import User
 from config import Config
 from werkzeug.utils import secure_filename

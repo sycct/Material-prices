@@ -1,6 +1,6 @@
-{% extends "base.html" %}
+{% extends "sms_base.html" %}
 
-{% block title %}Index{% endblock %}
+{% block title %}主页{% endblock %}
 
 {% block content %}
     <section class="container">
@@ -13,7 +13,12 @@
                 <div class="sms_info_list">
                     <nav>
                         <ul>
-                            <li></li>
+                            <li>在使用前你应该知晓下面的电话号码短信内容所有人都可以查看</li>
+                            <li>请不要用这个电话号码接收重要内容</li>
+                            <li>下面的电话号码只用于注册一些网站，<b class="text-info">防止被骚扰</b></li>
+                            <li>他人可以通过此电话号码找回密码，所以注册时应注意个人信息</li>
+                            <li><b class="text-danger">由此造成经济损失概不负责</b></li>
+                            <li>在使用时即代表以上条款已同意</li>
                         </ul>
                     </nav>
                 </div>
@@ -32,8 +37,8 @@
                     <h3>+8613429950072</h3>
                 </div>
                 <div class="number-list-info">
-                    <p>总共<b>1538</b>条短信内容。</p>
-                    <p>最新一条是在<time>5</time>分钟前。</p>
+                    <p>总共<b>{{ SMS_Count }}</b>条短信内容。</p>
+                    <p>最新一条是在<time>{{ timeInfo }}</time>前。</p>
                 </div>
                 <div class="sms-number-read">
                     <a href="/SMS_Receive/SMSContent" type="button" class="btn btn-w-m btn-success btn-lg">

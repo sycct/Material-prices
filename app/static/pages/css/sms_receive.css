@@ -123,6 +123,24 @@ body {
     margin: 15px;
 }
 
+.sms-content-pager .pagination{
+    margin: 0 auto;
+    display: block;
+}
+
+footer .navbar.navbar-default.copyright{
+    margin: 0;
+}
+
+.disabled{
+    pointer-events:none;
+}
+
+.sms_info_list nav ul li{
+    font-size: 1.5rem;
+    line-height: 2rem;
+}
+
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
     /* Hide captions */
