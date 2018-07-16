@@ -1,5 +1,6 @@
 {% extends "sms_base.html" %}
 {% import "_macros.html" as macros %}
+
 {% block title %}短信列表{% endblock %}
 
 {% block content %}
@@ -25,8 +26,12 @@
                     <tbody>
                     {% for item in list_four %}
                         <tr>
-                            <td> 1</td>
-                            <td> {{ item.PhoneNumber }} </td>
+                            <td>{{ loop.index }}</td>
+                            {% if item.PhoneNumber|length <9 %}
+                                <td>{{ item.PhoneNumber }}</td>
+                            {% else %}
+                                <td> {{ item.PhoneNumber[:item.PhoneNumber|length - 8]  + '****' + item.PhoneNumber[item.PhoneNumber|length - 4:] }} </td>
+                            {% endif %}
                             <td> {{ item.Content }} </td>
                             <td>
                                 <time>{{ item.SMS_ReceiveTime }}</time>
@@ -59,8 +64,12 @@
                     <tbody>
                     {% for item in list_surplus %}
                         <tr>
-                            <td> 1</td>
-                            <td> {{ item.PhoneNumber }} </td>
+                            <td> {{ loop.index }}</td>
+                            {% if item.PhoneNumber|length <9 %}
+                                <td>{{ item.PhoneNumber }}</td>
+                            {% else %}
+                                <td> {{ item.PhoneNumber[:item.PhoneNumber|length - 8]  + '****' + item.PhoneNumber[item.PhoneNumber|length - 4:] }} </td>
+                            {% endif %}
                             <td> {{ item.Content }} </td>
                             <td>
                                 <time>{{ item.SMS_ReceiveTime }}</time>

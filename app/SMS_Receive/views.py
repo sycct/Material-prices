@@ -12,7 +12,7 @@ from flask import render_template, redirect, url_for, abort, flash, request, \
     current_app, make_response
 
 
-@receive.route('/index')
+@receive.route('/')
 def index():
     title = '首 页'
     page_name = 'Dashboard'

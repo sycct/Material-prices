@@ -5,13 +5,13 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
     SECRET_KEY = os.environ.get(
-        'SECRET_KEY') or 'mLZXlBhl7hoV39xt6PUsJI8N3UUF8r575E77953YH7hIDOv12Yw9kua4nU75xybyyFDfSM6ZO4UPW4UO69e98lisAItyUTkI2TbplZTsDdfdM9ZG'
+        'SECRET_KEY') or 'default'
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     # 163 mail config
     MAIL_SERVER = os.environ.get('MAIL_SERVER', 'smtp.163.com')
     MAIL_PORT = int(os.environ.get('MAIL_PORT', '465'))
-    #MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS', 'true').lower() in \
-                   #['true', 'on', '1']
+    # MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS', 'true').lower() in \
+    # ['true', 'on', '1']
     MAIL_USE_SSL = os.environ.get('MAIL_USE_SSL', 'true')
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
@@ -22,6 +22,10 @@ class Config:
     BOOTSTRAP_USE_MINIFIED = True
     BOOTSTRAP_SERVE_LOCAL = True
     BOOTSTRAP_CDN_FORCE_SSL = True
+    FLASKY_POSTS_PER_PAGE = 10
+    # file upload path and file upload extensions
+    UPLOAD_FOLDER = os.environ.get('UPLOAD_FOLDER', '/uploads')
+    ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
     @staticmethod
     def init_app(app):
@@ -31,18 +35,18 @@ class Config:
 class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get(
-        'DEV_DATABASE_URL') or 'mysql://'
+        'DEV_DATABASE_URL') or 'default'
 
 
 class TestingConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = os.environ.get(
-        'TEST_DATABASE_URL') or 'mysql://'
+        'TEST_DATABASE_URL') or 'default'
 
 
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get(
-        'TEST_DATABASE_URL') or 'mysql://'
+        'TEST_DATABASE_URL') or 'default'
 
 
 config = {
