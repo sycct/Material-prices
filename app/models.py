@@ -92,13 +92,18 @@ class User(UserMixin, db.Model):
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     password_hash = db.Column(db.String(128))
     confirmed = db.Column(db.Boolean, default=False)
-    name = db.Column(db.String(64))
+    nick_name = db.Column(db.String(64))
     location = db.Column(db.String(64))
     about_me = db.Column(db.Text())
     member_since = db.Column(db.DateTime(), default=datetime.utcnow)
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
     avatar_hash = db.Column(db.String(32))
     posts = db.relationship('Post', backref='author', lazy='dynamic')
+    phone_number = db.Column(db.String(32))
+    website_url = db.Column(db.String(128))
+    profile_picture = db.Column(db.String(128))
+    # False:普通用户, True:店家
+    user_status = db.Column(db.Boolean, default=False, index=True)
     followed = db.relationship('Follow',
                                foreign_keys=[Follow.follower_id],
                                backref=db.backref('follower', lazy='joined'),
@@ -502,7 +507,7 @@ class SMS_Receive(db.Model):
     PhoneNumber = db.Column(db.String(32))
     Content = db.Column(db.String(512))
     SMS_ReceiveTime = db.Column(db.DateTime, index=True)
-    Type=db.Column(db.String(32))
+    Type = db.Column(db.String(32))
 
 
 db.event.listen(Comment.body, 'set', Comment.on_changed_body)

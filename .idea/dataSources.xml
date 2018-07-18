@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="Material_Testing@159.138.0.104" uuid="c620f3fb-a8f3-44ae-beed-fed6d7e850f0">
+    <data-source source="LOCAL" name="Material_Development@database.pdflibr.com" uuid="9a36f866-ea80-4f27-8bcc-782c3e83d6aa">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://159.138.0.104:3306/Material_Testing</jdbc-url>
+      <jdbc-url>jdbc:mysql://database.pdflibr.com:3306/Material_Development</jdbc-url>
       <driver-properties>
         <property name="autoReconnect" value="true" />
         <property name="zeroDateTimeBehavior" value="convertToNull" />
@@ -15,39 +15,11 @@
         <property name="yearIsDateType" value="false" />
       </driver-properties>
     </data-source>
-    <data-source source="LOCAL" name="Material_Development@159.138.0.104" uuid="92bad0e0-ae54-400b-a4fb-4bd6af73c8af">
+    <data-source source="LOCAL" name="Material_Testing@database.pdflibr.com" uuid="b3ae4c40-10e3-4e49-b378-6f91447ad252">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://159.138.0.104:3306/Material_Development</jdbc-url>
-      <driver-properties>
-        <property name="autoReconnect" value="true" />
-        <property name="zeroDateTimeBehavior" value="convertToNull" />
-        <property name="tinyInt1isBit" value="false" />
-        <property name="characterEncoding" value="utf8" />
-        <property name="characterSetResults" value="utf8" />
-        <property name="yearIsDateType" value="false" />
-      </driver-properties>
-    </data-source>
-    <data-source source="LOCAL" name="SMS_Recive@database.pdflibr.com" uuid="e8b90aa5-08dc-422c-9707-24edf1fb34dd">
-      <driver-ref>mysql</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://database.pdflibr.com:3306/SMS_Recive</jdbc-url>
-      <driver-properties>
-        <property name="autoReconnect" value="true" />
-        <property name="zeroDateTimeBehavior" value="convertToNull" />
-        <property name="tinyInt1isBit" value="false" />
-        <property name="characterEncoding" value="utf8" />
-        <property name="characterSetResults" value="utf8" />
-        <property name="yearIsDateType" value="false" />
-      </driver-properties>
-    </data-source>
-    <data-source source="LOCAL" name="ShadowsocksManage@159.138.0.104" uuid="3c297c99-22c2-4bae-9f9f-c92170ff6608">
-      <driver-ref>mysql</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://159.138.0.104:3306/ShadowsocksManage</jdbc-url>
+      <jdbc-url>jdbc:mysql://database.pdflibr.com:3306/Material_Testing</jdbc-url>
       <driver-properties>
         <property name="autoReconnect" value="true" />
         <property name="zeroDateTimeBehavior" value="convertToNull" />

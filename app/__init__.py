@@ -44,8 +44,4 @@ def create_app(config_name):
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
-    # 注册短信接收页面
-    from .SMS_Receive import receive as sms_receive
-    app.register_blueprint(sms_receive, url_prefix='/SMS_Receive')
-
     return app

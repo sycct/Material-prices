@@ -1,7 +1,7 @@
 from flask import render_template, redirect, request, url_for, flash, abort
 from ..decorators import admin_required
 from . import manage
-from flask_login import login_required
+from flask_login import login_required, current_user
 from ..models import User
 from config import Config
 from werkzeug.utils import secure_filename
@@ -15,6 +15,8 @@ def index():
     title = '首 页'
     page_name = 'Dashboard'
     page_features = 'dashboard & statistics'
+    # 获取当前用户名
+    get_user_id = current_user.get_id()
     return render_template("manage/index.html", name=title, pageName=page_name, description=page_name,
                            pageFeatures=page_features)
 
@@ -22,7 +24,15 @@ def index():
 @manage.route('/user/<username>')
 @login_required
 def user(username):
+    # 判断当前登陆用户名
+    get_current_username = current_user.username
     user = User.query.filter_by(username=username).first()
+    if (get_current_username == user):
+        user_info = {'user_name': user.username}
+    else:
+        user = User.query.filter_by(username=get_current_username).first()
+        user_info = {'full_name': user.fullname, 'address': user.address}
+
     page_name = 'user'
     description = 'New User Profile'
     page_features = 'user account page'
@@ -30,7 +40,7 @@ def user(username):
     if user is None:
         abort(404)
     return render_template('manage/user.html', name=description, user=user, pageName=page_name, description=description,
-                           pageFeatures=page_features, bg_style=bg_style)
+                           pageFeatures=page_features, bg_style=bg_style, user_info=user_info)
 
 
 def allowed_file(filename):
