@@ -13,7 +13,8 @@
                 <div class="portlet light profile-sidebar-portlet ">
                     <!-- SIDEBAR USERPIC -->
                     <div class="profile-userpic">
-                        <img src="{{ url_for('static',filename='pages/media/profile/profile_user.jpg') }}" class="img-responsive" alt=""></div>
+                        <img src="{{ url_for('static',filename='pages/media/profile/profile_user.jpg') }}"
+                             class="img-responsive" alt=""></div>
                     <!-- END SIDEBAR USERPIC -->
                     <!-- SIDEBAR USER TITLE -->
                     <div class="profile-usertitle">
@@ -113,19 +114,29 @@
                             <div class="portlet-body">
                                 <div class="tab-content">
                                     <!-- PERSONAL INFO TAB -->
+                                    {% for category, message in messages %}
+                                        <div class="alert alert-{{ category }}">
+                                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                            {{ message }}
+                                        </div>
+                                    {% endfor %}
                                     <div class="tab-pane active" id="tab_1_1">
-                                        <form role="form" action="#">
+                                        <form role="form"
+                                              action="{{ url_for('manage.user',username=current_user.username) }}"
+                                              method="post">
+                                            {{ form.hidden_tag() }}
                                             <div class="form-group">
-                                                <label class="control-label">First Name</label>
-                                                <input type="text" placeholder="{{ user_info.user_name }}"
-                                                       class="form-control"/></div>
+                                                {{ form.fullname.label(class='control-label') }}
+                                                {{ form.fullname(class='form-control',type='text') }}
+                                            </div>
                                             <div class="form-group">
-                                                <label class="control-label">Last Name</label>
-                                                <input type="text" placeholder="Doe" class="form-control"/></div>
+                                                {{ form.nick_name.label(class='control-label') }}
+                                                {{ form.nick_name(class='form-control',type='text') }}
+                                            </div>
                                             <div class="form-group">
-                                                <label class="control-label">Mobile Number</label>
-                                                <input type="text" placeholder="+1 646 580 DEMO (6284)"
-                                                       class="form-control"/></div>
+                                                {{ form.phone_number.label(class='control-label') }}
+                                                {{ form.phone_number(class='form-control',type='text') }}
+                                            </div>
                                             <div class="form-group">
                                                 <label class="control-label">Interests</label>
                                                 <input type="text" placeholder="Design, Web etc." class="form-control"/>
@@ -135,17 +146,16 @@
                                                 <input type="text" placeholder="Web Developer" class="form-control"/>
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label">About</label>
-                                                <textarea class="form-control" rows="3"
-                                                          placeholder="We are KeenThemes!!!"></textarea>
+                                                {{ form.about_me.label(class='control-label') }}
+                                                {{ form.about_me(class='form-control',row='3') }}
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label">Website Url</label>
-                                                <input type="text" placeholder="http://www.mywebsite.com"
-                                                       class="form-control"/></div>
+                                                {{ form.website_url.label(class='control-label') }}
+                                                {{ form.website_url(class='form-control',type='text') }}
+                                            </div>
                                             <div class="margiv-top-10">
-                                                <a href="javascript:;" class="btn green"> Save Changes </a>
-                                                <a href="javascript:;" class="btn default"> Cancel </a>
+                                                {{ form.submit.label(class='btn green',id='user_profile') }}
+                                                <a href="javascript:;" class="btn default"> 取 消 </a>
                                             </div>
                                         </form>
                                     </div>
@@ -153,20 +163,25 @@
                                     <!-- CHANGE AVATAR TAB -->
                                     <div class="tab-pane" id="tab_1_2">
                                         <p> 请上传小于3M的文件。 </p>
-                                        <form action="/manage/file_upload" role="form" enctype=multipart/form-data method="post">
+                                        <form action="/manage/file_upload" role="form" enctype=multipart/form-data
+                                              method="post">
                                             <div class="form-group">
                                                 <div class="fileinput fileinput-new" data-provides="fileinput">
-                                                    <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
-                                                        <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image" alt=""/>
+                                                    <div class="fileinput-new thumbnail"
+                                                         style="width: 200px; height: 150px;">
+                                                        <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image"
+                                                             alt=""/>
                                                     </div>
-                                                    <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+                                                    <div class="fileinput-preview fileinput-exists thumbnail"
+                                                         style="max-width: 200px; max-height: 150px;"></div>
                                                     <div>
                                                         <span class="btn default btn-file">
                                                             <span class="fileinput-new"> 选择图片 </span>
                                                             <span class="fileinput-exists"> Change </span>
                                                             <input type="file" name="file">
                                                         </span>
-                                                        <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remove </a>
+                                                        <a href="javascript:;" class="btn default fileinput-exists"
+                                                           data-dismiss="fileinput"> Remove </a>
                                                     </div>
                                                 </div>
                                                 <div class="clearfix margin-top-10">
@@ -269,10 +284,12 @@
 {% endblock %}
 
 {% block page_level_styles_plugins %}
-    <link href="{{ url_for('static',filename='global/plugins/bootstrap-fileinput/bootstrap-fileinput.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('static',filename='global/plugins/bootstrap-fileinput/bootstrap-fileinput.css') }}"
+          rel="stylesheet"/>
 {% endblock %}
 
 {% block page_level_scripts_plugins %}
     <script src="{{ url_for('static',filename='global/plugins/bootstrap-fileinput/bootstrap-fileinput.js') }}"></script>
     <script src="{{ url_for('static',filename='global/plugins/jquery.sparkline.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='pages/scripts/page_level_script.js') }}"></script>
 {% endblock %}

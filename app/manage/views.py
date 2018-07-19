@@ -6,6 +6,8 @@ from ..models import User
 from config import Config
 from werkzeug.utils import secure_filename
 import os
+from .forms import EditProfileForm
+from .. import db
 
 
 @manage.route('/index', methods=['GET', 'POST'])
@@ -21,18 +23,41 @@ def index():
                            pageFeatures=page_features)
 
 
-@manage.route('/user/<username>')
+@manage.route('/user/<username>', methods=['GET', 'POST'])
 @login_required
 def user(username):
     # 判断当前登陆用户名
     get_current_username = current_user.username
     user = User.query.filter_by(username=username).first()
+    if user is None:
+        abort(404)
+    form = EditProfileForm()
+    # 判断当前用户
     if (get_current_username == user):
-        user_info = {'user_name': user.username}
+        form.fullname.data = user.fullname
+        form.phone_number.data = user.phone_number
+        form.nick_name.data = user.nick_name
+        form.about_me.data = user.about_me
+        form.website_url.data = user.website_url
     else:
-        user = User.query.filter_by(username=get_current_username).first()
-        user_info = {'full_name': user.fullname, 'address': user.address}
+        user_real = User.query.filter_by(username=get_current_username).first()
+        form.fullname.data = user_real.fullname
+        form.phone_number.data = user_real.phone_number
+        form.nick_name.data = user_real.nick_name
+        form.about_me.data = user_real.about_me
+        form.website_url.data = user_real.website_url
 
+    # 验证提交
+    if form.validate_on_submit():
+        current_user.fullname = request.values.get('fullname', 0)
+        current_user.phone_number = request.values.get('phone_number', 0)
+        current_user.nick_name = request.values.get('nick_name', 0)
+        current_user.about_me = request.values.get('about_me', 0)
+        current_user.website_url = request.values.get('website_url', 0)
+        db.session.add(current_user._get_current_object())
+        db.session.commit()
+
+        flash(u'更新成功！', 'success')
     page_name = 'user'
     description = 'New User Profile'
     page_features = 'user account page'
@@ -40,7 +65,7 @@ def user(username):
     if user is None:
         abort(404)
     return render_template('manage/user.html', name=description, user=user, pageName=page_name, description=description,
-                           pageFeatures=page_features, bg_style=bg_style, user_info=user_info)
+                           pageFeatures=page_features, bg_style=bg_style, form=form)
 
 
 def allowed_file(filename):
