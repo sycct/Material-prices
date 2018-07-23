@@ -16,6 +16,7 @@
     <meta name="description" content={% block description %}{% endblock %}>
     <meta name="keywords" content={% block keywords %}{% endblock %}>
     <meta content="Material" name="author"/>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     {{ super() }}
 {% endblock %}
 {% block title %}{{ name }} | Dashboard{% endblock %}

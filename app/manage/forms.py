@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, BooleanField, SelectField, \
-    SubmitField
-from wtforms.validators import DataRequired, Length, Email, Regexp
+    SubmitField, PasswordField
+from wtforms.validators import DataRequired, Length, Email, Regexp, EqualTo
 from wtforms import ValidationError
 from flask_pagedown.fields import PageDownField
 from ..models import Role, User
@@ -14,3 +14,12 @@ class EditProfileForm(FlaskForm):
     about_me = TextAreaField('自我介绍')
     website_url = StringField('个人网址', validators=[Length(0, 128)])
     submit = SubmitField('保存更改')
+
+
+class ChangePasswordForm(FlaskForm):
+    old_password = PasswordField('Old password', validators=[DataRequired()])
+    password = PasswordField('New password', validators=[
+        DataRequired(), EqualTo('password2', message='Passwords must match.')])
+    password2 = PasswordField('Confirm new password',
+                              validators=[DataRequired()])
+    submit = SubmitField('Update Password')

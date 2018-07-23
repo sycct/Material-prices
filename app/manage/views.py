@@ -6,7 +6,7 @@ from ..models import User
 from config import Config
 from werkzeug.utils import secure_filename
 import os
-from .forms import EditProfileForm
+from .forms import EditProfileForm, ChangePasswordForm
 from .. import db
 
 
@@ -73,13 +73,31 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1] in Config.ALLOWED_EXTENSIONS
 
 
-@manage.route('/file_upload', methods=['GET', 'POST'])
+@manage.route('/upload_file', methods=['GET', 'POST'])
 @login_required
 def upload_file():
     if request.method == 'POST':
+        request_t = request.files
+        print(request_t)
         file = request.files['file']
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file.save(os.path.join(os.environ.get['UPLOAD_FOLDER'], filename))
             return redirect(url_for('uploaded_file', filename=filename))
     return 'ok'
+
+
+@manage.route('/change-password', methods=['GET', 'POST'])
+@login_required
+def change_password():
+    form = ChangePasswordForm()
+    if form.validate_on_submit():
+        if current_user.verify_password(form.old_password.data):
+            current_user.password = form.password.data
+            db.session.add(current_user)
+            db.session.commit()
+            flash('Your password has been updated.')
+            return redirect(url_for('main.index'))
+        else:
+            flash('Invalid password.')
+    return render_template("auth/change_password.html", form=form)
