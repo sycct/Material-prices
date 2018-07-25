@@ -13,12 +13,12 @@
                 <div class="portlet light profile-sidebar-portlet ">
                     <!-- SIDEBAR USERPIC -->
                     <div class="profile-userpic">
-                        <img src="{{ url_for('static',filename='pages/media/profile/profile_user.jpg') }}"
-                             class="img-responsive" alt=""></div>
+                        <img src="/static/uploads/{{ user.profile_picture }}" class="img-responsive" alt="">
+                    </div>
                     <!-- END SIDEBAR USERPIC -->
                     <!-- SIDEBAR USER TITLE -->
                     <div class="profile-usertitle">
-                        <div class="profile-usertitle-name"> Marcus Doe</div>
+                        <div class="profile-usertitle-name"> {{ user.fullname }}</div>
                         <div class="profile-usertitle-job"> Developer</div>
                     </div>
                     <!-- END SIDEBAR USER TITLE -->

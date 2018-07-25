@@ -1,4 +1,4 @@
-from flask import render_template, redirect, request, url_for, flash, abort
+from flask import render_template, redirect, request, url_for, flash, abort, current_app
 from ..decorators import admin_required
 from . import manage
 from flask_login import login_required, current_user
@@ -8,6 +8,7 @@ from werkzeug.utils import secure_filename
 import os
 from .forms import EditProfileForm, ChangePasswordForm
 from .. import db
+import uuid
 
 
 @manage.route('/index', methods=['GET', 'POST'])
@@ -77,14 +78,21 @@ def allowed_file(filename):
 @login_required
 def upload_file():
     if request.method == 'POST':
-        request_t = request.files
-        print(request_t)
         file = request.files['file']
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            file.save(os.path.join(os.environ.get['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('uploaded_file', filename=filename))
-    return 'ok'
+            file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+            old_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+            new_filename = str(uuid.uuid4()) + '.' + filename.rsplit('.', 1)[1]
+            new_path = os.path.join(current_app.config['UPLOAD_FOLDER'], new_filename)
+            # rename file
+            os.rename(old_path, new_path)
+            # save as file name to database
+            current_user.profile_picture = new_filename
+            db.session.add(current_user._get_current_object())
+            db.session.commit()
+            return '0'
+    return '1'
 
 
 @manage.route('/change-password', methods=['GET', 'POST'])
