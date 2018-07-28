@@ -293,3 +293,8 @@
     <script src="{{ url_for('static',filename='global/plugins/jquery.sparkline.min.js') }}"></script>
     <script src="{{ url_for('static',filename='pages/scripts/page_level_script.js') }}"></script>
 {% endblock %}
+
+{% block top_menu %}
+    {{ super() }}
+    {% include '_topMenu_block.html' %}
+{% endblock %}

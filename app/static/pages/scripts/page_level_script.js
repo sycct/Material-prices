@@ -33,7 +33,11 @@ function user_profile() {
         data: $('#tab_1_1 form').serialize(),
         contentType: "application/x-www-form-urlencoded",
         success: function (data) {
-
+            if (data == 0) {
+                Alert_common('success', '更新成功！', 'check');
+            } else {
+                Alert_common('warning', '更新失败！', 'warning');
+            }
         }
     })
 }
@@ -45,7 +49,11 @@ function change_password() {
         data: $('#tab_1_3 form').serialize(),
         contentType: "application/x-www-form-urlencoded",
         success: function (data) {
-
+            if (data == 0) {
+                Alert_common('success', '更新成功！', 'check');
+            } else {
+                Alert_common('warning', '更新失败！', 'warning');
+            }
         }
     })
 }
@@ -61,7 +69,25 @@ function upload_file() {
         contentType: false,
         processData: false,
         success: function (data) {
-            console.log(data);
+            if (data == 0) {
+                Alert_common('success', '更新成功！', 'check');
+            } else {
+                Alert_common('warning', '更新失败！', 'warning');
+            }
         }
     })
+}
+
+function Alert_common(type, message, ico) {
+    App.alert({
+        container: $('.profile-content'), // alerts parent container(by default placed after the page breadcrumbs)
+        place: 'prepend', // append or prepent in container
+        type: type,  // alert's type
+        message: message,  // alert's message
+        close: true, // make alert closable
+        reset: true, // close all previouse alerts first
+        focus: true, // auto scroll to the alert after shown
+        closeInSeconds: 0, // auto close after defined seconds
+        icon: ico // put icon before the message
+    });
 }

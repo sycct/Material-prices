@@ -18,10 +18,11 @@ def index():
     title = '首 页'
     page_name = 'Dashboard'
     page_features = 'dashboard & statistics'
-    # 获取当前用户名
-    get_user_id = current_user.get_id()
+    # 获取当前用户id
+    id = current_user.id
+    user_info = User.query.get_or_404(id)
     return render_template("manage/index.html", name=title, pageName=page_name, description=page_name,
-                           pageFeatures=page_features)
+                           pageFeatures=page_features, user_info=user_info)
 
 
 @manage.route('/user/<username>', methods=['GET', 'POST'])
@@ -57,16 +58,20 @@ def user(username):
         current_user.website_url = request.values.get('website_url', 0)
         db.session.add(current_user._get_current_object())
         db.session.commit()
-
-        flash(u'更新成功！', 'success')
+        # success
+        return '0'
     page_name = 'user'
     description = 'New User Profile'
     page_features = 'user account page'
     bg_style = 'page-container-bg-solid'
+
+    # 获取当前用户id
+    id = current_user.id
+    user_info = User.query.get_or_404(id)
     if user is None:
         abort(404)
     return render_template('manage/user.html', name=description, user=user, pageName=page_name, description=description,
-                           pageFeatures=page_features, bg_style=bg_style, form=form)
+                           pageFeatures=page_features, bg_style=bg_style, form=form, user_info=user_info)
 
 
 def allowed_file(filename):
@@ -104,8 +109,7 @@ def change_password():
             current_user.password = form.password.data
             db.session.add(current_user)
             db.session.commit()
-            flash('Your password has been updated.')
-            return redirect(url_for('main.index'))
+            return '0'
         else:
-            flash('Invalid password.')
+            return '1'
     return render_template("auth/change_password.html", form=form)
