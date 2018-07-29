@@ -2,13 +2,14 @@ from flask import render_template, redirect, request, url_for, flash, abort, cur
 from ..decorators import admin_required
 from . import manage
 from flask_login import login_required, current_user
-from ..models import User
+from ..models import User, MaterialClassification
 from config import Config
 from werkzeug.utils import secure_filename
 import os
-from .forms import EditProfileForm, ChangePasswordForm
+from .forms import EditProfileForm, ChangePasswordForm, AddClassificationForm
 from .. import db
 import uuid
+from pypinyin import lazy_pinyin
 
 
 @manage.route('/index', methods=['GET', 'POST'])
@@ -84,19 +85,12 @@ def allowed_file(filename):
 def upload_file():
     if request.method == 'POST':
         file = request.files['file']
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
-            old_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
-            new_filename = str(uuid.uuid4()) + '.' + filename.rsplit('.', 1)[1]
-            new_path = os.path.join(current_app.config['UPLOAD_FOLDER'], new_filename)
-            # rename file
-            os.rename(old_path, new_path)
-            # save as file name to database
-            current_user.profile_picture = new_filename
-            db.session.add(current_user._get_current_object())
-            db.session.commit()
-            return '0'
+        new_filename = file_upload(file)
+        # save as file name to database
+        current_user.profile_picture = new_filename
+        db.session.add(current_user._get_current_object())
+        db.session.commit()
+        return '0'
     return '1'
 
 
@@ -113,3 +107,49 @@ def change_password():
         else:
             return '1'
     return render_template("auth/change_password.html", form=form)
+
+
+@manage.route('/admin_add_classification', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def admin_add_classification():
+    # 获取当前用户id
+    id = current_user.id
+    # 页面信息
+    user_info = User.query.get_or_404(id)
+    title = '首 页'
+    page_name = 'Dashboard'
+    page_features = 'dashboard & statistics'
+    # form
+    form = AddClassificationForm()
+    if form.validate_on_submit():
+        file = form.classification_icon.data
+        new_filename = file_upload(file)
+        material_classification = MaterialClassification(classification_name=form.classification_name.data,
+                                                         classification_icon=new_filename)
+        db.session.add(material_classification)
+        db.session.commit()
+    return render_template('manage/admin_material_classification.html', user_info=user_info, name=title,
+                           pageName=page_name, description=page_name, pageFeatures=page_features, form=form)
+
+
+# Ajax file upload common
+def file_upload(file):
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        if filename.startswith('.'):
+            name = file.filename.split('.')[0]
+            ext = file.filename.split('.')[1]
+            filename = '_'.join(lazy_pinyin(name)) + '.' + ext
+        else:
+            name = file.filename.split('.')[0]
+            ext = file.filename.split('.')[1]
+            filename = '_'.join(lazy_pinyin(name)) + '.' + ext
+        file.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+        old_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+        new_filename = str(uuid.uuid4()) + '.' + filename.rsplit('.', 1)[1]
+        new_path = os.path.join(current_app.config['UPLOAD_FOLDER'], new_filename)
+        # rename file
+        os.rename(old_path, new_path)
+        # return new file name e.g.:example.png
+        return new_filename

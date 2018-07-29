@@ -1,0 +1,92 @@
+{% extends "manage.html" %}
+
+{% block content %}
+    {{ super() }}
+    <div class="row" xmlns="http://www.w3.org/1999/html">
+        <div class="col-md-12">
+            <div class="note note-success">
+                <h3>增加材料类别</h3>
+                <p>在此增加材料类别，在首页显示，此页面是管理员页面。 </p>
+                <p class="text-warning">注意:上传图片尺寸为：32*32px</p>
+            </div>
+            <div class="portlet light bordered">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-social-dribbble font-green"></i>
+                        <span class="caption-subject font-green bold uppercase">Default textbox</span>
+                    </div>
+                    <div class="actions">
+                        <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                            <i class="icon-cloud-upload"></i>
+                        </a>
+                        <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                            <i class="icon-wrench"></i>
+                        </a>
+                        <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                            <i class="icon-trash"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <form action="{{ url_for('manage.admin_add_classification') }}" method="post" role="form"
+                          enctype="multipart/form-data"/>
+                    {{ form.csrf_token }}
+                    <div class="form-group">
+                        {{ form.classification_name.label(class='control-label',for='default') }}
+                        {{ form.classification_name(class='form-control',placeholder='Placeholder text',id='default') }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.classification_icon.label(class='control-label',for='default') }}
+                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                            <div class="input-group">
+                                <div class="form-control uneditable-input input-fixed" data-trigger="fileinput">
+                                    <i class="fa fa-file fileinput-exists"></i>&nbsp;
+                                    <span class="fileinput-filename"> </span>
+                                </div>
+                                <span class="input-group-addon btn default btn-file">
+                                        <span class="fileinput-new"> Select file </span>
+                                        <span class="fileinput-exists"> Change </span>
+                                        {{ form.classification_icon() }}
+{#                                        <input type="file" name="classification_icon"> </span>#}
+                                    <a href="javascript:;" class="input-group-addon btn red fileinput-exists"
+                                       data-dismiss="fileinput"> Remove </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{ form.submit(class='btn green') }}
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block page_level_scripts %}
+    <script src="{{ url_for('static',filename='pages/scripts/dashboard.min.js') }}"></script>
+{% endblock %}
+
+{% block page_level_styles_plugins %}
+    <link href="{{ url_for('static',filename='global/plugins/bootstrap-daterangepicker/daterangepicker.min.css') }}"
+          rel="stylesheet"/>
+    <link href="{{ url_for('static',filename='global/plugins/morris/morris.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('static',filename='global/plugins/fullcalendar/fullcalendar.min.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('static',filename='global/plugins/jqvmap/jqvmap/jqvmap.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('static',filename='global/plugins/bootstrap-fileinput/bootstrap-fileinput.css') }}"
+          rel="stylesheet"/>
+{% endblock %}
+
+{% block page_level_scripts_plugins %}
+    <script src="{{ url_for('static',filename='global/plugins/moment.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/bootstrap-daterangepicker/daterangepicker.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/morris/morris.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/bootstrap-fileinput/bootstrap-fileinput.js') }}"></script>
+    <script src="{{ url_for('static',filename='pages/scripts/page_level_script.js') }}"></script>
+{% endblock %}
+
+
+{% block top_menu %}
+    {{ super() }}
+    {% include '_topMenu_block.html' %}
+{% endblock %}

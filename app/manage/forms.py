@@ -2,6 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, BooleanField, SelectField, \
     SubmitField, PasswordField
 from wtforms.validators import DataRequired, Length, Email, Regexp, EqualTo
+from flask_wtf.file import FileField, FileRequired
 from wtforms import ValidationError
 from flask_pagedown.fields import PageDownField
 from ..models import Role, User
@@ -23,3 +24,9 @@ class ChangePasswordForm(FlaskForm):
     password2 = PasswordField('Confirm new password',
                               validators=[DataRequired()])
     submit = SubmitField('Update Password')
+
+
+class AddClassificationForm(FlaskForm):
+    classification_name = StringField("类别名称：", validators=[Length(0, 64), DataRequired()])
+    classification_icon = FileField("材料小图：", validators=[FileRequired()])
+    submit = SubmitField('保存更改')

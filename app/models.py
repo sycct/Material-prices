@@ -500,14 +500,4 @@ class PageRelated(db.Model):
     page_features = db.Column(db.String(64))
 
 
-# 短信接收相关表
-class SMS_Receive(db.Model):
-    __tablename__ = 'SMS_Receive'
-    id = db.Column(db.Integer, primary_key=True)
-    PhoneNumber = db.Column(db.String(32))
-    Content = db.Column(db.String(512))
-    SMS_ReceiveTime = db.Column(db.DateTime, index=True)
-    Type = db.Column(db.String(32))
-
-
 db.event.listen(Comment.body, 'set', Comment.on_changed_body)
