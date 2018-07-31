@@ -120,6 +120,8 @@ def admin_add_classification():
     title = '首 页'
     page_name = 'Dashboard'
     page_features = 'dashboard & statistics'
+    # get classification tables
+    get_classification_material = MaterialClassification.query.all()
     # form
     form = AddClassificationForm()
     if form.validate_on_submit():
@@ -129,8 +131,10 @@ def admin_add_classification():
                                                          classification_icon=new_filename)
         db.session.add(material_classification)
         db.session.commit()
+        flash(u'保存成功！', 'success')
     return render_template('manage/admin_material_classification.html', user_info=user_info, name=title,
-                           pageName=page_name, description=page_name, pageFeatures=page_features, form=form)
+                           pageName=page_name, description=page_name, pageFeatures=page_features, form=form,
+                           classification_lists=get_classification_material)
 
 
 # Ajax file upload common
