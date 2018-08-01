@@ -111,20 +111,28 @@ var TableDatatablesEditable = function () {
         }
 
         function editRow(oTable, nRow) {
+            console.log(oTable, nRow)
             var aData = oTable.fnGetData(nRow);
             var jqTds = $('>td', nRow);
             jqTds[1].innerHTML = '<input type="text" class="form-control input-small" value="' + aData[1] + '">';
-            jqTds[2].innerHTML = '<input type="text" class="form-control input-small" value="' + aData[2] + '">';
-            jqTds[3].innerHTML = '<a class="edit" href="">Save</a>';
+            jqTds[2].innerHTML = '<div class="fileinput fileinput-new" data-provides="fileinput">\n' +
+                '                                                        <span class="btn green btn-file">\n' +
+                '                                                            <span class="fileinput-new"> Select file </span>\n' +
+                '                                                            <span class="fileinput-exists"> Change </span>\n' +
+                '                                                            <input type="file" name="edit_classification_icon" id="edit_classification_icon"> </span>\n' +
+                '                                                        <span class="fileinput-filename"> </span> &nbsp;\n' +
+                '                                                        <a href="javascript:;" class="close fileinput-exists" data-dismiss="fileinput"> </a>\n' +
+                '                                                    </div>';
+            jqTds[3].innerHTML = '<a class="edit" href="javascript:;">Save</a>';
             jqTds[4].innerHTML = '<a class="cancel" href="">Cancel</a>';
         }
 
         function saveRow(oTable, nRow) {
             var jqInputs = $('input', nRow);
-            oTable.fnUpdate(jqInputs[1].value, nRow, 1, false);
-            oTable.fnUpdate(jqInputs[2].value, nRow, 2, false);
-            oTable.fnUpdate('<a class="edit" href="">Edit</a>', nRow, 4, false);
-            oTable.fnUpdate('<a class="delete" href="">Delete</a>', nRow, 5, false);
+            oTable.fnUpdate(jqInputs[0].value, nRow, 1, false);
+            oTable.fnUpdate(jqInputs[1].value, nRow, 2, false);
+            oTable.fnUpdate('<a class="edit" href="">Edit</a>', nRow, 3, false);
+            oTable.fnUpdate('<a class="delete" href="">Delete</a>', nRow, 4, false);
             oTable.fnDraw();
         }
 
@@ -233,21 +241,22 @@ var TableDatatablesEditable = function () {
         table.on('click', '.edit', function (e) {
             e.preventDefault();
 
-            /* Get the row as a parent of the link that was clicked on */
+            /!* Get the row as a parent of the link that was clicked on *!/
             var nRow = $(this).parents('tr')[0];
 
             if (nEditing !== null && nEditing != nRow) {
-                /* Currently editing - but not this row - restore the old before continuing to edit mode */
+                /!* Currently editing - but not this row - restore the old before continuing to edit mode *!/
                 restoreRow(oTable, nEditing);
                 editRow(oTable, nRow);
                 nEditing = nRow;
             } else if (nEditing == nRow && this.innerHTML == "Save") {
-                /* Editing this row and want to save it */
+                /!* Editing this row and want to save it *!/
                 saveRow(oTable, nEditing);
                 nEditing = null;
+
                 alert("Updated! Do not forget to do some ajax to sync with backend :)");
             } else {
-                /* No edit in progress - let's start one */
+                /!* No edit in progress - let's start one *!/
                 editRow(oTable, nRow);
                 nEditing = nRow;
             }
@@ -263,4 +272,24 @@ var TableDatatablesEditable = function () {
 
     };
 
+}();
+
+var edit_modal_classification = function () {
+    var formData = new FormData();
+    formData.append("file", $('#edit_classification_icon')[0].files[0])
+    // add assoc key values, this will be posts values
+    $.ajax({
+        type: 'post',
+        url: '/manage/',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (data) {
+            if (data == 0) {
+                Alert_common('success', '更新成功！', 'check');
+            } else {
+                Alert_common('warning', '更新失败！', 'warning');
+            }
+        }
+    })
 }();
