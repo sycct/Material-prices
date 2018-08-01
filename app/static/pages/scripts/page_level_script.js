@@ -111,7 +111,6 @@ var TableDatatablesEditable = function () {
         }
 
         function editRow(oTable, nRow) {
-            console.log(oTable, nRow)
             var aData = oTable.fnGetData(nRow);
             var jqTds = $('>td', nRow);
             jqTds[1].innerHTML = '<input type="text" class="form-control input-small" value="' + aData[1] + '">';
@@ -128,6 +127,7 @@ var TableDatatablesEditable = function () {
         }
 
         function saveRow(oTable, nRow) {
+            //console.log(nRow)
             var jqInputs = $('input', nRow);
             oTable.fnUpdate(jqInputs[0].value, nRow, 1, false);
             oTable.fnUpdate(jqInputs[1].value, nRow, 2, false);
@@ -280,7 +280,7 @@ var edit_modal_classification = function () {
     // add assoc key values, this will be posts values
     $.ajax({
         type: 'post',
-        url: '/manage/',
+        url: '/manage/admin_edit_classification',
         data: formData,
         contentType: false,
         processData: false,
@@ -292,4 +292,4 @@ var edit_modal_classification = function () {
             }
         }
     })
-}();
+};

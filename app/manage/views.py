@@ -137,6 +137,12 @@ def admin_add_classification():
                            classification_lists=get_classification_material)
 
 
+@manage.route('/admin_edit_classification', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def admin_edit_classification():
+    return '0'
+
 # Ajax file upload common
 def file_upload(file):
     if file and allowed_file(file.filename):
