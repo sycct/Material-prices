@@ -137,12 +137,6 @@ def admin_add_classification():
                            classification_lists=get_classification_material)
 
 
-@manage.route('/admin_edit_classification', methods=['GET', 'POST'])
-@login_required
-@admin_required
-def admin_edit_classification():
-    return '0'
-
 # Ajax file upload common
 def file_upload(file):
     if file and allowed_file(file.filename):
@@ -163,3 +157,47 @@ def file_upload(file):
         os.rename(old_path, new_path)
         # return new file name e.g.:example.png
         return new_filename
+
+
+@manage.route('/admin_list_classification', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def admin_list_classification():
+    # 获取当前用户id
+    id = current_user.id
+    # 页面信息
+    user_info = User.query.get_or_404(id)
+    title = '首 页'
+    page_name = 'Dashboard'
+    page_features = 'dashboard & statistics'
+    # get classification tables
+    get_classification_material = MaterialClassification.query.all()
+    # form
+
+    return render_template('manage/admin_list_classification.html', user_info=user_info, name=title,
+                           pageName=page_name, description=page_name, pageFeatures=page_features,
+                           classification_lists=get_classification_material)
+
+
+@manage.route('/admin_edit_classification/<int:id>', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def admin_edit_classification(id):
+    # get classification item
+    classification_item = MaterialClassification.query.get_or_404(id)
+    # 获取当前用户id
+    id = current_user.id
+    # 页面信息
+    user_info = User.query.get_or_404(id)
+    title = '首 页'
+    page_name = 'Dashboard'
+    page_features = 'dashboard & statistics'
+    # get classification tables
+    get_classification_material = MaterialClassification.query.all()
+    # form
+    form = AddClassificationForm()
+    form.classification_name.data = classification_item.classification_name
+    form.classification_icon.data = classification_item.classification_icon
+    return render_template('manage/admin_edit_classification.html', user_info=user_info, name=title,
+                           pageName=page_name, description=page_name, pageFeatures=page_features,
+                           classification_lists=get_classification_material, form=form)
