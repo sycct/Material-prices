@@ -94,7 +94,6 @@ function Alert_common(type, message, ico) {
     });
 }
 
-
 var TableDatatablesEditable = function () {
 
     var handleTable = function () {
@@ -127,7 +126,6 @@ var TableDatatablesEditable = function () {
         }
 
         function saveRow(oTable, nRow) {
-            //console.log(nRow)
             var jqInputs = $('input', nRow);
             oTable.fnUpdate(jqInputs[0].value, nRow, 1, false);
             oTable.fnUpdate(jqInputs[1].value, nRow, 2, false);
@@ -253,7 +251,6 @@ var TableDatatablesEditable = function () {
                 /!* Editing this row and want to save it *!/
                 saveRow(oTable, nEditing);
                 nEditing = null;
-                edit_modal_classification(nEditing, nRow);
                 alert("Updated! Do not forget to do some ajax to sync with backend :)");
             } else {
                 /!* No edit in progress - let's start one *!/
@@ -273,26 +270,3 @@ var TableDatatablesEditable = function () {
     };
 
 }();
-
-var edit_modal_classification = function (nEditing, nRow) {
-    /*  var formData = new FormData();
-      console.log($('#edit_classification_icon')[0]);
-      formData.append("file", $('#edit_classification_icon')[0].files[0]);*/
-    var jqInputs = $('input', nRow);
-    alert(nEditing.fnUpdate(jqInputs[0].value, nRow, 1, false));
-    // add assoc key values, this will be posts values
-    $.ajax({
-        type: 'post',
-        url: '/manage/admin_edit_classification',
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function (data) {
-            if (data == 0) {
-                Alert_common('success', '更新成功！', 'check');
-            } else {
-                Alert_common('warning', '更新失败！', 'warning');
-            }
-        }
-    })
-};

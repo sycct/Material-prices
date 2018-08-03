@@ -2,7 +2,7 @@ from flask import render_template, redirect, request, url_for, flash, abort, cur
 from ..decorators import admin_required
 from . import manage
 from flask_login import login_required, current_user
-from ..models import User, MaterialClassification
+from ..models import User, MaterialClassification, Permission
 from config import Config
 from werkzeug.utils import secure_filename
 import os
@@ -185,19 +185,32 @@ def admin_list_classification():
 def admin_edit_classification(id):
     # get classification item
     classification_item = MaterialClassification.query.get_or_404(id)
+    # Check permission
+    if not current_user.can(Permission.ADMIN):
+        abort(403)
     # 获取当前用户id
-    id = current_user.id
+    user_id = current_user.id
     # 页面信息
-    user_info = User.query.get_or_404(id)
+    user_info = User.query.get_or_404(user_id)
     title = '首 页'
     page_name = 'Dashboard'
     page_features = 'dashboard & statistics'
-    # get classification tables
-    get_classification_material = MaterialClassification.query.all()
     # form
     form = AddClassificationForm()
-    form.classification_name.data = classification_item.classification_name
+    if form.validate_on_submit():
+        classification_item.classification_name = form.classification_name.data
+        file = form.classification_icon.data
+        if file is None:
+            new_filename = classification_item.classification_icon
+        else:
+            new_filename = file_upload(file)
+        classification_item.classification_icon = new_filename
+        db.session.add(classification_item)
+        db.session.commit()
+        flash(u'更新成功！', 'success')
+        return redirect(url_for('.admin_list_classification'))
     form.classification_icon.data = classification_item.classification_icon
+    form.classification_name.data = classification_item.classification_name
     return render_template('manage/admin_edit_classification.html', user_info=user_info, name=title,
-                           pageName=page_name, description=page_name, pageFeatures=page_features,
-                           classification_lists=get_classification_material, form=form)
+                           pageName=page_name, description=page_name, pageFeatures=page_features, form=form,
+                           classification_item=classification_item)

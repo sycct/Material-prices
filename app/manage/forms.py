@@ -28,5 +28,5 @@ class ChangePasswordForm(FlaskForm):
 
 class AddClassificationForm(FlaskForm):
     classification_name = StringField("类别名称：", validators=[Length(0, 64), DataRequired()])
-    classification_icon = FileField("材料小图：", validators=[FileRequired()])
+    classification_icon = FileField("材料小图：")
     submit = SubmitField('保存更改')
