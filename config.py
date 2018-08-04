@@ -2,7 +2,7 @@ import os
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') \
-                 or 'mLZXlBhl7hoV39xt6PUsJI8N3UUF8r575E77953YH7hIDOv12Yw9kua4nU75xybyyFDfSM6ZO4UPW4UO69e98lisAItyUTkI2TbplZTsDdfdM9ZG'
+                 or ''
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     # 163 mail config
     MAIL_SERVER = os.environ.get('MAIL_SERVER', 'smtp.163.com')
@@ -11,7 +11,7 @@ class Config:
     # ['true', 'on', '1']
     MAIL_USE_SSL = os.environ.get('MAIL_USE_SSL', 'true')
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME', 'huang_9119596')
-    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD', 'gb231212')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD', '')
     FLASKY_MAIL_SUBJECT_PREFIX = '[Flasky]'
     FLASKY_MAIL_SENDER = 'Flasky Admin <huang_9119596@163.com>'
     FLASKY_ADMIN = os.environ.get('FLASKY_ADMIN', 'huang_9119596@163.com')
@@ -32,18 +32,18 @@ class Config:
 class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') \
-                              or 'mysql://MaterialDBA:pdf-lib.org&huang_huang118@database.pdflibr.com:3306/Material_Development?charset=utf8'
+                              or ''
 
 
 class TestingConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL') \
-                              or 'mysql://MaterialDBA:pdf-lib.org&huang_huang118@database.pdflibr.com:3306/Material_Test?charset=utf8'
+                              or ''
 
 
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get('PRODUCTION_DATABASE_URL') \
-                              or 'mysql://MaterialDBA:pdf-lib.org&huang_huang118@database.pdflibr.com:3306/Material_Production?charset=utf8'
+                              or ''
 
 
 config = {
