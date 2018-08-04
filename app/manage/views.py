@@ -214,3 +214,15 @@ def admin_edit_classification(id):
     return render_template('manage/admin_edit_classification.html', user_info=user_info, name=title,
                            pageName=page_name, description=page_name, pageFeatures=page_features, form=form,
                            classification_item=classification_item)
+
+
+@manage.route('/admin_delete_classification/<int:id>', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def admin_delete_classification(id):
+    classification_delete_item = MaterialClassification.query.get_or_404(id)
+    if classification_delete_item is None:
+        return '1'
+    db.session.delete(classification_delete_item)
+    db.session.commit()
+    return '0'

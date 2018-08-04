@@ -36,9 +36,9 @@ function user_profile() {
         contentType: "application/x-www-form-urlencoded",
         success: function (data) {
             if (data == 0) {
-                Alert_common('success', '更新成功！', 'check');
+                Alert_common('.profile-content', 'success', '更新成功！', 'check');
             } else {
-                Alert_common('warning', '更新失败！', 'warning');
+                Alert_common('.profile-content', 'warning', '更新失败！', 'warning');
             }
         }
     })
@@ -52,9 +52,9 @@ function change_password() {
         contentType: "application/x-www-form-urlencoded",
         success: function (data) {
             if (data == 0) {
-                Alert_common('success', '更新成功！', 'check');
+                Alert_common('.profile-content', 'success', '更新成功！', 'check');
             } else {
-                Alert_common('warning', '更新失败！', 'warning');
+                Alert_common('.profile-content', 'warning', '更新失败！', 'warning');
             }
         }
     })
@@ -72,17 +72,17 @@ function upload_file() {
         processData: false,
         success: function (data) {
             if (data == 0) {
-                Alert_common('success', '更新成功！', 'check');
+                Alert_common('.profile-content', 'success', '更新成功！', 'check');
             } else {
-                Alert_common('warning', '更新失败！', 'warning');
+                Alert_common('.profile-content', 'warning', '更新失败！', 'warning');
             }
         }
     })
 }
 
-function Alert_common(type, message, ico) {
+function Alert_common(container, type, message, ico) {
     App.alert({
-        container: $('.profile-content'), // alerts parent container(by default placed after the page breadcrumbs)
+        container: $(container), // alerts parent container(by default placed after the page breadcrumbs)
         place: 'prepend', // append or prepent in container
         type: type,  // alert's type
         message: message,  // alert's message
@@ -92,6 +92,32 @@ function Alert_common(type, message, ico) {
         closeInSeconds: 0, // auto close after defined seconds
         icon: ico // put icon before the message
     });
+}
+
+function delete_item(id) {
+    $.ajax({
+        type: 'POST',
+        url: '/manage/admin_delete_classification/' + id,
+        success: function (data) {
+            if (data == 0) {
+                $('#responsive').modal('hide')
+                Alert_common('.classification_list', 'success', '删除成功！', 'check');
+            } else {
+                $('#responsive').modal('hide')
+                Alert_common('.classification_list', 'warning', '删除失败！', 'warning');
+            }
+        }
+    })
+}
+
+function show_delete_modal(id) {
+    $('#responsive').modal('show')
+    $('#delete_modal_clse').click(function () {
+        $('#responsive').modal('hide')
+    })
+    $('#delete_item').click(function () {
+        delete_item(id);
+    })
 }
 
 var TableDatatablesEditable = function () {
