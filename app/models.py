@@ -312,7 +312,7 @@ class MaterialClassification(db.Model):
 class ClassificationCatalog(db.Model):
     __tablename__ = 'classification_catalog'
     id = db.Column(db.Integer, primary_key=True)
-    catalog_name = db.Column(db.String(64), index=True)
+    catalog_name = db.Column(db.String(64), index=True, unique=True)
     classification_id = db.Column(db.Integer, db.ForeignKey('material_classification.id'))
     catalog_since = db.Column(db.DateTime, default=datetime.utcnow)
 

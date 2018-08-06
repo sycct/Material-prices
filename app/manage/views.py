@@ -2,11 +2,11 @@ from flask import render_template, redirect, request, url_for, flash, abort, cur
 from ..decorators import admin_required
 from . import manage
 from flask_login import login_required, current_user
-from ..models import User, MaterialClassification, Permission
+from ..models import User, MaterialClassification, Permission, ClassificationCatalog
 from config import Config
 from werkzeug.utils import secure_filename
 import os
-from .forms import EditProfileForm, ChangePasswordForm, AddClassificationForm
+from .forms import EditProfileForm, ChangePasswordForm, AddClassificationForm, AddClassificationCatalogForm
 from .. import db
 import uuid
 from pypinyin import lazy_pinyin
@@ -226,3 +226,30 @@ def admin_delete_classification(id):
     db.session.delete(classification_delete_item)
     db.session.commit()
     return '0'
+
+
+@manage.route('/admin_add_catalog', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def admin_add_catalog():
+    # 获取当前用户id
+    user_id = current_user.id
+    # 页面信息
+    user_info = User.query.get_or_404(user_id)
+    title = '首 页'
+    page_name = 'Dashboard'
+    page_features = 'dashboard & statistics'
+    form = AddClassificationCatalogForm()
+    if form.validate_on_submit():
+        get_classification_id = MaterialClassification.query.filter_by(
+            classification_name=form.Catalog_to_Classification.data).first().id
+        print(get_classification_id)
+        if get_classification_id is None:
+            flash(u'保存失败', 'error')
+        classification_catalog = ClassificationCatalog(catalog_name=form.ClassificationCatalog_name.data,
+                                                       classification_id=get_classification_id)
+        db.session.add(classification_catalog)
+        db.session.commit()
+        flash(u'增加成功', 'success')
+    return render_template('manage/admin_add_catalog.html', user_info=user_info, name=title,
+                           pageName=page_name, description=page_name, pageFeatures=page_features, form=form)

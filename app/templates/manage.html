@@ -163,18 +163,18 @@
                     <li class="nav-item  ">
                         <a href="javascript:;" class="nav-link nav-toggle">
                             <i class="icon-diamond"></i>
-                            <span class="title">UI Features</span>
+                            <span class="title">页面管理</span>
                             <span class="arrow"></span>
                         </a>
                         <ul class="sub-menu">
                             <li class="nav-item  ">
-                                <a href="ui_colors.html" class="nav-link ">
-                                    <span class="title">Color Library</span>
+                                <a href="{{ url_for('manage.admin_list_classification') }}" class="nav-link ">
+                                    <span class="title">类别列表</span>
                                 </a>
                             </li>
                             <li class="nav-item  ">
-                                <a href="ui_general.html" class="nav-link ">
-                                    <span class="title">General Components</span>
+                                <a href="{{ url_for('manage.admin_add_classification') }}" class="nav-link ">
+                                    <span class="title">增加类别</span>
                                 </a>
                             </li>
                             <li class="nav-item  ">
