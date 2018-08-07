@@ -172,7 +172,6 @@ def admin_list_classification():
     page_features = 'dashboard & statistics'
     # get classification tables
     get_classification_material = MaterialClassification.query.all()
-    # form
 
     return render_template('manage/admin_list_classification.html', user_info=user_info, name=title,
                            pageName=page_name, description=page_name, pageFeatures=page_features,
@@ -253,3 +252,22 @@ def admin_add_catalog():
         flash(u'增加成功', 'success')
     return render_template('manage/admin_add_catalog.html', user_info=user_info, name=title,
                            pageName=page_name, description=page_name, pageFeatures=page_features, form=form)
+
+
+@manage.route('/admin_list_catalog', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def admin_list_catalog():
+    # 获取当前用户id
+    user_id = current_user.id
+    # 页面信息
+    user_info = User.query.get_or_404(user_id)
+    title = '首 页'
+    page_name = 'Dashboard'
+    page_features = 'dashboard & statistics'
+    # get all catalog items.
+    get_catalog_items = ClassificationCatalog.query.all()
+
+    return render_template('manage/admin_list_catalog.html', user_info=user_info, name=title,
+                           pageName=page_name, description=page_name, pageFeatures=page_features,
+                           catalog_list=get_catalog_items)
