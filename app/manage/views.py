@@ -10,6 +10,7 @@ from .forms import EditProfileForm, ChangePasswordForm, AddClassificationForm, A
 from .. import db
 import uuid
 from pypinyin import lazy_pinyin
+from sqlalchemy.sql import func
 
 
 @manage.route('/index', methods=['GET', 'POST'])
@@ -267,7 +268,23 @@ def admin_list_catalog():
     page_features = 'dashboard & statistics'
     # get all catalog items.
     get_catalog_items = ClassificationCatalog.query.all()
-
+    u = db.session.query(ClassificationCatalog.classification_id).group_by(
+        ClassificationCatalog.classification_id).subquery()
+    for a in db.session.query(MaterialClassification).outerjoin(u,
+                                                                MaterialClassification.id == u.c.classification_id).order_by(
+            MaterialClassification.id):
+        print('0')
+    for m, c in db.session.query(MaterialClassification, ClassificationCatalog).filter(
+            MaterialClassification.id == ClassificationCatalog.classification_id).all():
+        print(m)
+        print(c)
     return render_template('manage/admin_list_catalog.html', user_info=user_info, name=title,
                            pageName=page_name, description=page_name, pageFeatures=page_features,
                            catalog_list=get_catalog_items)
+
+
+@manage.route('/admin_edit_catalog', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def admin_edit_catalog():
+    return '0'
