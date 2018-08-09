@@ -316,6 +316,14 @@ class ClassificationCatalog(db.Model):
     classification_id = db.Column(db.Integer, db.ForeignKey('material_classification.id'))
     catalog_since = db.Column(db.DateTime, default=datetime.utcnow)
 
+    def to_json(self):
+        json_catalog = {
+            'id': self.id,
+            'catalog_name': self.catalog_name,
+            'catalog_since': self.catalog_since
+        }
+        return json_catalog
+
 
 # 材料品牌
 class MaterialClassificationBrand(db.Model):

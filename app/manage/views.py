@@ -10,6 +10,7 @@ from .forms import EditProfileForm, ChangePasswordForm, AddClassificationForm, A
 from .. import db
 import uuid
 from pypinyin import lazy_pinyin
+from flask import jsonify
 
 
 @manage.route('/index', methods=['GET', 'POST'])
@@ -242,7 +243,6 @@ def admin_add_catalog():
     if form.validate_on_submit():
         get_classification_id = MaterialClassification.query.filter_by(
             classification_name=form.Catalog_to_Classification.data).first().id
-        print(get_classification_id)
         if get_classification_id is None:
             flash(u'保存失败', 'error')
         classification_catalog = ClassificationCatalog(catalog_name=form.ClassificationCatalog_name.data,
@@ -266,8 +266,29 @@ def admin_list_catalog():
     page_name = 'Dashboard'
     page_features = 'dashboard & statistics'
     # get all catalog items.
-    get_catalog_items = ClassificationCatalog.query.all()
-
+    form = AddClassificationCatalogForm()
+    catalog_list = ClassificationCatalog.query.all()
     return render_template('manage/admin_list_catalog.html', user_info=user_info, name=title,
                            pageName=page_name, description=page_name, pageFeatures=page_features,
-                           catalog_list=get_catalog_items)
+                           form=form, catalog_list=catalog_list)
+
+
+@manage.route('/admin_get_catalog', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def admin_get_catalog():
+    get_catalog_select_val = request.values.get('catalog_val', 0)
+    if get_catalog_select_val is None:
+        return '1'
+    classification_id = MaterialClassification.query.filter_by(classification_name=get_catalog_select_val).first().id
+    if classification_id is None:
+        return '1'
+    data = ClassificationCatalog.query.filter_by(classification_id=classification_id).all()
+    return jsonify({'data': [item.to_json() for item in data]})
+
+
+@manage.route('/admin_edit_catalog', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def admin_edit_catalog():
+    return '0'

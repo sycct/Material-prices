@@ -42,6 +42,13 @@
                             </div>
                         </div>
                         <div class="portlet-body">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12">
+                                    <div id="sample_1_filter" class="dataTables_filter">
+                                        <label>筛选: </label>{{ form.Catalog_to_Classification(class='form-control input-large input-inline',for='default') }}
+                                    </div>
+                                </div>
+                            </div>
                             <div class="table-scrollable">
                                 <table class="table table-hover">
                                     <thead>
@@ -53,19 +60,9 @@
                                         <th> 删 除</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="catalog_table">
                                     {% for item in catalog_list %}
-                                        <tr>
-                                            <td> {{ loop.index }} </td>
-                                            <td> {{ item.catalog_name }} </td>
-                                            <td></td>
-                                            <td>
-                                                <a class="edit" href="{{ url_for('.admin_edit_catalog', id=item.id) }}">Edit </a>
-                                            </td>
-                                            <td>
-                                                <a class="delete" onclick="show_delete_modal({{ item.id }})">Delete </a>
-                                            </td>
-                                        </tr>
+
                                     {% endfor %}
                                     </tbody>
                                 </table>
@@ -103,6 +100,7 @@
 {% block page_level_scripts %}
     <script src="{{ url_for('static',filename='pages/scripts/dashboard.min.js') }}"></script>
     <script src="{{ url_for('static',filename='pages/scripts/page_level_script.js') }}"></script>
+    <script src="{{ url_for('static',filename='pages/scripts/catalog-page-init.js') }}"></script>
 {% endblock %}
 
 {% block page_level_styles_plugins %}
