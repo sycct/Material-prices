@@ -94,10 +94,10 @@ function Alert_common(container, type, message, ico) {
     });
 }
 
-function delete_item(id) {
+function delete_item(url, id) {
     $.ajax({
         type: 'POST',
-        url: '/manage/admin_delete_classification/' + id,
+        url: url + id,
         success: function (data) {
             if (data == 0) {
                 $('#responsive').modal('hide')
@@ -110,13 +110,13 @@ function delete_item(id) {
     })
 }
 
-function show_delete_modal(id) {
+function show_delete_modal(url, id) {
     $('#responsive').modal('show')
     $('#delete_modal_clse').click(function () {
         $('#responsive').modal('hide')
     })
     $('#delete_item').click(function () {
-        delete_item(id);
+        delete_item(url, id);
     })
 }
 
@@ -296,3 +296,20 @@ var TableDatatablesEditable = function () {
     };
 
 }();
+
+var check_select = function () {
+    // get to link select element
+    var get_select_val = loadPageVar("select")
+    if (get_select_val.replace(/(^s*)|(s*$)/g, "").length == 0) {
+        return false;
+    }
+    $('#Catalog_to_Classification option').each(function () {
+        if ($(this).val() == get_select_val) {
+            $(this).attr('selected', 'selected');
+        }
+    })
+}();
+
+function loadPageVar(sVar) {
+    return decodeURI(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + encodeURI(sVar).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));
+}

@@ -287,8 +287,38 @@ def admin_get_catalog():
     return jsonify({'data': [item.to_json() for item in data]})
 
 
-@manage.route('/admin_edit_catalog', methods=['GET', 'POST'])
+@manage.route('/admin_edit_catalog/<int:id>', methods=['GET', 'POST'])
 @login_required
 @admin_required
-def admin_edit_catalog():
-    return '0'
+def admin_edit_catalog(id):
+    # get classification item
+    catalog_item = ClassificationCatalog.query.get_or_404(id)
+    # Check permission
+    if not current_user.can(Permission.ADMIN):
+        abort(403)
+    # 获取当前用户id
+    user_id = current_user.id
+    # 页面信息
+    user_info = User.query.get_or_404(user_id)
+    title = '首 页'
+    page_name = 'Dashboard'
+    page_features = 'dashboard & statistics'
+    # form
+    form = AddClassificationCatalogForm()
+    if form.validate_on_submit():
+        get_catalog_select_val = form.Catalog_to_Classification.data
+        classification_id = MaterialClassification.query.filter_by(
+            classification_name=get_catalog_select_val).first().id
+        if classification_id is None:
+            return flash(u'保存出现错误。', 'error')
+        catalog_item.catalog_name = form.ClassificationCatalog_name.data
+        catalog_item.classification_id = classification_id
+        db.session.add(catalog_item)
+        db.session.commit()
+        flash(u'更新成功！', 'success')
+        return redirect(url_for('.admin_list_catalog'))
+    form.ClassificationCatalog_name.data = catalog_item.catalog_name
+    # form.classification_name.data = classification_item.classification_name
+    return render_template('manage/admin_edit_catalog.html', user_info=user_info, name=title,
+                           pageName=page_name, description=page_name, pageFeatures=page_features, form=form,
+                           catalog_item=catalog_item)

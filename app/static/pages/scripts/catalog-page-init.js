@@ -16,23 +16,25 @@ function catalog_page_init() {
             if (data == 1) {
                 Alert_common('.profile-content', 'warning', '更新失败！', 'warning');
             } else {
-                html = ''
-                $.each(data, function (index, value) {
+                var html = ''
+                delete_flag = 'catalog'
+                var item = data['data']
+                for (let i = 0; i < item.length; i++) {
                     html = '<tr>\n' +
-                        '                                            <td> ' + index + '</td>\n' +
-                        '                                            <td> ' + value.catalog_name + ' </td>\n' +
-                        '                                            <td>' + value.catalog_since + '</td>\n' +
+                        '                                            <td> ' + i + 1 + '</td>\n' +
+                        '                                            <td> ' + item[i]["catalog_name"] + ' </td>\n' +
+                        '                                            <td>' + item[i]["catalog_since"] + '</td>\n' +
                         '                                            <td>\n' +
-                        '                                                <a class="edit" href="{{ url_for(\'.admin_edit_catalog\', id=item.id) }}">Edit </a>\n' +
+                        '                                                <a class="edit" href="/manage/admin_edit_catalog/' + item[i]["id"] + '?select=' + get_catalog_val + '">Edit </a>\n' +
                         '                                            </td>\n' +
                         '                                            <td>\n' +
-                        '                                                <a class="delete" onclick="show_delete_modal()">Delete </a>\n' +
+                        '                                                <a class="delete" onclick="show_delete_modal(' + "delete_flag" + ',' + item[i]["id"] + ')">Delete </a>\n' +
                         '                                            </td>\n' +
                         '                                        </tr>'
-                })
+                }
+                $('#catalog_table').empty();
                 $('#catalog_table').append(html);
             }
         }
     });
 }
-
