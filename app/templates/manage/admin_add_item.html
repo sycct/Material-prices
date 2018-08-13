@@ -40,16 +40,16 @@
                     </div>
                 </div>
                 <div class="portlet-body">
-                    <form action="{{ url_for('manage.admin_add_brand') }}" method="post" role="form"
+                    <form action="{{ url_for('manage.admin_add_item') }}" method="post" role="form"
                           enctype="multipart/form-data"/>
                     {{ form.csrf_token }}
                     <div class="form-group">
-                        {{ form.Brand_name.label(class='control-label',for='default') }}
-                        {{ form.Brand_name(class='form-control',placeholder='Placeholder text',id='default') }}
+                        {{ form.Item_name.label(class='control-label',for='default') }}
+                        {{ form.Item_name(class='form-control',placeholder='Placeholder text',id='default') }}
                     </div>
                     <div class="form-group">
-                        {{ form.Brand_to_Catalog.label(class='control-label',for='default') }}
-                        {{ form.Brand_to_Catalog(class='form-control',for='default') }}
+                        {{ form.Item_to_Catalog.label(class='control-label',for='default') }}
+                        {{ form.Item_to_Catalog(class='form-control',for='default') }}
                     </div>
                     <div class="form-group">
                         {{ form.submit(class='btn green') }}

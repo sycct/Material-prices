@@ -42,34 +42,27 @@
                             </div>
                         </div>
                         <div class="portlet-body">
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12">
+                                    <div id="sample_1_filter" class="dataTables_filter">
+                                        <label>筛选: </label>{{ form.Item_to_Catalog(class='form-control input-large input-inline',for='default') }}
+                                    </div>
+                                </div>
+                            </div>
                             <div class="table-scrollable">
                                 <table class="table table-hover">
                                     <thead>
                                     <tr>
                                         <th> #</th>
-                                        <th> 类别名称</th>
-                                        <th> 类别小图</th>
+                                        <th> 类别目录</th>
+                                        <th> 父类别</th>
                                         <th> 修 改</th>
                                         <th> 删 除</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
-                                    {% for classification_list in classification_lists %}
-                                        <tr>
-                                            <td> {{ loop.index }} </td>
-                                            <td> {{ classification_list.classification_name }} </td>
-                                            <td><img src="/static/uploads/{{ classification_list.classification_icon }}"
-                                                     width="16px" height="16px"/></td>
-                                            <td>
-                                                <a class="edit"
-                                                   href="{{ url_for('.admin_edit_classification', id=classification_list.id) }}">Edit </a>
-                                            </td>
-                                            <td>
-                                                <a class="delete"
-                                                   onclick="show_delete_modal('classification',{{ classification_list.id }})">
-                                                    Delete </a>
-                                            </td>
-                                        </tr>
+                                    <tbody id="catalog_table">
+                                    {% for item in item_list %}
+
                                     {% endfor %}
                                     </tbody>
                                 </table>
@@ -107,6 +100,7 @@
 {% block page_level_scripts %}
     <script src="{{ url_for('static',filename='pages/scripts/dashboard.min.js') }}"></script>
     <script src="{{ url_for('static',filename='pages/scripts/page_level_script.js') }}"></script>
+    <script src="{{ url_for('static',filename='pages/scripts/item-page-init.js') }}"></script>
 {% endblock %}
 
 {% block page_level_styles_plugins %}

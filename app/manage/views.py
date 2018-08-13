@@ -2,11 +2,12 @@ from flask import render_template, redirect, request, url_for, flash, abort, cur
 from ..decorators import admin_required
 from . import manage
 from flask_login import login_required, current_user
-from ..models import User, MaterialClassification, Permission, ClassificationCatalog
+from ..models import User, MaterialClassification, Permission, ClassificationCatalog, MaterialItem
 from config import Config
 from werkzeug.utils import secure_filename
 import os
-from .forms import EditProfileForm, ChangePasswordForm, AddClassificationForm, AddClassificationCatalogForm
+from .forms import EditProfileForm, ChangePasswordForm, AddClassificationForm, AddClassificationCatalogForm, \
+    AddBrandForm, AddMaterialItemForm
 from .. import db
 import uuid
 from pypinyin import lazy_pinyin
@@ -340,3 +341,86 @@ def admin_delete_catalog(id):
     db.session.delete(catalog_delete_item)
     db.session.commit()
     return '0'
+
+
+@manage.route('/admin_add_brand', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def admin_add_brand():
+    # 获取当前用户id
+    user_id = current_user.id
+    # 页面信息
+    user_info = User.query.get_or_404(user_id)
+    title = '首 页'
+    page_name = 'Dashboard'
+    page_features = 'dashboard & statistics'
+    form = AddBrandForm()
+    if form.validate_on_submit():
+        get_classification_id = MaterialClassification.query.filter_by(
+            classification_name=form.Catalog_to_Classification.data).first().id
+        if get_classification_id is None:
+            flash(u'保存失败', 'error')
+        classification_catalog = ClassificationCatalog(catalog_name=form.ClassificationCatalog_name.data,
+                                                       classification_id=get_classification_id)
+        db.session.add(classification_catalog)
+        db.session.commit()
+        flash(u'增加成功', 'success')
+    return render_template('manage/admin_add_brand.html', user_info=user_info, name=title,
+                           pageName=page_name, description=page_name, pageFeatures=page_features, form=form)
+
+
+@manage.route('/admin_add_item', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def admin_add_item():
+    # 获取当前用户id
+    user_id = current_user.id
+    # 页面信息
+    user_info = User.query.get_or_404(user_id)
+    title = '首 页'
+    page_name = 'Dashboard'
+    page_features = 'dashboard & statistics'
+    form = AddMaterialItemForm()
+    if form.validate_on_submit():
+        get_catalog_id = ClassificationCatalog.query.filter_by(catalog_name=form.Item_to_Catalog.data).first().id
+        if get_catalog_id is None:
+            flash(u'保存失败', 'error')
+        material_item = MaterialItem(i_name=form.Item_name.data, i_catalog_id=get_catalog_id)
+        db.session.add(material_item)
+        db.session.commit()
+        flash(u'增加成功', 'success')
+    return render_template('manage/admin_add_item.html', user_info=user_info, name=title,
+                           pageName=page_name, description=page_name, pageFeatures=page_features, form=form)
+
+
+@manage.route('/admin_list_item', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def admin_list_item():
+    # 获取当前用户id
+    user_id = current_user.id
+    # 页面信息
+    user_info = User.query.get_or_404(user_id)
+    title = '首 页'
+    page_name = 'Dashboard'
+    page_features = 'dashboard & statistics'
+    # get all catalog items.
+    form = AddMaterialItemForm()
+    item_list = MaterialItem.query.all()
+    return render_template('manage/admin_list_item.html', user_info=user_info, name=title,
+                           pageName=page_name, description=page_name, pageFeatures=page_features,
+                           form=form, catalog_list=item_list)
+
+
+@manage.route('/admin_get_item', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def admin_get_item():
+    get_item_select_val = request.values.get('item_val', 0)
+    if get_item_select_val is None:
+        return '1'
+    catalog_id = ClassificationCatalog.query.filter_by(catalog_name=get_item_select_val).first().id
+    if catalog_id is None:
+        return '1'
+    data = MaterialItem.query.filter_by(i_catalog_id=catalog_id).all()
+    return jsonify({'data': [item.to_json() for item in data]})
