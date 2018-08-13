@@ -20,7 +20,7 @@ function catalog_page_init() {
                 catalog = 'catalog'
                 var item = data['data']
                 for (let i = 0; i < item.length; i++) {
-                    html = '<tr>\n' +
+                    html += '<tr>\n' +
                         '                                            <td> ' + i + 1 + '</td>\n' +
                         '                                            <td> ' + item[i]["catalog_name"] + ' </td>\n' +
                         '                                            <td>' + item[i]["catalog_since"] + '</td>\n' +

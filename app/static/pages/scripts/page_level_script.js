@@ -123,6 +123,9 @@ function show_delete_modal(flag, id) {
         case "classification":
             url = '/manage/admin_delete_classification/';
             break;
+        case "item":
+            url = '/manage/admin_delete_item/';
+            break;
     }
     $('#delete_item').click(function () {
         delete_item(url, id);

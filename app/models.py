@@ -315,6 +315,7 @@ class ClassificationCatalog(db.Model):
     catalog_name = db.Column(db.String(64), index=True, unique=True)
     classification_id = db.Column(db.Integer, db.ForeignKey('material_classification.id'))
     catalog_since = db.Column(db.DateTime, default=datetime.utcnow)
+    catalog_item = db.relationship('MaterialItem', backref='ClassificationCatalog', lazy='dynamic')
 
     def to_json(self):
         json_catalog = {
@@ -344,6 +345,15 @@ class MaterialItem(db.Model):
     material_product = db.relationship('MaterialProduct', backref='MaterialItem')
     i_fk_i = db.relationship('MaterialItem')
     i_ref_pn = db.relationship('MaterialProductName', backref='MaterialItem')
+    i_catalog_id = db.Column(db.Integer, db.ForeignKey('classification_catalog.id'))
+
+    def to_json(self):
+        json_item = {
+            "id": self.i_id,
+            "item_name": self.i_name,
+            "parent_id": self.i_parent_id
+        }
+        return json_item
 
 
 # 具体产品

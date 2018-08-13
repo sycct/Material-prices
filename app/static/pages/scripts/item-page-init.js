@@ -17,18 +17,18 @@ function item_page_init() {
                 Alert_common('.profile-content', 'warning', '更新失败！', 'warning');
             } else {
                 var html = ''
-                item = 'item'
+                item_flag = 'item'
                 var item = data['data']
                 for (let i = 0; i < item.length; i++) {
-                    html = '<tr>\n' +
-                        '                                            <td> ' + i + 1 + '</td>\n' +
+                    html += '<tr>\n' +
+                        '                                            <td> ' + i + '</td>\n' +
                         '                                            <td> ' + item[i]["item_name"] + ' </td>\n' +
                         '                                            <td>' + item[i]["parent_id"] + '</td>\n' +
                         '                                            <td>\n' +
                         '                                                <a class="edit" href="/manage/admin_edit_item/' + item[i]["id"] + '?select=' + get_item_val + '">Edit </a>\n' +
                         '                                            </td>\n' +
                         '                                            <td>\n' +
-                        '                                                <a class="delete" onclick="show_delete_modal(' + "item" + ',' + item[i]["id"] + ')">Delete </a>\n' +
+                        '                                                <a class="delete" onclick="show_delete_modal(' + "item_flag" + ',' + item[i]["id"] + ')">Delete </a>\n' +
                         '                                            </td>\n' +
                         '                                        </tr>'
                 }
