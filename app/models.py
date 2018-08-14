@@ -332,7 +332,16 @@ class MaterialClassificationBrand(db.Model):
     b_id = db.Column(db.Integer, primary_key=True)
     b_name = db.Column(db.VARCHAR(50), index=True)
     b_rel_id = db.Column(db.Integer, db.ForeignKey('material_item.i_id'))
-    material_product = db.relationship('MaterialProduct', backref='MaterialClassificationBrand')
+    material_product = db.relationship('MaterialProduct', backref='MaterialClassificationBrand', lazy='dynamic')
+    brand_since = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def to_json(self):
+        json_catalog = {
+            'id': self.b_id,
+            'brand_name': self.b_name,
+            'brand_since': self.brand_since
+        }
+        return json_catalog
 
 
 # 材料项目
@@ -346,12 +355,14 @@ class MaterialItem(db.Model):
     i_fk_i = db.relationship('MaterialItem')
     i_ref_pn = db.relationship('MaterialProductName', backref='MaterialItem')
     i_catalog_id = db.Column(db.Integer, db.ForeignKey('classification_catalog.id'))
+    item_since = db.Column(db.DateTime, default=datetime.utcnow)
 
     def to_json(self):
         json_item = {
             "id": self.i_id,
             "item_name": self.i_name,
-            "parent_id": self.i_parent_id
+            "parent_id": self.i_parent_id,
+            "item_since": self.item_since
         }
         return json_item
 

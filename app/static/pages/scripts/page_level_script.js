@@ -126,6 +126,8 @@ function show_delete_modal(flag, id) {
         case "item":
             url = '/manage/admin_delete_item/';
             break;
+        case "brand":
+            url = '/manage/admin_delete_brand/'
     }
     $('#delete_item').click(function () {
         delete_item(url, id);
@@ -316,6 +318,11 @@ var check_select = function () {
         return false;
     }
     $('#Catalog_to_Classification option').each(function () {
+        if ($(this).val() == get_select_val) {
+            $(this).attr('selected', 'selected');
+        }
+    })
+    $('#Brand_to_Item option').each(function () {
         if ($(this).val() == get_select_val) {
             $(this).attr('selected', 'selected');
         }

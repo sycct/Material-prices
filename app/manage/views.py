@@ -368,6 +368,90 @@ def admin_add_brand():
                            pageName=page_name, description=page_name, pageFeatures=page_features, form=form)
 
 
+@manage.route('/admin_delete_brand/<int:b_id>', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def admin_delete_brand(b_id):
+    item_delete_brand = MaterialClassificationBrand.query.get_or_404(b_id)
+    if item_delete_brand is None:
+        return '1'
+    db.session.delete(item_delete_brand)
+    db.session.commit()
+    return '0'
+
+
+@manage.route('/admin_list_brand', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def admin_list_brand():
+    # 获取当前用户id
+    user_id = current_user.id
+    # 页面信息
+    user_info = User.query.get_or_404(user_id)
+    title = '首 页'
+    page_name = 'Dashboard'
+    page_features = 'dashboard & statistics'
+    # get all catalog items.
+    form = AddBrandForm()
+    return render_template('manage/admin_list_brand.html', user_info=user_info, name=title,
+                           pageName=page_name, description=page_name, pageFeatures=page_features, form=form)
+
+
+@manage.route('/admin_get_brand', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def admin_get_brand():
+    get_item_select_val = request.values.get('Item_val', 0)
+    if get_item_select_val is None:
+        return '1'
+    item_id = MaterialItem.query.filter_by(i_name=get_item_select_val).first().i_id
+    if item_id is None:
+        return '1'
+    data = MaterialClassificationBrand.query.filter_by(b_rel_id=item_id).all()
+    return jsonify({'data': [item.to_json() for item in data]})
+
+
+@manage.route('/admin_edit_brand/<int:b_id>', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def admin_edit_brand(b_id):
+    # get classification item
+    item = MaterialClassificationBrand.query.get_or_404(b_id)
+    # Check permission
+    if not current_user.can(Permission.ADMIN):
+        abort(403)
+    # 获取当前用户id
+    user_id = current_user.id
+    # 页面信息
+    user_info = User.query.get_or_404(user_id)
+    title = '首 页'
+    page_name = 'Dashboard'
+    page_features = 'dashboard & statistics'
+    # form
+    form = AddBrandForm()
+    if form.validate_on_submit():
+        get_item_select_val = form.Brand_to_Item.data
+        item_id = MaterialItem.query.filter_by(i_name=get_item_select_val).first().i_id
+        if item_id is None:
+            return flash(u'保存出现错误。', 'error')
+        item.b_name = form.Brand_name.data
+        item.b_rel_id = item_id
+        try:
+            db.session.add(item)
+            db.session.commit()
+        except:
+            db.session.rollback()
+            raise
+        finally:
+            db.session.close()  # optional, depends on use case
+        flash(u'更新成功！', 'success')
+        return redirect(url_for('.admin_list_brand'))
+    form.Brand_name.data = item.b_name
+    # form.classification_name.data = classification_item.classification_name
+    return render_template('manage/admin_edit_brand.html', user_info=user_info, name=title,
+                           pageName=page_name, description=page_name, pageFeatures=page_features, form=form, item=item)
+
+
 @manage.route('/admin_add_item', methods=['GET', 'POST'])
 @login_required
 @admin_required
