@@ -8,7 +8,7 @@ from config import Config
 from werkzeug.utils import secure_filename
 import os
 from .forms import EditProfileForm, ChangePasswordForm, AddClassificationForm, AddClassificationCatalogForm, \
-    AddBrandForm, AddMaterialItemForm
+    AddBrandForm, AddMaterialItemForm, AddMaterialPropertyNameForm
 from .. import db
 import uuid
 from pypinyin import lazy_pinyin
@@ -560,3 +560,37 @@ def admin_delete_item(id):
     db.session.delete(item_delete_item)
     db.session.commit()
     return '0'
+
+
+@manage.route('/material_property_name', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def material_property_name():
+    # 获取当前用户id
+    user_id = current_user.id
+    # 页面信息
+    user_info = User.query.get_or_404(user_id)
+    title = '首 页'
+    page_name = 'Dashboard'
+    page_features = 'dashboard & statistics'
+    # from
+    form = AddMaterialPropertyNameForm()
+    return render_template('manage/admin_add_pro_name.html', user_info=user_info, name=title,
+                           pageName=page_name, description=page_name, pageFeatures=page_features, form=form)
+
+
+@manage.route('/material_property_value', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def material_property_value():
+    # 获取当前用户id
+    user_id = current_user.id
+    # 页面信息
+    user_info = User.query.get_or_404(user_id)
+    title = '首 页'
+    page_name = 'Dashboard'
+    page_features = 'dashboard & statistics'
+    # from
+    form = AddMaterialPropertyNameForm()
+    return render_template('manage/admin_add_pro_value.html', user_info=user_info, name=title,
+                           pageName=page_name, description=page_name, pageFeatures=page_features, form=form)
