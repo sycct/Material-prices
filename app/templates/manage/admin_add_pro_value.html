@@ -1,10 +1,208 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "manage.html" %}
+
+{% block content %}
+    {{ super() }}
+    <div class="row" xmlns="http://www.w3.org/1999/html">
+        <div class="col-md-12">
+            <div class="note note-success">
+                <h3>增加材料属性名称</h3>
+                <p>在此增加材料类别，在首页显示，此页面是管理员页面。 </p>
+                <p class="text-warning">注意:上传图片尺寸为：16*16px</p>
+            </div>
+            <div class="container-fluid alter_clear">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+            <div class="portlet light bordered">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-social-dribbble font-green"></i>
+                        <span class="caption-subject font-green bold uppercase">Default textbox</span>
+                    </div>
+                    <div class="actions">
+                        <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                            <i class="icon-cloud-upload"></i>
+                        </a>
+                        <a class="btn btn-circle btn-icon-only btn-default" data-toggle="modal" href="#responsive">
+                            <i class="icon-wrench"></i>
+                        </a>
+                        <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                            <i class="icon-trash"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <form action="{{ url_for('.material_property_value') }}" method="post" role="form"
+                          enctype="multipart/form-data" class="form-horizontal">
+                        {{ form.csrf_token }}
+                        <div class="form-group">
+                            {{ form.value_to_pro_name.label(class='col-md-2 control-label') }}
+                            <div class="col-md-8">
+                                {{ form.value_to_pro_name(class='form-control') }}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            {{ form.property_value.label(class='col-md-2 control-label') }}
+                            <div class="col-md-8">
+                                {{ form.property_value(class='form-control') }}
+                                <div class="margin-top-10">
+                                    <input type="text" class="form-control input-large" placeholder="Tag value"
+                                           id="object_tagsinput_value">
+                                </div>
+                                <div class="margin-top-10">
+                                    <a href="javascript:;" class="btn red" id="object_tagsinput_add">Add tag</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <div class="row">
+                                <div class="col-md-offset-2 col-md-9">
+                                    <button type="submit" class="btn green">Submit</button>
+                                    <button type="button" class="btn default">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                        <form action="{{ url_for('.material_property_name') }}" method="post" role="form"
+                              enctype="multipart/form-data" class="form-horizontal" role="form">
+                            {{ form.csrf_token }}
+                            <div class="form-group">
+                                {{ form.property_name.label(class='col-md-2 control-label') }}
+                                <div class="col-md-8">
+                                    {{ form.property_name(class='form-control', placeholder='输入属性名') }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                {{ form.item_to_pro_name.label(class='col-md-2 control-label') }}
+                                <div class="col-md-8">
+                                    {{ form.item_to_pro_name(class='form-control') }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                {{ form.pro_has_otherName.label(class='col-md-2 control-label') }}
+                                <div class="col-md-8">
+                                    <div class="radio-list">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="pro_has_otherName" id="pro_has_otherName_1"
+                                                   value="0">
+                                            是</label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="pro_has_otherName" id="pro_has_otherName_2"
+                                                   value="1"
+                                                   checked> 否 </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                {{ form.pro_has_color.label(class='col-md-2 control-label') }}
+                                <div class="col-md-8">
+                                    <div class="radio-list">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="pro_has_color" id="pro_has_color_1" value="0">
+                                            是</label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="pro_has_color" id="pro_has_color_2" value="1"
+                                                   checked>
+                                            否 </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                {{ form.pro_has_enum.label(class='col-md-2 control-label') }}
+                                <div class="col-md-8">
+                                    <div class="radio-list">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="pro_has_enum" id="pro_has_enum_1" value="0">
+                                            是</label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="pro_has_enum" id="pro_has_enum_2" value="1"
+                                                   checked> 否
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                {{ form.pro_has_input.label(class='col-md-2 control-label') }}
+                                <div class="col-md-8">
+                                    <div class="radio-list">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="pro_has_input" id="pro_has_input_1" value="0">
+                                            是</label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="pro_has_input" id="pro_has_input_2" value="1"
+                                                   checked>
+                                            否 </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                {{ form.pro_is_key.label(class='col-md-2 control-label') }}
+                                <div class="col-md-8">
+                                    <div class="radio-list">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="pro_is_key" id="pro_is_key_1" value="0"> 是</label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="pro_is_key" id="pro_is_key_2" value="1" checked> 否
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="form-actions">
+                            <div class="row">
+                                <div class="col-md-offset-2 col-md-9">
+                                    <button type="submit" class="btn green">Submit</button>
+                                    <button type="button" class="btn default">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block page_level_scripts %}
+    <script src="{{ url_for('static',filename='pages/scripts/dashboard.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='pages/scripts/components-bootstrap-tagsinput.js') }}"></script>
+    <script src="{{ url_for('static',filename='pages/scripts/page_level_script.js') }}"></script>
+{% endblock %}
+
+{% block page_level_styles_plugins %}
+    <link href="{{ url_for('static',filename='global/plugins/bootstrap-daterangepicker/daterangepicker.min.css') }}"
+          rel="stylesheet"/>
+    <link href="{{ url_for('static',filename='global/plugins/morris/morris.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('static',filename='global/plugins/bootstrap-fileinput/bootstrap-fileinput.css') }}"
+          rel="stylesheet"/>
+    <link href="{{ url_for('static',filename='global/plugins/datatables/datatables.min.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('static',filename='global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css') }}"
+          rel="stylesheet"/>
+{% endblock %}
+
+{% block page_level_scripts_plugins %}
+    <script src="{{ url_for('static',filename='global/plugins/moment.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/bootstrap-daterangepicker/daterangepicker.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/morris/morris.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/bootstrap-fileinput/bootstrap-fileinput.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/scripts/datatable.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/datatables/datatables.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/typeahead/handlebars.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/typeahead/typeahead.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js') }}"></script>
+{% endblock %}
+
+
+{% block top_menu %}
+    {{ super() }}
+    {% include '_topMenu_block.html' %}
+{% endblock %}
