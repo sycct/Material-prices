@@ -1,0 +1,100 @@
+{% extends "manage.html" %}
+
+{% block content %}
+    {{ super() }}
+    <div class="row" xmlns="http://www.w3.org/1999/html">
+        <div class="col-md-12">
+            <div class="note note-success">
+                <h3>增加材料种类</h3>
+                <p>在此增加材料种类，在首页显示，此页面是管理员页面。 </p>
+                <p class="text-warning">注意:上传图片尺寸为：16*16px</p>
+            </div>
+            <div class="container-fluid alter_clear">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+            <div class="portlet light bordered">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-social-dribbble font-green"></i>
+                        <span class="caption-subject font-green bold uppercase">Default textbox</span>
+                    </div>
+                    <div class="actions">
+                        <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                            <i class="icon-cloud-upload"></i>
+                        </a>
+                        <a class="btn btn-circle btn-icon-only btn-default" data-toggle="modal" href="#responsive">
+                            <i class="icon-wrench"></i>
+                        </a>
+                        <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                            <i class="icon-trash"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <form action="{{ url_for('manage.admin_add_brand') }}" method="post" role="form"
+                          enctype="multipart/form-data"/>
+                    {{ form.csrf_token }}
+                    <div class="form-group">
+                        {{ form.Brand_name.label(class='control-label',for='default') }}
+                        {{ form.Brand_name(class='form-control',placeholder='Placeholder text',id='default') }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.Brand_to_Item.label(class='control-label',for='default') }}
+                        {{ form.Brand_to_Item(class='form-control',for='default') }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.submit(class='btn green') }}
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block page_level_scripts %}
+    <script src="{{ url_for('static',filename='pages/scripts/dashboard.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='pages/scripts/page_level_script.js') }}"></script>
+{% endblock %}
+
+{% block page_level_styles_plugins %}
+    <link href="{{ url_for('static',filename='global/plugins/bootstrap-daterangepicker/daterangepicker.min.css') }}"
+          rel="stylesheet"/>
+    <link href="{{ url_for('static',filename='global/plugins/morris/morris.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('static',filename='global/plugins/bootstrap-fileinput/bootstrap-fileinput.css') }}"
+          rel="stylesheet"/>
+    <link href="{{ url_for('static',filename='global/plugins/bootstrap-modal/css/bootstrap-modal-bs3patch.css') }}"
+          rel="stylesheet"/>
+    <link href="{{ url_for('static',filename='global/plugins/bootstrap-modal/css/bootstrap-modal.css') }}"
+          rel="stylesheet"/>
+    <link href="{{ url_for('static',filename='global/plugins/datatables/datatables.min.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('static',filename='global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css') }}"
+          rel="stylesheet"/>
+{% endblock %}
+
+{% block page_level_scripts_plugins %}
+    <script src="{{ url_for('static',filename='global/plugins/moment.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/bootstrap-daterangepicker/daterangepicker.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/morris/morris.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/bootstrap-fileinput/bootstrap-fileinput.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/bootstrap-modal/js/bootstrap-modalmanager.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/bootstrap-modal/js/bootstrap-modal.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/scripts/datatable.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/datatables/datatables.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js') }}"></script>
+{% endblock %}
+
+
+{% block top_menu %}
+    {{ super() }}
+    {% include '_topMenu_block.html' %}
+{% endblock %}

@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import tzinfo, timedelta, datetime
 import hashlib
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
@@ -92,13 +92,18 @@ class User(UserMixin, db.Model):
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     password_hash = db.Column(db.String(128))
     confirmed = db.Column(db.Boolean, default=False)
-    name = db.Column(db.String(64))
+    nick_name = db.Column(db.String(64))
     location = db.Column(db.String(64))
     about_me = db.Column(db.Text())
     member_since = db.Column(db.DateTime(), default=datetime.utcnow)
     last_seen = db.Column(db.DateTime(), default=datetime.utcnow)
     avatar_hash = db.Column(db.String(32))
     posts = db.relationship('Post', backref='author', lazy='dynamic')
+    phone_number = db.Column(db.String(32))
+    website_url = db.Column(db.String(128))
+    profile_picture = db.Column(db.String(128))
+    # False:普通用户, True:店家
+    user_status = db.Column(db.Boolean, default=False, index=True)
     followed = db.relationship('Follow',
                                foreign_keys=[Follow.follower_id],
                                backref=db.backref('follower', lazy='joined'),
@@ -293,6 +298,133 @@ class CH_REGION(db.Model):
                                       backref=db.backref('province_regions', lazy='joined'), lazy='dynamic')
 
 
+# 材料类别
+class MaterialClassification(db.Model):
+    __tablename__ = 'material_classification'
+    id = db.Column(db.Integer, primary_key=True)
+    classification_name = db.Column(db.String(64), index=True, unique=True)
+    classification_icon = db.Column(db.String(64))
+    classification_since = db.Column(db.DateTime, default=datetime.utcnow)
+    classification_catalog = db.relationship('ClassificationCatalog', backref='MaterialClassification', lazy='dynamic')
+
+
+# 类别目录
+class ClassificationCatalog(db.Model):
+    __tablename__ = 'classification_catalog'
+    id = db.Column(db.Integer, primary_key=True)
+    catalog_name = db.Column(db.String(64), index=True, unique=True)
+    classification_id = db.Column(db.Integer, db.ForeignKey('material_classification.id'))
+    catalog_since = db.Column(db.DateTime, default=datetime.utcnow)
+    catalog_item = db.relationship('MaterialItem', backref='ClassificationCatalog', lazy='dynamic')
+
+    def to_json(self):
+        json_catalog = {
+            'id': self.id,
+            'catalog_name': self.catalog_name,
+            'catalog_since': self.catalog_since
+        }
+        return json_catalog
+
+
+# 材料品牌
+class MaterialClassificationBrand(db.Model):
+    __tablename__ = 'material_brand'
+    b_id = db.Column(db.Integer, primary_key=True)
+    b_name = db.Column(db.VARCHAR(50), index=True)
+    b_rel_id = db.Column(db.Integer, db.ForeignKey('material_item.i_id'))
+    material_product = db.relationship('MaterialProduct', backref='MaterialClassificationBrand', lazy='dynamic')
+    brand_since = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def to_json(self):
+        json_catalog = {
+            'id': self.b_id,
+            'brand_name': self.b_name,
+            'brand_since': self.brand_since
+        }
+        return json_catalog
+
+
+# 材料项目
+class MaterialItem(db.Model):
+    __tablename__ = 'material_item'
+    i_id = db.Column(db.Integer, primary_key=True)
+    i_name = db.Column(db.UnicodeText(50))
+    i_parent_id = db.Column(db.Integer, db.ForeignKey('material_item.i_id'))
+    material_brand = db.relationship('MaterialClassificationBrand', backref='MaterialItem')
+    material_product = db.relationship('MaterialProduct', backref='MaterialItem')
+    i_fk_i = db.relationship('MaterialItem')
+    i_ref_pn = db.relationship('MaterialProductName', backref='MaterialItem')
+    i_catalog_id = db.Column(db.Integer, db.ForeignKey('classification_catalog.id'))
+    item_since = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def to_json(self):
+        json_item = {
+            "id": self.i_id,
+            "item_name": self.i_name,
+            "parent_id": self.i_parent_id,
+            "item_since": self.item_since
+        }
+        return json_item
+
+
+# 具体产品
+class MaterialProduct(db.Model):
+    __tablename__ = 'material_product'
+    p_id = db.Column(db.Integer, primary_key=True)
+    p_name = db.Column(db.VARCHAR(50), default=None)
+    b_name = db.Column(db.VARCHAR(50), db.ForeignKey('material_brand.b_name'), default=None, index=True)
+    p_fk_p = db.Column(db.Integer, db.ForeignKey('material_product.p_id'), default=None, index=True)
+    p_fk_i = db.Column(db.Integer, db.ForeignKey('material_item.i_id'), default=None, index=True)
+    p_rel_p = db.relationship('MaterialProduct')
+    p_rel_pp = db.relationship('MaterialProductProperty', backref='material_product')
+
+
+# 产品属性
+class MaterialProductProperty(db.Model):
+    __tablename__ = 'material_product_pro'
+    pp_id = db.Column(db.Integer, primary_key=True)
+    pp_fk_p = db.Column(db.Integer, db.ForeignKey('material_product.p_id'), index=True)
+    pp_fk_pv = db.Column(db.Integer, db.ForeignKey('material_product_value.pv_id'), index=True)
+    pp_fk_pn = db.Column(db.Integer, db.ForeignKey('material_pro_name.pro_id'), index=True)
+
+
+# 产品sku
+class MaterialProductSKU(db.Model):
+    __tablename__ = 'material_product_sku'
+    ps_id = db.Column(db.Integer, primary_key=True)
+    pd_fk_id = db.Column(db.Integer, db.ForeignKey('material_product.p_id'), default=None, index=True)
+    pd_num = db.Column(db.Integer, default=None)
+    pd_price = db.Column(db.DECIMAL(10, 4), default=None)
+    pd_name = db.Column(db.VARCHAR(50), default=None)
+    pd_properties = db.Column(db.VARCHAR(300), default=None)
+
+
+# 产品名称
+class MaterialProductName(db.Model):
+    __tablename__ = 'material_pro_name'
+    pro_id = db.Column(db.Integer, primary_key=True)
+    pro_name = db.Column(db.VARCHAR(50))
+    pro_fk_id = db.Column(db.Integer, db.ForeignKey('material_item.i_id'), index=True)
+    pro_has_otherName = db.Column(db.CHAR(2), default=0)
+    pro_has_color = db.Column(db.CHAR(2), default=0)
+    pro_has_enum = db.Column(db.CHAR(2), default=0)
+    pro_has_input = db.Column(db.CHAR(2), default=0)
+    pro_is_key = db.Column(db.CHAR(2), default=0)
+    pro_is_sale = db.Column(db.CHAR(2), default=0)
+    pro_is_must = db.Column(db.CHAR(2), default=0)
+    pn_rel_pv = db.relationship('MaterialProductValue', backref='material_pro_name')
+    pn_rel_pp = db.relationship('MaterialProductProperty', backref='material_pro_name')
+
+
+# 材料值表
+class MaterialProductValue(db.Model):
+    __tablename__ = 'material_product_value'
+    pv_id = db.Column(db.Integer, primary_key=True)
+    pv_name = db.Column(db.VARCHAR(50))
+    pv_fk_pid = db.Column(db.Integer, db.ForeignKey('material_pro_name.pro_id'), index=True)
+    pv_rel_pp = db.relationship('MaterialProductProperty', backref='material_product_value')
+
+
 class AnonymousUser(AnonymousUserMixin):
     def can(self, permissions):
         return False
@@ -385,6 +517,16 @@ class Comment(db.Model):
         if body is None or body == '':
             raise ValidationError('comment does not have a body')
         return Comment(body=body)
+
+
+# 页面相关内容（包括描述、标题等内容）
+class PageRelated(db.Model):
+    __tablename__ = 'page_related'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(64), index=True)
+    description = db.Column(db.String(64))
+    # 页面功能
+    page_features = db.Column(db.String(64))
 
 
 db.event.listen(Comment.body, 'set', Comment.on_changed_body)

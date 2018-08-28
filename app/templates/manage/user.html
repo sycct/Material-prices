@@ -1,0 +1,300 @@
+{% extends "manage.html" %}
+
+{% block page_level_styles %}
+    <link href="{{ url_for('static',filename='pages/css/profile.min.css') }}" rel="stylesheet"/>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <!-- BEGIN PROFILE SIDEBAR -->
+            <div class="profile-sidebar">
+                <!-- PORTLET MAIN -->
+                <div class="portlet light profile-sidebar-portlet ">
+                    <!-- SIDEBAR USERPIC -->
+                    <div class="profile-userpic">
+                        <img src="/static/uploads/{{ user.profile_picture }}" class="img-responsive" alt="">
+                    </div>
+                    <!-- END SIDEBAR USERPIC -->
+                    <!-- SIDEBAR USER TITLE -->
+                    <div class="profile-usertitle">
+                        <div class="profile-usertitle-name"> {{ user.fullname }}</div>
+                        <div class="profile-usertitle-job"> Developer</div>
+                    </div>
+                    <!-- END SIDEBAR USER TITLE -->
+                    <!-- SIDEBAR BUTTONS -->
+                    <div class="profile-userbuttons">
+                        <button type="button" class="btn btn-circle green btn-sm">Follow</button>
+                        <button type="button" class="btn btn-circle red btn-sm">Message</button>
+                    </div>
+                    <!-- END SIDEBAR BUTTONS -->
+                    <!-- SIDEBAR MENU -->
+                    <div class="profile-usermenu">
+                        <ul class="nav">
+                            <li>
+                                <a href="page_user_profile_1.html">
+                                    <i class="icon-home"></i> Overview </a>
+                            </li>
+                            <li class="active">
+                                <a href="page_user_profile_1_account.html">
+                                    <i class="icon-settings"></i> Account Settings </a>
+                            </li>
+                            <li>
+                                <a href="page_user_profile_1_help.html">
+                                    <i class="icon-info"></i> Help </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- END MENU -->
+                </div>
+                <!-- END PORTLET MAIN -->
+                <!-- PORTLET MAIN -->
+                <div class="portlet light ">
+                    <!-- STAT -->
+                    <div class="row list-separated profile-stat">
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                            <div class="uppercase profile-stat-title"> 37</div>
+                            <div class="uppercase profile-stat-text"> Projects</div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                            <div class="uppercase profile-stat-title"> 51</div>
+                            <div class="uppercase profile-stat-text"> Tasks</div>
+                        </div>
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                            <div class="uppercase profile-stat-title"> 61</div>
+                            <div class="uppercase profile-stat-text"> Uploads</div>
+                        </div>
+                    </div>
+                    <!-- END STAT -->
+                    <div>
+                        <h4 class="profile-desc-title">About Marcus Doe</h4>
+                        <span class="profile-desc-text"> Lorem ipsum dolor sit amet diam nonummy nibh dolore. </span>
+                        <div class="margin-top-20 profile-desc-link">
+                            <i class="fa fa-globe"></i>
+                            <a href="http://www.keenthemes.com">www.keenthemes.com</a>
+                        </div>
+                        <div class="margin-top-20 profile-desc-link">
+                            <i class="fa fa-twitter"></i>
+                            <a href="http://www.twitter.com/keenthemes/">@keenthemes</a>
+                        </div>
+                        <div class="margin-top-20 profile-desc-link">
+                            <i class="fa fa-facebook"></i>
+                            <a href="http://www.facebook.com/keenthemes/">keenthemes</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- END PORTLET MAIN -->
+            </div>
+            <!-- END BEGIN PROFILE SIDEBAR -->
+            <!-- BEGIN PROFILE CONTENT -->
+            <div class="profile-content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="portlet light ">
+                            <div class="portlet-title tabbable-line">
+                                <div class="caption caption-md">
+                                    <i class="icon-globe theme-font hide"></i>
+                                    <span class="caption-subject font-blue-madison bold uppercase">Profile Account</span>
+                                </div>
+                                <ul class="nav nav-tabs">
+                                    <li class="active">
+                                        <a href="#tab_1_1" data-toggle="tab">客户信息</a>
+                                    </li>
+                                    <li>
+                                        <a href="#tab_1_2" data-toggle="tab">修改头像</a>
+                                    </li>
+                                    <li>
+                                        <a href="#tab_1_3" data-toggle="tab">修改密码</a>
+                                    </li>
+                                    <li>
+                                        <a href="#tab_1_4" data-toggle="tab">Privacy Settings</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="portlet-body">
+                                <div class="tab-content">
+                                    <!-- PERSONAL INFO TAB -->
+                                    {% for category, message in messages %}
+                                        <div class="alert alert-{{ category }}">
+                                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                            {{ message }}
+                                        </div>
+                                    {% endfor %}
+                                    <div class="tab-pane active" id="tab_1_1">
+                                        <form role="form"
+                                              action="{{ url_for('manage.user',username=current_user.username) }}"
+                                              method="post">
+                                            <div class="form-group">
+                                                {{ form.fullname.label(class='control-label') }}
+                                                {{ form.fullname(class='form-control',type='text') }}
+                                            </div>
+                                            <div class="form-group">
+                                                {{ form.nick_name.label(class='control-label') }}
+                                                {{ form.nick_name(class='form-control',type='text') }}
+                                            </div>
+                                            <div class="form-group">
+                                                {{ form.phone_number.label(class='control-label') }}
+                                                {{ form.phone_number(class='form-control',type='text') }}
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">Interests</label>
+                                                <input type="text" placeholder="Design, Web etc." class="form-control"/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">Occupation</label>
+                                                <input type="text" placeholder="Web Developer" class="form-control"/>
+                                            </div>
+                                            <div class="form-group">
+                                                {{ form.about_me.label(class='control-label') }}
+                                                {{ form.about_me(class='form-control',row='3') }}
+                                            </div>
+                                            <div class="form-group">
+                                                {{ form.website_url.label(class='control-label') }}
+                                                {{ form.website_url(class='form-control',type='text') }}
+                                            </div>
+                                            <div class="margiv-top-10">
+                                                {{ form.submit.label(class='btn green',id='user_profile') }}
+                                                <a href="javascript:;" class="btn default"> 取 消 </a>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <!-- END PERSONAL INFO TAB -->
+                                    <!-- CHANGE AVATAR TAB -->
+                                    <div class="tab-pane" id="tab_1_2">
+                                        <p> 请上传小于3M的文件。 </p>
+                                        <form action="{{ url_for('manage.upload_file') }}" role="form"
+                                              enctype=multipart/form-data method="post">
+                                            <div class="form-group">
+                                                <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                    <div class="fileinput-new thumbnail"
+                                                         style="width: 200px; height: 150px;">
+                                                        <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image"
+                                                             alt=""/>
+                                                    </div>
+                                                    <div class="fileinput-preview fileinput-exists thumbnail"
+                                                         style="max-width: 200px; max-height: 150px;"></div>
+                                                    <div>
+                                                        <span class="btn default btn-file">
+                                                            <span class="fileinput-new"> 选择图片 </span>
+                                                            <span class="fileinput-exists"> Change </span>
+                                                            <input type="file" name="file" id="ingredient_file">
+                                                        </span>
+                                                        <a href="javascript:;" class="btn default fileinput-exists"
+                                                           data-dismiss="fileinput"> Remove </a>
+                                                    </div>
+                                                </div>
+                                                <div class="clearfix margin-top-10">
+                                                    <span class="label label-danger">NOTE! </span>
+                                                    <span>Attached image thumbnail is supported in Latest Firefox, Chrome, Opera, Safari and Internet Explorer 10 only </span>
+                                                </div>
+                                            </div>
+                                            <div class="margin-top-10">
+                                                <button class="btn green" type="submit" id="upload_file">Submit</button>
+                                                <a href="javascript:;" class="btn default"> Cancel </a>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <!-- END CHANGE AVATAR TAB -->
+                                    <!-- CHANGE PASSWORD TAB -->
+                                    <div class="tab-pane" id="tab_1_3">
+                                        <form action="{{ url_for('manage.change_password') }}" method="post">
+                                            <div class="form-group">
+                                                <label class="control-label">Current Password</label>
+                                                <input type="password" class="form-control" name="old_password"/></div>
+                                            <div class="form-group">
+                                                <label class="control-label">New Password</label>
+                                                <input type="password" class="form-control" name="password"/></div>
+                                            <div class="form-group">
+                                                <label class="control-label">Re-type New Password</label>
+                                                <input type="password" class="form-control" name="password2"/></div>
+                                            <div class="margin-top-10">
+                                                <a href="javascript:;" class="btn green" id="change_password"> Change
+                                                    Password </a>
+                                                <a href="javascript:;" class="btn default"> Cancel </a>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <!-- END CHANGE PASSWORD TAB -->
+                                    <!-- PRIVACY SETTINGS TAB -->
+                                    <div class="tab-pane" id="tab_1_4">
+                                        <form action="#">
+                                            <table class="table table-light table-hover">
+                                                <tr>
+                                                    <td> Anim pariatur cliche reprehenderit, enim eiusmod high life
+                                                        accusamus..
+                                                    </td>
+                                                    <td>
+                                                        <label class="uniform-inline">
+                                                            <input type="radio" name="optionsRadios1" value="option1"/>
+                                                            Yes </label>
+                                                        <label class="uniform-inline">
+                                                            <input type="radio" name="optionsRadios1" value="option2"
+                                                                   checked/> No </label>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td> Enim eiusmod high life accusamus terry richardson ad squid wolf
+                                                        moon
+                                                    </td>
+                                                    <td>
+                                                        <label class="uniform-inline">
+                                                            <input type="checkbox" value=""/> Yes </label>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td> Enim eiusmod high life accusamus terry richardson ad squid wolf
+                                                        moon
+                                                    </td>
+                                                    <td>
+                                                        <label class="uniform-inline">
+                                                            <input type="checkbox" value=""/> Yes </label>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td> Enim eiusmod high life accusamus terry richardson ad squid wolf
+                                                        moon
+                                                    </td>
+                                                    <td>
+                                                        <label class="uniform-inline">
+                                                            <input type="checkbox" value=""/> Yes </label>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <!--end profile-settings-->
+                                            <div class="margin-top-10">
+                                                <a href="javascript:;" class="btn red"> Save Changes </a>
+                                                <a href="javascript:;" class="btn default"> Cancel </a>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <!-- END PRIVACY SETTINGS TAB -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END PROFILE CONTENT -->
+        </div>
+    </div>
+{% endblock %}
+
+{% block page_level_scripts %}
+    <script src="{{ url_for('static',filename='pages/scripts/profile.min.js') }}"></script>
+{% endblock %}
+
+{% block page_level_styles_plugins %}
+    <link href="{{ url_for('static',filename='global/plugins/bootstrap-fileinput/bootstrap-fileinput.css') }}"
+          rel="stylesheet"/>
+{% endblock %}
+
+{% block page_level_scripts_plugins %}
+    <script src="{{ url_for('static',filename='global/plugins/bootstrap-fileinput/bootstrap-fileinput.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/jquery.sparkline.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='pages/scripts/page_level_script.js') }}"></script>
+{% endblock %}
+
+{% block top_menu %}
+    {{ super() }}
+    {% include '_topMenu_block.html' %}
+{% endblock %}

@@ -10,9 +10,10 @@
     <title>{% block title %}{% endblock %} - 材料价格</title>
     <link href="{{ url_for('static',filename='favicon.ico') }}" rel="shortcut icon" type="image/x-icon">
     <link href="{{ url_for('static',filename='favicon.ico') }}" rel="icon" type="image/x-icon">
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet"/>
+    <link href="{{ url_for('static',filename='pages/css/style.css') }}" rel="stylesheet">
     {% block styles %}
-        <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.css" rel="stylesheet"/>
-        <link href="{{ url_for('static',filename='pages/css/style.css') }}" rel="stylesheet">
+        {{ super() }}
     {% endblock %}
     {% endblock %}
 </head>
@@ -41,6 +42,7 @@
                                 <li><a href="/Tools/MediaQueries">屏幕宽度查询</a></li>
                                 <li><a href="/Tools/ZhihuDaily">知乎日报</a></li>
                                 <li><a href="/Tools/IP">IP地址查询</a></li>
+                                <li><a href="/SMS_Receive/index">在线短信接收</a> </li>
                                 <li role="separator" class="divider"></li>
                                 <li><a href="http://pdflibr.com/Note">黄兵的记事本</a></li>
                             </ul>
@@ -61,14 +63,14 @@
             <div class="container"></div>
         {% endblock %}
         <footer>
-            <nav class="navbar navbar-default navbar-fixed-bottom copyright">
+            <nav class="navbar navbar-default copyright">
               <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
                             <span>Copyright © {% block Year %}{% endblock %}
-                                <a href="https://pdf-lib.org/">材料价格网</a>
+                                <a href="https://pdf-lib.org/">黄兵个人博客</a>
                             </span> |
-                            <span>京公网安备11010802014853</span>
+                            <span>网站备案号：鄂ICP备16022780号-2</span>
                         </div>
                 </div>
               </div>
