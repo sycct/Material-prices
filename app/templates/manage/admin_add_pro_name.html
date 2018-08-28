@@ -118,7 +118,30 @@
                                 </div>
                             </div>
                         </div>
-                    </form>
+                        <div class="form-group">
+                            {{ form.pro_is_sale.label(class='col-md-2 control-label') }}
+                            <div class="col-md-8">
+                                <div class="radio-list">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="pro_is_sale" id="pro_is_sale_1" value="0"> 是</label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="pro_is_sale" id="pro_is_sale_2" value="1" checked> 否
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            {{ form.pro_is_must.label(class='col-md-2 control-label') }}
+                            <div class="col-md-8">
+                                <div class="radio-list">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="pro_is_must" id="pro_is_must_1" value="0"> 是</label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="pro_is_must" id="pro_is_must_2" value="1" checked> 否
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
 
                     <div class="form-actions">
                         <div class="row">
