@@ -97,8 +97,7 @@ class AddMaterialPropertyNameForm(FlaskForm):
 
 class AddMaterialPropertyValueForm(FlaskForm):
     def query_factory(*args):
-        return [r.i_name for r in db.session.query(MaterialProductName).all()]
-        return [r.i_name for r in db.session.query(MaterialItem).all()]
+        return [r.pro_name for r in db.session.query(MaterialProductName).all()]
 
     def get_pk(obj):
         return obj

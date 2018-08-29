@@ -14,6 +14,8 @@ $(function () {
         upload_file();
     });
 
+    $("#Special_characters").popover({html: true});
+
     TableDatatablesEditable.init();
 
     // Inject our CSRF token into our AJAX request.
