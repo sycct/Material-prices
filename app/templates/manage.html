@@ -126,15 +126,13 @@
                         </form>
                         <!-- END RESPONSIVE QUICK SEARCH FORM -->
                     </li>
-                    <li class="nav-item start active open">
+                    <li class="nav-item start">
                         <a href="javascript:;" class="nav-link nav-toggle">
                             <i class="icon-home"></i>
                             <span class="title">Dashboard</span>
-                            <span class="selected"></span>
-                            <span class="arrow open"></span>
                         </a>
                         <ul class="sub-menu">
-                            <li class="nav-item start active open">
+                            <li class="nav-item start">
                                 <a href="index.html" class="nav-link ">
                                     <i class="icon-bar-chart"></i>
                                     <span class="title">Dashboard 1</span>
@@ -160,11 +158,12 @@
                     <li class="heading">
                         <h3 class="uppercase">Features</h3>
                     </li>
-                    <li class="nav-item  ">
+                    <li class="nav-item active open">
                         <a href="javascript:;" class="nav-link nav-toggle">
                             <i class="icon-diamond"></i>
                             <span class="title">页面管理</span>
-                            <span class="arrow"></span>
+                            <span class="selected"></span>
+                            <span class="arrow open"></span>
                         </a>
                         <ul class="sub-menu">
                             <li class="nav-item  ">
@@ -178,23 +177,28 @@
                                 </a>
                             </li>
                             <li class="nav-item  ">
-                                <a href="ui_buttons.html" class="nav-link ">
-                                    <span class="title">Buttons</span>
+                                <a href="{{ url_for('manage.admin_list_catalog') }}" class="nav-link ">
+                                    <span class="title">分类列表</span>
                                 </a>
                             </li>
                             <li class="nav-item  ">
-                                <a href="ui_confirmations.html" class="nav-link ">
-                                    <span class="title">Popover Confirmations</span>
+                                <a href="{{ url_for('manage.admin_list_item') }}" class="nav-link ">
+                                    <span class="title">项目列表</span>
                                 </a>
                             </li>
                             <li class="nav-item  ">
-                                <a href="ui_icons.html" class="nav-link ">
-                                    <span class="title">Font Icons</span>
+                                <a href="{{ url_for('manage.admin_list_brand') }}" class="nav-link ">
+                                    <span class="title">品牌列表</span>
                                 </a>
                             </li>
                             <li class="nav-item  ">
-                                <a href="ui_socicons.html" class="nav-link ">
-                                    <span class="title">Social Icons</span>
+                                <a href="{{ url_for('manage.admin_add_brand') }}" class="nav-link ">
+                                    <span class="title">增加品牌</span>
+                                </a>
+                            </li>
+                            <li class="nav-item  ">
+                                <a href="{{ url_for('manage.material_property_name') }}" class="nav-link ">
+                                    <span class="title">增加属性名</span>
                                 </a>
                             </li>
                             <li class="nav-item  ">
