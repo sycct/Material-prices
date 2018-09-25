@@ -41,7 +41,7 @@
                 </div>
                 <div class="portlet-body">
                     <form action="{{ url_for('.material_property_value') }}" method="post" role="form"
-                          enctype="multipart/form-data" class="form-horizontal">
+                          class="form-horizontal">
                         {{ form.csrf_token }}
                         <div class="form-group">
                             {{ form.value_to_pro_name.label(class='col-md-2 control-label') }}

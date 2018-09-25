@@ -3,7 +3,7 @@ from ..decorators import admin_required
 from . import manage
 from flask_login import login_required, current_user
 from ..models import User, MaterialClassification, Permission, ClassificationCatalog, MaterialItem, \
-    MaterialClassificationBrand, MaterialProductName
+    MaterialClassificationBrand, MaterialProductName, MaterialProductValue
 from config import Config
 from werkzeug.utils import secure_filename
 import os
@@ -581,7 +581,8 @@ def material_property_name():
         if get_item_id is None:
             return flash(u'更新失败！', 'error')
         mater_pro_name = MaterialProductName(pro_name=form.property_name.data, pro_fk_id=get_item_id,
-                                             pro_has_otherName=form.pro_has_otherName.data, pro_has_color=form.pro_has_color.data,
+                                             pro_has_otherName=form.pro_has_otherName.data,
+                                             pro_has_color=form.pro_has_color.data,
                                              pro_has_enum=form.pro_has_enum.data, pro_has_input=form.pro_has_input.data,
                                              pro_is_key=form.pro_is_key.data, pro_is_sale=form.pro_is_sale.data,
                                              pro_is_must=form.pro_is_must.data)
@@ -612,6 +613,33 @@ def material_property_value():
     page_features = 'dashboard & statistics'
     # from
     form = AddMaterialPropertyValueForm()
-
+    if form.validate_on_submit():
+        pv_fk_text = form.value_to_pro_name.data
+        pv_fk_pid = MaterialProductName.query.filter_by(pro_name=pv_fk_text).first().pro_id
+        pv_names = form.property_value.data
+        if ',' in pv_names:
+            pv_name_list = pv_names.split(',')
+            for item in pv_name_list:
+                material_pvalue = MaterialProductValue(pv_name=item, pv_fk_pid=pv_fk_pid)
+                try:
+                    db.session.add(material_pvalue)
+                    db.session.commit()
+                except:
+                    db.session.rollback()
+                    raise
+                finally:
+                    db.session.close()  # optional, depends on use case
+        else:
+            material_pvalue = MaterialProductValue(pv_name=pv_names, pv_fk_pid=pv_fk_pid)
+            try:
+                db.session.add(material_pvalue)
+                db.session.commit()
+            except:
+                db.session.rollback()
+                raise
+            finally:
+                db.session.close()  # optional, depends on use case
+        flash(u'更新成功！', 'success')
+        return redirect(url_for('.admin_list_item'))
     return render_template('manage/admin_add_pro_value.html', user_info=user_info, name=title,
                            pageName=page_name, description=page_name, pageFeatures=page_features, form=form)
