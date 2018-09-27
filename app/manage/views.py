@@ -643,3 +643,17 @@ def material_property_value():
         return redirect(url_for('.admin_list_item'))
     return render_template('manage/admin_add_pro_value.html', user_info=user_info, name=title,
                            pageName=page_name, description=page_name, pageFeatures=page_features, form=form)
+
+
+@manage.route('user_add_material', methods=['GET', 'POST'])
+@login_required
+def user_add_material():
+    # 获取当前用户id
+    user_id = current_user.id
+    # 页面信息
+    user_info = User.query.get_or_404(user_id)
+    title = '首 页'
+    page_name = 'Dashboard'
+    page_features = 'dashboard & statistics'
+    return render_template('manage/user_add_material.html', user_info=user_info, name=title,
+                           pageName=page_name, description=page_name, pageFeatures=page_features)
