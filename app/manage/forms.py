@@ -4,7 +4,7 @@ from wtforms import StringField, TextAreaField, BooleanField, SelectField, \
 from wtforms.validators import DataRequired, Length, Email, Regexp, EqualTo
 from flask_wtf.file import FileField
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
-from ..models import MaterialClassification, ClassificationCatalog, MaterialItem
+from ..models import MaterialClassification, ClassificationCatalog, MaterialItem, MaterialProductName
 from .. import db
 
 
@@ -97,6 +97,7 @@ class AddMaterialPropertyNameForm(FlaskForm):
 
 class AddMaterialPropertyValueForm(FlaskForm):
     def query_factory(*args):
+        return [r.i_name for r in db.session.query(MaterialProductName).all()]
         return [r.i_name for r in db.session.query(MaterialItem).all()]
 
     def get_pk(obj):

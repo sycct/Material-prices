@@ -8,7 +8,7 @@ from config import Config
 from werkzeug.utils import secure_filename
 import os
 from .forms import EditProfileForm, ChangePasswordForm, AddClassificationForm, AddClassificationCatalogForm, \
-    AddBrandForm, AddMaterialItemForm, AddMaterialPropertyNameForm
+    AddBrandForm, AddMaterialItemForm, AddMaterialPropertyNameForm, AddMaterialPropertyValueForm
 from .. import db
 import uuid
 from pypinyin import lazy_pinyin
@@ -611,6 +611,7 @@ def material_property_value():
     page_name = 'Dashboard'
     page_features = 'dashboard & statistics'
     # from
-    form = AddMaterialPropertyNameForm()
+    form = AddMaterialPropertyValueForm()
+
     return render_template('manage/admin_add_pro_value.html', user_info=user_info, name=title,
                            pageName=page_name, description=page_name, pageFeatures=page_features, form=form)
