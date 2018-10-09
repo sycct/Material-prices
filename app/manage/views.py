@@ -645,7 +645,25 @@ def material_property_value():
                            pageName=page_name, description=page_name, pageFeatures=page_features, form=form)
 
 
-@manage.route('user_add_material', methods=['GET', 'POST'])
+@manage.route('/user_list_material', methods=['GET'])
+@login_required
+def user_list_material():
+    # 获取当前用户id
+    user_id = current_user.id
+    # 页面信息
+    user_info = User.query.get_or_404(user_id)
+    title = '首 页'
+    page_name = 'Dashboard'
+    page_features = 'dashboard & statistics'
+
+    get_material_list = MaterialClassification.query.all()
+
+    return render_template('manage/user_list_material.html', user_info=user_info, name=title,
+                           pageName=page_name, description=page_name, pageFeatures=page_features,
+                           get_material_list=get_material_list)
+
+
+@manage.route('/user_add_material', methods=['GET', 'POST'])
 @login_required
 def user_add_material():
     # 获取当前用户id
@@ -655,5 +673,21 @@ def user_add_material():
     title = '首 页'
     page_name = 'Dashboard'
     page_features = 'dashboard & statistics'
+
+    # check parameters
+    get_id = request.values.get('id', 0)
+    if get_id is None:
+        return redirect(url_for('.user_list_material'))
+    get_material_count = ClassificationCatalog.query.filter_by(classification_id=get_id).count()
+    if get_material_count == 0:
+        return redirect(url_for('.user_list_material'))
     return render_template('manage/user_add_material.html', user_info=user_info, name=title,
                            pageName=page_name, description=page_name, pageFeatures=page_features)
+
+
+@manage.route('/ajax_get_material', methods=['GET', 'POST'])
+@login_required
+def ajax_get_material():
+    get_id = request.values.get('get_id', 0)
+    print(get_id)
+    return jsonify()
