@@ -54,35 +54,19 @@
                     <form action="#" id="form-username" class="form-horizontal form-bordered">
                         <div class="form-group">
                             <div class="col-md-12">
-                                <select id="select_selectsplitter1" class="form-control" size="4">
-                                    <optgroup label="Category 1">
-                                        <option value="1">Option 1</option>
-                                        <option value="2">Option 2</option>
-                                        <option value="3">Option 3</option>
-                                        <option value="4">Option 4</option>
-                                        <option value="5">Option 5</option>
-                                        <option value="6">Option 6</option>
-                                        <option value="7">Option 7</option>
-                                        <option value="8">Option 8</option>
-                                    </optgroup>
-                                    <optgroup label="Category 2">
-                                        <option value="9">Option 9</option>
-                                        <option value="10">Option 10</option>
-                                        <option value="11">Option 11</option>
-                                        <option value="12">Option 12</option>
-                                        <option value="13">Option 13</option>
-                                        <option value="14">Option 14</option>
-                                        <option value="15">Option 15</option>
-                                        <option value="16">Option 16</option>
-                                    </optgroup>
-                                    <optgroup label="Category 3">
-                                        <option value="17">Option 17</option>
-                                        <option value="18">Option 18</option>
-                                        <option value="19">Option 19</option>
-                                        <option value="20">Option 20</option>
-                                        <option value="21">Option 21</option>
-                                    </optgroup>
-                                </select>
+                                <div class="row" data-selectsplitter-wrapper-selector="">
+                                    <div class="col-xs-12 col-sm-6">
+                                        <select class="form-control" id="material_parent">
+                                            <option value=""></option>
+                                        </select>
+                                    </div> <!-- Add the extra clearfix for only the required viewport -->
+                                    <div class="clearfix visible-xs-block"></div>
+                                    <div class="col-xs-12 col-sm-6">
+                                        <select class="form-control" id="material_child">
+
+                                        </select>
+                                    </div>
+                                </div>
                                 <p class="help-block"> click on the main option to list its child items </p>
                             </div>
                         </div>
@@ -106,7 +90,6 @@
 {% block page_level_scripts %}
     <script src="{{ url_for('static',filename='pages/scripts/dashboard.min.js') }}"></script>
     <script src="{{ url_for('static',filename='pages/scripts/page_level_script.js') }}"></script>
-    <script src="{{ url_for('static',filename='pages/scripts/components-bootstrap-select-splitter.min.js') }}"></script>
     <script src="{{ url_for('static',filename='pages/scripts/add-material-init.js') }}"></script>
 {% endblock %}
 
@@ -135,7 +118,6 @@
     <script src="{{ url_for('static',filename='global/scripts/datatable.js') }}"></script>
     <script src="{{ url_for('static',filename='global/plugins/datatables/datatables.min.js') }}"></script>
     <script src="{{ url_for('static',filename='global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js') }}"></script>
-    <script src="{{ url_for('static',filename='global/plugins/bootstrap-selectsplitter/bootstrap-selectsplitter.min.js') }}"></script>
 {% endblock %}
 
 

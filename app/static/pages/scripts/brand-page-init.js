@@ -19,7 +19,7 @@ function brand_page_init() {
                 var html = ''
                 brand = 'brand'
                 var item = data['data']
-                for (let i = 0; i < item.length; i++) {
+                for (var i = 0; i < item.length; i++) {
                     html += '<tr>\n' +
                         '                                            <td> ' + i + '</td>\n' +
                         '                                            <td> ' + item[i]["brand_name"] + ' </td>\n' +
