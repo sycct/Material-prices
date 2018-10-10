@@ -688,6 +688,15 @@ def user_add_material():
 @manage.route('/ajax_get_material', methods=['GET', 'POST'])
 @login_required
 def ajax_get_material():
+    # get material classification id
+    global get_id
     get_id = request.values.get('get_id', 0)
-    print(get_id)
+    # if data is None,get default data is first data.
+    if get_id is None:
+        get_id = MaterialClassification.query.order_by(MaterialClassification.classification_since).first().id
+
+    get_catalog = ClassificationCatalog.query.filter_by(classification_id=get_id).first()
+    get_material_item_name = MaterialItem.query.filter_by(i_catalog_id=get_catalog.id).i_name
+    # TODO:Assemble json data.
+    
     return jsonify()
