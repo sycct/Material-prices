@@ -12,6 +12,7 @@ function select_init() {
         data: {get_id: get_param},
         contentType: "json",
         success: function (data) {
+            console.log(data)
             var item = data["item"]
             var html = '<optgroup label="' + data["name"] + '">\n'
             for (var i = 0; i < item.length; i++) {

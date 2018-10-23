@@ -695,8 +695,17 @@ def ajax_get_material():
     if get_id is None:
         get_id = MaterialClassification.query.order_by(MaterialClassification.classification_since).first().id
 
-    get_catalog = ClassificationCatalog.query.filter_by(classification_id=get_id).first()
-    get_material_item = MaterialItem.query.filter_by(i_catalog_id=get_catalog.id)
+    get_catalog = ClassificationCatalog.query.filter_by(classification_id=get_id)
+    for item_parent in get_catalog:
+        # 遍历父级
+        dict_item = [{'id': item_parent.id, 'name': item_parent.catalog_name}]
+        dict_item.append({'id': item_parent.id, 'name': item_parent.catalog_name})
+        # 遍历子集
+        for item_child in item_parent.id:
+            get_material_item = MaterialItem.query.filter_by(i_catalog_id=item_child.id)
+            for item_child_last in get_material_item:
+                dict_item = []
+
     # {'id':1,'name':x,'item':{'id',1,'name':x,'id':2,'name':y,...}}
     dict_item = {'id': get_catalog.id, 'name': get_catalog.catalog_name}
     # TODO:Assemble json data.
