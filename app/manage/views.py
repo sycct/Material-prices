@@ -712,3 +712,4 @@ def ajax_get_material():
     for item in get_material_item:
         dict_item.setdefault('item', []).append({'id': item.i_id, 'item_name': item.i_name})
     return jsonify(dict_item)
+>>>>>>>>> Temporary merge branch 2
