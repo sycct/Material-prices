@@ -1,7 +1,7 @@
 $(function () {
     item_page_init();
     $('#Item_to_Catalog').change(function () {
-        catalog_page_init();
+        item_page_init();
     })
 });
 
@@ -19,7 +19,7 @@ function item_page_init() {
                 var html = ''
                 item_flag = 'item'
                 var item = data['data']
-                for (let i = 0; i < item.length; i++) {
+                for (var i = 0; i < item.length; i++) {
                     html += '<tr>\n' +
                         '                                            <td> ' + i + '</td>\n' +
                         '                                            <td> ' + item[i]["item_name"] + ' </td>\n' +

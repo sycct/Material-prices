@@ -696,19 +696,37 @@ def ajax_get_material():
         get_id = MaterialClassification.query.order_by(MaterialClassification.classification_since).first().id
 
     get_catalog = ClassificationCatalog.query.filter_by(classification_id=get_id)
+    dict_item = []
     for item_parent in get_catalog:
         # 遍历父级
-        dict_item = [{'id': item_parent.id, 'name': item_parent.catalog_name}]
         dict_item.append({'id': item_parent.id, 'name': item_parent.catalog_name})
         # 遍历子集
-        for item_child in item_parent.id:
-            get_material_item = MaterialItem.query.filter_by(i_catalog_id=item_child.id)
-            for item_child_last in get_material_item:
-                dict_item = []
+    #     for item_child in item_parent.id:
+    #         get_material_item = MaterialItem.query.filter_by(i_catalog_id=item_child.id)
+    #         for item_child_last in get_material_item:
+    #             dict_item = []
+    #
+    # # {'id':1,'name':x,'item':{'id',1,'name':x,'id':2,'name':y,...}}
+    # dict_item = {'id': get_catalog.id, 'name': get_catalog.catalog_name}
+    # # TODO:Assemble json data.
+    # for item in get_material_item:
+    #     dict_item.setdefault('item', []).append({'id': item.i_id, 'item_name': item.i_name})
+    return jsonify(dict_item)
 
-    # {'id':1,'name':x,'item':{'id',1,'name':x,'id':2,'name':y,...}}
-    dict_item = {'id': get_catalog.id, 'name': get_catalog.catalog_name}
-    # TODO:Assemble json data.
-    for item in get_material_item:
-        dict_item.setdefault('item', []).append({'id': item.i_id, 'item_name': item.i_name})
+
+@manage.route('/ajax_get_material_item', methods=['GET', 'POST'])
+@login_required
+def ajax_get_material_item():
+    get_catalog_id = request.values.get('get_id', 0)
+    # if data is None,get default data is first data.
+    if get_catalog_id is None:
+        get_catalog_id = ClassificationCatalog.query.order_by(MaterialClassification.classification_since).first().id
+
+    get_item = MaterialItem.query.filter_by(i_catalog_id=get_catalog_id)
+    dict_item = []
+    for item in get_item:
+        dict_item.append({'id': item.i_id, 'name': item.i_name})
+
+    print(dict_item)
+
     return jsonify(dict_item)
