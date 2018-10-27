@@ -1,0 +1,42 @@
+{% extends "manage.html" %}
+
+
+
+{% block page_level_scripts %}
+    <script src="{{ url_for('static',filename='pages/scripts/dashboard.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='pages/scripts/page_level_script.js') }}"></script>
+    <script src="{{ url_for('static',filename='pages/scripts/add-material-init.js') }}"></script>
+{% endblock %}
+
+{% block page_level_styles_plugins %}
+    <link href="{{ url_for('static',filename='global/plugins/bootstrap-daterangepicker/daterangepicker.min.css') }}"
+          rel="stylesheet"/>
+    <link href="{{ url_for('static',filename='global/plugins/morris/morris.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('static',filename='global/plugins/bootstrap-fileinput/bootstrap-fileinput.css') }}"
+          rel="stylesheet"/>
+    <link href="{{ url_for('static',filename='global/plugins/bootstrap-modal/css/bootstrap-modal-bs3patch.css') }}"
+          rel="stylesheet"/>
+    <link href="{{ url_for('static',filename='global/plugins/bootstrap-modal/css/bootstrap-modal.css') }}"
+          rel="stylesheet"/>
+    <link href="{{ url_for('static',filename='global/plugins/datatables/datatables.min.css') }}" rel="stylesheet"/>
+    <link href="{{ url_for('static',filename='global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css') }}"
+          rel="stylesheet"/>
+{% endblock %}
+
+{% block page_level_scripts_plugins %}
+    <script src="{{ url_for('static',filename='global/plugins/moment.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/bootstrap-daterangepicker/daterangepicker.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/morris/morris.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/bootstrap-fileinput/bootstrap-fileinput.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/bootstrap-modal/js/bootstrap-modalmanager.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/bootstrap-modal/js/bootstrap-modal.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/scripts/datatable.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/datatables/datatables.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js') }}"></script>
+{% endblock %}
+
+
+{% block top_menu %}
+    {{ super() }}
+    {% include '_topMenu_block.html' %}
+{% endblock %}

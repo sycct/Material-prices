@@ -5,7 +5,7 @@
     <div class="row" xmlns="http://www.w3.org/1999/html">
         <div class="col-md-12">
             <div class="note note-success">
-                <h3>增加材料类别</h3>
+                <h3>材料属性名称</h3>
                 <p>在此增加材料类别，在首页显示，此页面是管理员页面。 </p>
                 <p class="text-warning">注意:上传图片尺寸为：16*16px</p>
             </div>
@@ -45,7 +45,7 @@
                             <div class="row">
                                 <div class="col-md-6 col-sm-12">
                                     <div id="sample_1_filter" class="dataTables_filter">
-                                        <label>筛选: </label>{{ form.Item_to_Catalog(class='form-control input-large input-inline',for='default') }}
+                                        <label>筛选: </label>{{ form.Brand_to_Item(class='form-control input-large input-inline',for='default') }}
                                     </div>
                                 </div>
                             </div>
@@ -55,16 +55,12 @@
                                     <tr>
                                         <th> #</th>
                                         <th> 类别目录</th>
+                                        <th> 父类别</th>
                                         <th> 修 改</th>
                                         <th> 删 除</th>
-                                        <th>增加属性名</th>
-                                        <th>增加品牌</th>
                                     </tr>
                                     </thead>
-                                    <tbody id="catalog_table">
-                                    {% for item in item_list %}
-                                    {% endfor %}
-                                    </tbody>
+                                    <tbody id="brand_table"></tbody>
                                 </table>
                                 <!-- begin modal -->
                                 <div id="responsive" class="modal fade" tabindex="-1" data-width="760">
@@ -100,7 +96,7 @@
 {% block page_level_scripts %}
     <script src="{{ url_for('static',filename='pages/scripts/dashboard.min.js') }}"></script>
     <script src="{{ url_for('static',filename='pages/scripts/page_level_script.js') }}"></script>
-    <script src="{{ url_for('static',filename='pages/scripts/item-page-init.js') }}"></script>
+    <script src="{{ url_for('static',filename='pages/scripts/brand-page-init.js') }}"></script>
 {% endblock %}
 
 {% block page_level_styles_plugins %}

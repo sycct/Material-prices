@@ -645,6 +645,21 @@ def material_property_value():
                            pageName=page_name, description=page_name, pageFeatures=page_features, form=form)
 
 
+@manage.route('/manage_list_pro_name', methods=['POST', 'GET'])
+@login_required
+def manage_list_pro_name():
+    # 获取当前用户id
+    user_id = current_user.id
+    # 页面信息
+    user_info = User.query.get_or_404(user_id)
+    title = '首 页'
+    page_name = 'Dashboard'
+    page_features = 'dashboard & statistics'
+
+    return render_template('manage/admin_list_pro_name.html', user_info=user_info, name=title,
+                           pageName=page_name, description=page_name, pageFeatures=page_features)
+
+
 @manage.route('/user_list_material', methods=['GET'])
 @login_required
 def user_list_material():
@@ -700,17 +715,7 @@ def ajax_get_material():
     for item_parent in get_catalog:
         # 遍历父级
         dict_item.append({'id': item_parent.id, 'name': item_parent.catalog_name})
-        # 遍历子集
-    #     for item_child in item_parent.id:
-    #         get_material_item = MaterialItem.query.filter_by(i_catalog_id=item_child.id)
-    #         for item_child_last in get_material_item:
-    #             dict_item = []
-    #
-    # # {'id':1,'name':x,'item':{'id',1,'name':x,'id':2,'name':y,...}}
-    # dict_item = {'id': get_catalog.id, 'name': get_catalog.catalog_name}
-    # # TODO:Assemble json data.
-    # for item in get_material_item:
-    #     dict_item.setdefault('item', []).append({'id': item.i_id, 'item_name': item.i_name})
+
     return jsonify(dict_item)
 
 
@@ -727,6 +732,27 @@ def ajax_get_material_item():
     for item in get_item:
         dict_item.append({'id': item.i_id, 'name': item.i_name})
 
-    print(dict_item)
-
     return jsonify(dict_item)
+
+
+@manage.route('/user_add_material_details', methods=['GET', 'POST'])
+@login_required
+def user_add_material_details():
+    # 获取当前用户id
+    user_id = current_user.id
+    # 页面信息
+    user_info = User.query.get_or_404(user_id)
+    title = '首 页'
+    page_name = 'Dashboard'
+    page_features = 'dashboard & statistics'
+
+    item_id = request.values.get('item_id', 0)
+    if item_id is None:
+        return redirect(url_for('ajax_get_material'))
+    # query material pro_name
+    get_material_pro_name = material_property_name.query.filter_by(pro_fk_id=item_id)
+    pro_name_list = []
+    for item in get_material_pro_name:
+        pro_name_list.append({item.pro_name: 1, })
+    return render_template('manage/user_add_material_details.html', user_info=user_info, name=title,
+                           pageName=page_name, description=page_name, pageFeatures=page_features)

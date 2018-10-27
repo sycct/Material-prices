@@ -1,10 +1,14 @@
 $(function () {
     select_init();
-    check_material_child()
     $('#material_parent').change(function () {
         select_item();
+        //第二次点击parent，child任然有值，修改此处存在问题
+        check_material_child('parent_clear');
+    });
+    $('#material_child').change(function () {
         check_material_child();
-    })
+        get_child_val();
+    });
 })
 
 function select_init() {
@@ -16,7 +20,7 @@ function select_init() {
         data: {get_id: get_param},
         contentType: "json",
         success: function (data) {
-            var html = ''
+            var html = '';
             for (var i = 0; i < data.length; i++) {
                 html += '<option value="' + data[i].id + '">' + data[i].name + '</option>'
             }
@@ -43,12 +47,27 @@ function select_item() {
     })
 }
 
-function check_material_child() {
-    var id = $('#material_child option:selected').val();
-    alert(id);
-    if (id != null && id != undefined) {
+function check_material_child(elem) {
+    var id;
+    id = $('#material_child option:selected').val();
+    if (elem === "parent_clear") {
+        // clear data.
+        id = null;
+    }
+    if (id != null && id !== undefined) {
         $('#item_next').removeAttr('disabled')
     } else {
         $('#item_next').attr('disabled', 'disabled')
     }
+}
+
+function get_child_val() {
+    get_child = $('#material_child option:selected').val();
+    if (get_child !== null && get_child !== undefined) {
+        var new_url = '/manage/user_add_material_details?item_id=' + get_child;
+        $('#item_next').attr('href', new_url)
+    } else {
+        $('#item_next').attr('disabled', 'disabled')
+    }
+
 }

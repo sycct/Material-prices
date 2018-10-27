@@ -23,12 +23,17 @@ function item_page_init() {
                     html += '<tr>\n' +
                         '                                            <td> ' + i + '</td>\n' +
                         '                                            <td> ' + item[i]["item_name"] + ' </td>\n' +
-                        '                                            <td>' + item[i]["parent_id"] + '</td>\n' +
                         '                                            <td>\n' +
                         '                                                <a class="edit" href="/manage/admin_edit_item/' + item[i]["id"] + '?select=' + get_item_val + '">Edit </a>\n' +
                         '                                            </td>\n' +
                         '                                            <td>\n' +
                         '                                                <a class="delete" onclick="show_delete_modal(' + "item_flag" + ',' + item[i]["id"] + ')">Delete </a>\n' +
+                        '                                            </td>\n' +
+                        '                                            <td>\n' +
+                        '                                                <a class="add_pro_name" href="/manage/material_property_name/' + item[i]["id"] + '">增加属性 </a>\n' +
+                        '                                            </td>\n' +
+                        '                                            <td>\n' +
+                        '                                                <a class="add_brand" href="/manage/admin_add_brand/' + item[i]["id"] + '">增加品牌 </a>\n' +
                         '                                            </td>\n' +
                         '                                        </tr>'
                 }
