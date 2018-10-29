@@ -13,6 +13,7 @@ from .. import db
 import uuid
 from pypinyin import lazy_pinyin
 from flask import jsonify
+from twilio.rest import Client
 
 
 @manage.route('/index', methods=['GET', 'POST'])
@@ -566,6 +567,7 @@ def admin_delete_item(id):
 @login_required
 @admin_required
 def material_property_name():
+    get_id = request.values.get('id', 0)
     # 获取当前用户id
     user_id = current_user.id
     # 页面信息
@@ -598,6 +600,24 @@ def material_property_name():
         return redirect(url_for('.admin_list_item'))
     return render_template('manage/admin_add_pro_name.html', user_info=user_info, name=title,
                            pageName=page_name, description=page_name, pageFeatures=page_features, form=form)
+
+
+@manage.route('/ajax_get_item', methods=['GET', 'POST'])
+@login_required
+def ajax_get_item():
+    global get_ajax_id
+    get_ajax_id = request.values.get('ajax_item_id', 0)
+    # get_ajax_id = request.json['ajax_item_id']
+    if get_ajax_id is None:
+        # query default
+        get_ajax_id = MaterialItem.query.order_by(MaterialItem.i_id).first().i_id
+    get_catalog_id = MaterialItem.query.filter_by(i_id=get_ajax_id).first().i_catalog_id
+    get_catalog_list = MaterialItem.query.filter_by(i_catalog_id=get_catalog_id).all()
+    catalog_list = []
+    for item in get_catalog_list:
+        catalog_list.append({'id': item.i_id, 'i_name': item.i_name})
+
+    return jsonify(catalog_list)
 
 
 @manage.route('/material_property_value', methods=['GET', 'POST'])
@@ -756,3 +776,32 @@ def user_add_material_details():
         pro_name_list.append({item.pro_name: 1, })
     return render_template('manage/user_add_material_details.html', user_info=user_info, name=title,
                            pageName=page_name, description=page_name, pageFeatures=page_features)
+
+
+@manage.route('/sms_test', methods=['GET', 'POST'])
+@login_required
+def sms_test():
+    # 获取当前用户id
+    user_id = current_user.id
+    # 页面信息
+    user_info = User.query.get_or_404(user_id)
+    title = '首 页'
+    page_name = 'Dashboard'
+    page_features = 'dashboard & statistics'
+
+    # Your Account Sid and Auth Token from twilio.com/console
+    account_sid = 'AC8703e90d8ce9da328804d637933f6836'
+    auth_token = '7de023ea77c599d5670ef19924e5c0c6'
+    client = Client(account_sid, auth_token)
+
+    message = client.messages \
+        .create(
+        body="Join Earth's mightiest heroes. Like Kevin Bacon.",
+        from_='+19513661939',
+        to='+447529149438'
+    )
+
+    print(message.sid)
+
+    return render_template('manage/user_sms_test.html', user_info=user_info, name=title,
+                           pageName=page_name, description=page_name, message=message.sid)

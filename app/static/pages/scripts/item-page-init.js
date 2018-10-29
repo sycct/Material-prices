@@ -30,7 +30,7 @@ function item_page_init() {
                         '                                                <a class="delete" onclick="show_delete_modal(' + "item_flag" + ',' + item[i]["id"] + ')">Delete </a>\n' +
                         '                                            </td>\n' +
                         '                                            <td>\n' +
-                        '                                                <a class="add_pro_name" href="/manage/material_property_name/' + item[i]["id"] + '">增加属性 </a>\n' +
+                        '                                                <a class="add_pro_name" href="/manage/material_property_name?id=' + item[i]["id"] + '">增加属性 </a>\n' +
                         '                                            </td>\n' +
                         '                                            <td>\n' +
                         '                                                <a class="add_brand" href="/manage/admin_add_brand/' + item[i]["id"] + '">增加品牌 </a>\n' +

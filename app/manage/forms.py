@@ -64,9 +64,6 @@ class AddMaterialItemForm(FlaskForm):
     def get_pk(obj):
         return obj
 
-    # def child_query_factory(*args):
-    #     return [r.i_name for r in db.session.query(MaterialItem).all()]
-
     Item_name = StringField("材料名称：", validators=[Length(0, 50), DataRequired()])
     Item_to_Catalog = QuerySelectField(label=u'目录名称：', validators=[DataRequired()], query_factory=query_factory,
                                        get_pk=get_pk)
@@ -82,7 +79,7 @@ class AddMaterialPropertyNameForm(FlaskForm):
     def get_pk(obj):
         return obj
 
-    property_name = StringField("属性名称：", validators=[Length(0, 50)])
+    property_name = StringField('属性名称：', validators=[Length(0, 50)])
     item_to_pro_name = QuerySelectField(label=u'所属类别：', validators=[DataRequired()], query_factory=query_factory,
                                         get_pk=get_pk)
     pro_has_otherName = RadioField('是否有别名： ', choices=[('0', '是'), ('1', '否')])
