@@ -45,15 +45,7 @@ class AddClassificationCatalogForm(FlaskForm):
 
 
 class AddBrandForm(FlaskForm):
-    def query_factory(*args):
-        return [r.i_name for r in db.session.query(MaterialItem).all()]
-
-    def get_pk(obj):
-        return obj
-
     Brand_name = StringField("品牌名称：", validators=[Length(0, 64), DataRequired()])
-    Brand_to_Item = QuerySelectField(label=u'材料名称', validators=[DataRequired()], query_factory=query_factory,
-                                     get_pk=get_pk)
     submit = SubmitField('保存更改')
 
 

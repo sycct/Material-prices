@@ -2,7 +2,6 @@ $(function () {
     select_init();
     $('#material_parent').change(function () {
         select_item();
-        //第二次点击parent，child任然有值，修改此处存在问题
         check_material_child('parent_clear');
     });
     $('#material_child').change(function () {
