@@ -9,15 +9,22 @@ function init_material_property_name() {
     }
     $.ajax({
         type: 'GET',
-        data: {ajax_item_id: JSON.stringify(get_param)},
+        data: {ajax_item_id: get_param},
         url: '/manage/ajax_get_item',
         contentType: "application/json; charset=utf-8",
-        //contentType: "application/json",
         dataType: "json",
         success: function (data) {
-            console.log(data);
+            var html = ''
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].id == get_param) {
+                    html += '<option value="' + data[i].id + '" selected>' + data[i].i_name + '</option>'
+                } else {
+                    html += '<option value="' + data[i].id + '">' + data[i].i_name + '</option>'
+                }
+            }
+            $('#item_to_pro_name').append(html);
         }
     });
-    console.log(get_param);
+
 
 }

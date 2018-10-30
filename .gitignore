@@ -15,10 +15,10 @@ _mailinglist
 .pytest_cache/
 .idea/
 docs/_build/
+config.py
 
 # Coverage reports
 htmlcov/
 .coverage
 .coverage.*
 *,cover
-config.py

@@ -44,9 +44,9 @@
                           class="form-horizontal" role="form">
                         {{ form.csrf_token }}
                         <div class="form-group">
-                            {{ form.item_to_pro_name.label(class='col-md-2 control-label') }}
+                            <label class="col-md-2 control-label" for="item_to_pro_name">项目名称：</label>
                             <div class="col-md-8">
-                                {{ form.item_to_pro_name(class='form-control') }}
+                                <select class="form-control" id="item_to_pro_name" name="item_to_pro_name"></select>
                             </div>
                         </div>
                         <div class="form-group">

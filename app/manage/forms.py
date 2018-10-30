@@ -73,15 +73,7 @@ class AddMaterialItemForm(FlaskForm):
 
 
 class AddMaterialPropertyNameForm(FlaskForm):
-    def query_factory(*args):
-        return [r.i_name for r in db.session.query(MaterialItem).all()]
-
-    def get_pk(obj):
-        return obj
-
     property_name = StringField('属性名称：', validators=[Length(0, 50)])
-    item_to_pro_name = QuerySelectField(label=u'所属类别：', validators=[DataRequired()], query_factory=query_factory,
-                                        get_pk=get_pk)
     pro_has_otherName = RadioField('是否有别名： ', choices=[('0', '是'), ('1', '否')])
     pro_has_color = RadioField('是否有颜色属性： ', choices=[('0', '是'), ('1', '否')])
     pro_has_enum = RadioField('是否可枚举： ', choices=[('0', '是'), ('1', '否')])

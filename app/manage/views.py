@@ -567,7 +567,6 @@ def admin_delete_item(id):
 @login_required
 @admin_required
 def material_property_name():
-    get_id = request.values.get('id', 0)
     # 获取当前用户id
     user_id = current_user.id
     # 页面信息
@@ -578,8 +577,7 @@ def material_property_name():
     # from
     form = AddMaterialPropertyNameForm()
     if form.validate_on_submit():
-        get_item_name = form.item_to_pro_name.data
-        get_item_id = MaterialItem.query.filter_by(i_name=get_item_name).first().i_id
+        get_item_id = request.values.get('item_to_pro_name', 0)
         if get_item_id is None:
             return flash(u'更新失败！', 'error')
         mater_pro_name = MaterialProductName(pro_name=form.property_name.data, pro_fk_id=get_item_id,
@@ -607,7 +605,6 @@ def material_property_name():
 def ajax_get_item():
     global get_ajax_id
     get_ajax_id = request.values.get('ajax_item_id', 0)
-    # get_ajax_id = request.json['ajax_item_id']
     if get_ajax_id is None:
         # query default
         get_ajax_id = MaterialItem.query.order_by(MaterialItem.i_id).first().i_id
