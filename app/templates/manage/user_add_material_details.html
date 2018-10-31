@@ -1,6 +1,78 @@
 {% extends "manage.html" %}
 
-
+{% block content %}
+    {{ super() }}
+    <div class="row" xmlns="http://www.w3.org/1999/html">
+        <div class="col-md-12">
+            <div class="note note-success">
+                <h3>增加材料属性名称</h3>
+                <p>在此增加材料类别，在首页显示，此页面是管理员页面。 </p>
+                <p class="text-warning">注意:上传图片尺寸为：16*16px</p>
+            </div>
+            <div class="container-fluid alter_clear">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+            <div class="portlet light bordered">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-social-dribbble font-green"></i>
+                        <span class="caption-subject font-green bold uppercase">Default textbox</span>
+                    </div>
+                    <div class="actions">
+                        <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                            <i class="icon-cloud-upload"></i>
+                        </a>
+                        <a class="btn btn-circle btn-icon-only btn-default" data-toggle="modal" href="#responsive">
+                            <i class="icon-wrench"></i>
+                        </a>
+                        <a class="btn btn-circle btn-icon-only btn-default" href="javascript:;">
+                            <i class="icon-trash"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <form action="{{ url_for('.user_add_material_details') }}" method="post" role="form"
+                          class="form-horizontal">
+                        {#                        {{ form.csrf_token }}#}
+                        {% for item in pro_name %}
+                            <div class="form-group">
+                                <label class="col-md-2 control-label"
+                                       for="value_to_pro_name_{{ item.id }}">{{ item.name }}： </label>
+                                <div class="col-md-8">
+                                    <select class="form-control" id="value_to_pro_name_{{ item.id }}"
+                                            name="value_to_pro_name_{{ item.id }}">
+                                        {% for value in pro_value %}
+                                            {% if item.id==value.pv_fk_pid %}
+                                                <option value="{{ value.pv_id }}">{{ value.pv_name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <div class="form-actions">
+                            <div class="row">
+                                <div class="col-md-offset-2 col-md-9">
+                                    <button type="submit" class="btn green">Submit</button>
+                                    <button type="button" class="btn default">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
 
 {% block page_level_scripts %}
     <script src="{{ url_for('static',filename='pages/scripts/dashboard.min.js') }}"></script>

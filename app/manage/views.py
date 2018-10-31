@@ -15,6 +15,7 @@ from pypinyin import lazy_pinyin
 from flask import jsonify
 from twilio.rest import Client
 from sqlalchemy import and_
+from sqlalchemy.orm import sessionmaker
 
 
 @manage.route('/index', methods=['GET', 'POST'])
@@ -772,14 +773,25 @@ def user_add_material_details():
 
     item_id = request.values.get('item_id', 0)
     if item_id is None:
-        return redirect(url_for('ajax_get_material'))
+        return redirect(url_for('user_list_material'))
     # query material pro_name
-    get_material_pro_name = material_property_name.query.filter_by(pro_fk_id=item_id)
+    collection_list = MaterialProductName.query.join(MaterialProductValue,
+                                                     MaterialProductName.pro_id == MaterialProductValue.pv_fk_pid) \
+        .filter(MaterialProductName.pro_fk_id == item_id) \
+        .with_entities(MaterialProductValue.pv_id, MaterialProductValue.pv_name, MaterialProductValue.pv_fk_pid) \
+        .all()
+    collection_dict = [dict(zip(result.keys(), result)) for result in collection_list]
+    print(collection_dict)
+
+    get_material_pro_name = MaterialProductName.query.filter_by(pro_fk_id=item_id)
     pro_name_list = []
     for item in get_material_pro_name:
-        pro_name_list.append({item.pro_name: 1, })
+        pro_name_list.append({'id': item.pro_id, 'name': item.pro_name})
+
+    print(pro_name_list)
     return render_template('manage/user_add_material_details.html', user_info=user_info, name=title,
-                           pageName=page_name, description=page_name, pageFeatures=page_features)
+                           pageName=page_name, description=page_name, pageFeatures=page_features,
+                           pro_name=pro_name_list, pro_value=collection_dict)
 
 
 @manage.route('/sms_test', methods=['GET', 'POST'])
@@ -800,9 +812,9 @@ def sms_test():
 
     message = client.messages \
         .create(
-        body="Join Earth's mightiest heroes. Like Kevin Bacon.",
-        from_='+19513661939',
-        to='+447529149438'
+        body="这是测试短信。",
+        from_='+14315317178',
+        to='+639777513454'
     )
 
     print(message.sid)
