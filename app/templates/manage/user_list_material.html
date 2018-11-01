@@ -58,7 +58,7 @@
                                             <td> {{ classification_list.classification_name }} </td>
                                             <td>
                                                 <a class="edit"
-                                                   href="{{ url_for('.user_add_material', id=classification_list.id) }}">选择 </a>
+                                                   href="{{ url_for('.user_add_material', classification_id=classification_list.id) }}">选择 </a>
                                             </td>
                                         </tr>
                                     {% endfor %}

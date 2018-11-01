@@ -42,7 +42,6 @@
                 <div class="portlet-body">
                     <form action="{{ url_for('.user_add_material_details') }}" method="post" role="form"
                           class="form-horizontal">
-                        {#                        {{ form.csrf_token }}#}
                         {% for item in pro_name %}
                             <div class="form-group">
                                 <label class="col-md-2 control-label"
@@ -56,6 +55,9 @@
                                             {% endif %}
                                         {% endfor %}
                                     </select>
+                                </div>
+                                <div class="col-md-2" id="add_attr">
+                                    <a>增加属性</a>
                                 </div>
                             </div>
                         {% endfor %}

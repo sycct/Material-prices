@@ -8,11 +8,15 @@ $(function () {
         check_material_child();
         get_child_val();
     });
+    change_link();
 })
 
 function select_init() {
     //get parameters for url
-    var get_param = location.search.replace('?id=', '');
+    var get_param = location.search.replace('?classification_id=', '')
+    if (get_param == null) {
+        return false;
+    }
     $.ajax({
         type: 'GET',
         url: '/manage/ajax_get_material',
@@ -63,10 +67,19 @@ function check_material_child(elem) {
 function get_child_val() {
     get_child = $('#material_child option:selected').val();
     if (get_child !== null && get_child !== undefined) {
-        var new_url = '/manage/user_add_material_details?item_id=' + get_child;
+        var get_classification_id = location.search;
+        var new_url = '/manage/user_add_material_details' + get_classification_id + '&item_id=' + get_child;
         $('#item_next').attr('href', new_url)
     } else {
         $('#item_next').attr('disabled', 'disabled')
     }
+}
 
+function change_link() {
+    get_uri = location.search
+    if (get_uri == null) {
+        return false;
+    } else {
+        $('#add_attr a').attr('href', '/manage/material_property_value' + get_uri)
+    }
 }

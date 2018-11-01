@@ -44,6 +44,12 @@
                           class="form-horizontal">
                         {{ form.csrf_token }}
                         <div class="form-group">
+                            <label class="col-md-2 control-label" for="value_to_item_name">项目名称： </label>
+                            <div class="col-md-8">
+                                <select class="form-control" id="value_to_item_name" name="value_to_item_name"></select>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             {{ form.value_to_pro_name.label(class='col-md-2 control-label') }}
                             <div class="col-md-8">
                                 {{ form.value_to_pro_name(class='form-control') }}
@@ -60,8 +66,8 @@
                                         <span class="input-group-btn">
                                             <a tabindex="0" class="btn blue" id="Special_characters" role="button"
                                                data-placement="bottom" data-toggle="popover" data-trigger="focus"
-                                               type="button" title="特殊符号" data-content="<span id='circle'>Ø</span>"><i
-                                                    class="fa fa-asterisk"></i></a>
+                                               type="button" title="特殊符号" data-content="<span id='circle'>Ø</span>">
+                                                <i class="fa fa-asterisk"></i></a>
                                         </span>
                                     </div>
                                 </div>
@@ -89,6 +95,7 @@
     <script src="{{ url_for('static',filename='pages/scripts/dashboard.min.js') }}"></script>
     <script src="{{ url_for('static',filename='pages/scripts/components-bootstrap-tagsinput.js') }}"></script>
     <script src="{{ url_for('static',filename='pages/scripts/page_level_script.js') }}"></script>
+    <script src="{{ url_for('static',filename='pages/scripts/admin_pro_value.js') }}"></script>
 {% endblock %}
 
 {% block page_level_styles_plugins %}

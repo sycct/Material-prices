@@ -715,7 +715,7 @@ def user_add_material():
     page_features = 'dashboard & statistics'
 
     # check parameters
-    get_id = request.values.get('id', 0)
+    get_id = request.values.get('classification_id', 0)
     if get_id is None:
         return redirect(url_for('.user_list_material'))
     get_material_count = ClassificationCatalog.query.filter_by(classification_id=get_id).count()
@@ -781,14 +781,12 @@ def user_add_material_details():
         .with_entities(MaterialProductValue.pv_id, MaterialProductValue.pv_name, MaterialProductValue.pv_fk_pid) \
         .all()
     collection_dict = [dict(zip(result.keys(), result)) for result in collection_list]
-    print(collection_dict)
 
     get_material_pro_name = MaterialProductName.query.filter_by(pro_fk_id=item_id)
     pro_name_list = []
     for item in get_material_pro_name:
         pro_name_list.append({'id': item.pro_id, 'name': item.pro_name})
 
-    print(pro_name_list)
     return render_template('manage/user_add_material_details.html', user_info=user_info, name=title,
                            pageName=page_name, description=page_name, pageFeatures=page_features,
                            pro_name=pro_name_list, pro_value=collection_dict)
