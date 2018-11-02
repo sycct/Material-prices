@@ -9,11 +9,11 @@ $(function () {
         get_child_val();
     });
     change_link();
-})
+});
 
 function select_init() {
     //get parameters for url
-    var get_param = location.search.replace('?classification_id=', '')
+    var get_param = location.search.replace('?classification_id=', '');
     if (get_param == null) {
         return false;
     }
@@ -65,7 +65,7 @@ function check_material_child(elem) {
 }
 
 function get_child_val() {
-    get_child = $('#material_child option:selected').val();
+    var get_child = $('#material_child option:selected').val();
     if (get_child !== null && get_child !== undefined) {
         var get_classification_id = location.search;
         var new_url = '/manage/user_add_material_details' + get_classification_id + '&item_id=' + get_child;
@@ -76,10 +76,15 @@ function get_child_val() {
 }
 
 function change_link() {
-    get_uri = location.search
-    if (get_uri == null) {
+    var get_uri = location.search;
+    var get_a_length = $('div[id^=add_attr_]').length;
+    if (get_uri === null) {
         return false;
     } else {
-        $('#add_attr a').attr('href', '/manage/material_property_value' + get_uri)
+        for (var i = 1; i < get_a_length + 1; i++) {
+            var url_str = '#add_attr_' + i + ' a';
+            var get_a_href = $(url_str).attr('href');
+            $(url_str).attr('href', get_a_href + '&' + get_uri.replace('?', ''))
+        }
     }
 }

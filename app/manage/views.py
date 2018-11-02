@@ -639,15 +639,20 @@ def material_property_value():
     # from
     form = AddMaterialPropertyValueForm()
     if form.validate_on_submit():
-        pv_fk_text = form.value_to_pro_name.data
-        pv_fk_pid = MaterialProductName.query.filter_by(pro_name=pv_fk_text).first().pro_id
+        pv_fk_pid = request.values.get('value_to_pro_name', 0)
         pv_names = form.property_value.data
         if ',' in pv_names:
             pv_name_list = pv_names.split(',')
             for item in pv_name_list:
-                material_pvalue = MaterialProductValue(pv_name=item, pv_fk_pid=pv_fk_pid)
+                # data exclusion
+                get_exclusion_count = MaterialProductValue.query \
+                    .filter(and_(MaterialProductValue.pv_name == item, MaterialProductValue.pv_fk_pid == pv_fk_pid)) \
+                    .count()
+                if get_exclusion_count != 0:
+                    continue
+                material_pro_value = MaterialProductValue(pv_name=item, pv_fk_pid=pv_fk_pid)
                 try:
-                    db.session.add(material_pvalue)
+                    db.session.add(material_pro_value)
                     db.session.commit()
                 except:
                     db.session.rollback()
@@ -655,34 +660,43 @@ def material_property_value():
                 finally:
                     db.session.close()  # optional, depends on use case
         else:
-            material_pvalue = MaterialProductValue(pv_name=pv_names, pv_fk_pid=pv_fk_pid)
-            try:
-                db.session.add(material_pvalue)
-                db.session.commit()
-            except:
-                db.session.rollback()
-                raise
-            finally:
-                db.session.close()  # optional, depends on use case
+            # data exclusion
+            get_exclusion_count = MaterialProductValue.query \
+                .filter(and_(MaterialProductValue.pv_name == pv_names, MaterialProductValue.pv_fk_pid == pv_fk_pid)) \
+                .count()
+            if get_exclusion_count != 0:
+                flash(u'数据重复！', 'info')
+                return redirect(url_for('.admin_list_item'))
+            else:
+                material_pro_value = MaterialProductValue(pv_name=pv_names, pv_fk_pid=pv_fk_pid)
+                try:
+                    db.session.add(material_pro_value)
+                    db.session.commit()
+                except:
+                    db.session.rollback()
+                    raise
+                finally:
+                    db.session.close()  # optional, depends on use case
         flash(u'更新成功！', 'success')
         return redirect(url_for('.admin_list_item'))
     return render_template('manage/admin_add_pro_value.html', user_info=user_info, name=title,
                            pageName=page_name, description=page_name, pageFeatures=page_features, form=form)
 
 
-@manage.route('/manage_list_pro_name', methods=['POST', 'GET'])
+@manage.route('/ajax_list_pro_name', methods=['POST', 'GET'])
 @login_required
 def manage_list_pro_name():
-    # 获取当前用户id
-    user_id = current_user.id
-    # 页面信息
-    user_info = User.query.get_or_404(user_id)
-    title = '首 页'
-    page_name = 'Dashboard'
-    page_features = 'dashboard & statistics'
+    global get_pro_name
+    get_item_id = request.values.get('get_id', 0)
+    get_filter = request.values.get('filter', 0)
+    # filter data
+    if get_filter == 'pro_name':
+        get_pro_name = MaterialProductName.query.filter_by(pro_fk_id=get_item_id)
 
-    return render_template('manage/admin_list_pro_name.html', user_info=user_info, name=title,
-                           pageName=page_name, description=page_name, pageFeatures=page_features)
+    dict_item = []
+    for item in get_pro_name:
+        dict_item.append({'id': item.pro_id, 'name': item.pro_name})
+    return jsonify(dict_item)
 
 
 @manage.route('/user_list_material', methods=['GET'])
@@ -747,12 +761,17 @@ def ajax_get_material():
 @manage.route('/ajax_get_material_item', methods=['GET', 'POST'])
 @login_required
 def ajax_get_material_item():
+    global get_item
     get_catalog_id = request.values.get('get_id', 0)
+    get_filter = request.values.get('filter')
     # if data is None,get default data is first data.
     if get_catalog_id is None:
         get_catalog_id = ClassificationCatalog.query.order_by(MaterialClassification.classification_since).first().id
-
-    get_item = MaterialItem.query.filter_by(i_catalog_id=get_catalog_id)
+    # filter data
+    if get_filter == 'item':
+        get_item = MaterialItem.query.filter_by(i_id=get_catalog_id)
+    else:
+        get_item = MaterialItem.query.filter_by(i_catalog_id=get_catalog_id)
     dict_item = []
     for item in get_item:
         dict_item.append({'id': item.i_id, 'name': item.i_name})

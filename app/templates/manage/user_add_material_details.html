@@ -56,8 +56,8 @@
                                         {% endfor %}
                                     </select>
                                 </div>
-                                <div class="col-md-2" id="add_attr">
-                                    <a>增加属性</a>
+                                <div class="col-md-2" id="add_attr_{{ item.id }}">
+                                    <a href="/manage/material_property_value?pro_id={{ item.id }}">增加属性</a>
                                 </div>
                             </div>
                         {% endfor %}

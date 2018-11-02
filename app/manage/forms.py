@@ -77,12 +77,4 @@ class AddMaterialPropertyNameForm(FlaskForm):
 
 
 class AddMaterialPropertyValueForm(FlaskForm):
-    def query_factory(*args):
-        return [r.pro_name for r in db.session.query(MaterialProductName).all()]
-
-    def get_pk(obj):
-        return obj
-
     property_value = StringField("属性值： ", validators=[Length(0, 50)])
-    value_to_pro_name = QuerySelectField(label=u'属性名称： ', validators=[DataRequired()], query_factory=query_factory,
-                                         get_pk=get_pk)
