@@ -406,7 +406,7 @@ class MaterialProductName(db.Model):
     pro_name = db.Column(db.VARCHAR(50))
     pro_fk_id = db.Column(db.Integer, db.ForeignKey('material_item.i_id'), index=True)
     pro_has_otherName = db.Column(db.CHAR(2), default=0)
-    pro_has_color = db.Column(db.CHAR(2), default=0)
+    pro_is_brand = db.Column(db.Boolean, default=1)
     pro_has_enum = db.Column(db.CHAR(2), default=0)
     pro_has_input = db.Column(db.CHAR(2), default=0)
     pro_is_key = db.Column(db.CHAR(2), default=0)

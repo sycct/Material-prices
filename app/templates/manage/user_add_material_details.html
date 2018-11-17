@@ -61,6 +61,21 @@
                                 </div>
                             </div>
                         {% endfor %}
+                        {% if pro_brand is not none %}
+                            <div class="form-group">
+                                <label class="col-md-2 control-label" for="value_to_pro_brand">品牌： </label>
+                                <div class="col-md-8">
+                                    <select class="form-control" id="value_to_pro_brand" name="value_to_pro_brand">
+                                        {% for value in pro_brand %}
+                                            <option value="{{ value.id }}">{{ value.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <a href="/manage/material_property_value">增加品牌</a>
+                                </div>
+                            </div>
+                        {% endif %}
                         <div class="form-actions">
                             <div class="row">
                                 <div class="col-md-offset-2 col-md-9">

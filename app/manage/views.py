@@ -805,10 +805,18 @@ def user_add_material_details():
     pro_name_list = []
     for item in get_material_pro_name:
         pro_name_list.append({'id': item.pro_id, 'name': item.pro_name})
+    # check is brand
+    is_brand = get_material_pro_name.first().pro_is_brand
+    brand_list = []
+    if is_brand is True:
+        # 存在品牌，查询品牌表，附加到列表
+        brand_item = MaterialClassificationBrand.query.filter_by(b_rel_id=item_id)
+        for b_item in brand_item:
+            brand_list.append({'id': b_item.b_id, 'name': b_item.b_name})
 
     return render_template('manage/user_add_material_details.html', user_info=user_info, name=title,
                            pageName=page_name, description=page_name, pageFeatures=page_features,
-                           pro_name=pro_name_list, pro_value=collection_dict)
+                           pro_name=pro_name_list, pro_brand=brand_list, pro_value=collection_dict)
 
 
 @manage.route('/sms_test', methods=['GET', 'POST'])
