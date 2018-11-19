@@ -86,5 +86,7 @@ function change_link() {
             var get_a_href = $(url_str).attr('href');
             $(url_str).attr('href', get_a_href + '&' + get_uri.replace('?', ''))
         }
+        var brand_link = $('#add_material_brand a').attr('href');
+        $('#add_material_brand a').attr('href', brand_link + get_uri)
     }
 }

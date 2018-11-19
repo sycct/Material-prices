@@ -401,9 +401,21 @@ def admin_list_brand():
     page_name = 'Dashboard'
     page_features = 'dashboard & statistics'
     # get all catalog items.
-    form = AddBrandForm()
+    # get url params to database query.
+    get_url_params = request.values.get('item_id', 0)
+    item_list = []
+    if get_url_params is not None:
+        items_to_catalog_id = MaterialItem.query.filter_by(i_id=get_url_params).first().i_catalog_id
+        items_collection = MaterialItem.query.filter_by(i_catalog_id=items_to_catalog_id)
+        if items_collection is not None:
+            for item in items_collection:
+                item_list.append({'id': item.i_id, 'name': item.i_name})
+        else:
+            flash(u'无法查询数据！', 'error')
+    else:
+        flash(u'获取参数失败！', 'error')
     return render_template('manage/admin_list_brand.html', user_info=user_info, name=title,
-                           pageName=page_name, description=page_name, pageFeatures=page_features, form=form)
+                           pageName=page_name, description=page_name, pageFeatures=page_features, item_list=item_list)
 
 
 @manage.route('/admin_get_brand', methods=['GET', 'POST'])
@@ -413,10 +425,7 @@ def admin_get_brand():
     get_item_select_val = request.values.get('Item_val', 0)
     if get_item_select_val is None:
         return '1'
-    item_id = MaterialItem.query.filter_by(i_name=get_item_select_val).first().i_id
-    if item_id is None:
-        return '1'
-    data = MaterialClassificationBrand.query.filter_by(b_rel_id=item_id).all()
+    data = MaterialClassificationBrand.query.filter_by(b_rel_id=get_item_select_val).all()
     return jsonify({'data': [item.to_json() for item in data]})
 
 
@@ -590,7 +599,7 @@ def material_property_name():
             return flash(u'更新失败！', 'error')
         mater_pro_name = MaterialProductName(pro_name=form.property_name.data, pro_fk_id=get_item_id,
                                              pro_has_otherName=form.pro_has_otherName.data,
-                                             pro_has_color=form.pro_has_color.data,
+                                             pro_is_brand=form.pro_is_brand.data,
                                              pro_has_enum=form.pro_has_enum.data, pro_has_input=form.pro_has_input.data,
                                              pro_is_key=form.pro_is_key.data, pro_is_sale=form.pro_is_sale.data,
                                              pro_is_must=form.pro_is_must.data)

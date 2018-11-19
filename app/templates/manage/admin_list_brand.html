@@ -45,7 +45,13 @@
                             <div class="row">
                                 <div class="col-md-6 col-sm-12">
                                     <div id="sample_1_filter" class="dataTables_filter">
-                                        <label>筛选: </label>{{ form.Brand_to_Item(class='form-control input-large input-inline',for='default') }}
+                                        <label>筛选: </label>
+                                        <select class="form-control input-large input-inline" for="default"
+                                                id="item_list" name="item_list">
+                                            {% for item in item_list %}
+                                                <option value="{{ item.id }}">{{ item.name }}</option>
+                                            {% endfor %}
+                                        </select>
                                     </div>
                                 </div>
                             </div>

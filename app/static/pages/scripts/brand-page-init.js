@@ -1,12 +1,11 @@
 $(function () {
-    brand_page_init();
-    $('#Brand_to_Item').change(function () {
+    $('#item_list').change(function () {
         brand_page_init();
     })
 });
 
 function brand_page_init() {
-    var get_item_val = $('#Brand_to_Item').val();
+    var get_item_val = $('#item_list option:selected').val();
     $.ajax({
         type: 'post',
         url: '/manage/admin_get_brand',

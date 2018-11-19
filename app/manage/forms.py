@@ -59,15 +59,13 @@ class AddMaterialItemForm(FlaskForm):
     Item_name = StringField("材料名称：", validators=[Length(0, 50), DataRequired()])
     Item_to_Catalog = QuerySelectField(label=u'目录名称：', validators=[DataRequired()], query_factory=query_factory,
                                        get_pk=get_pk)
-    # Item_to_ChildItem=QuerySelectField(label=u'子品牌名称', query_factory=child_query_factory,
-    #                                     get_pk=get_pk)
     submit = SubmitField('保存更改')
 
 
 class AddMaterialPropertyNameForm(FlaskForm):
     property_name = StringField('属性名称：', validators=[Length(0, 50)])
     pro_has_otherName = RadioField('是否有别名： ', choices=[('0', '是'), ('1', '否')])
-    pro_has_color = RadioField('是否有颜色属性： ', choices=[('0', '是'), ('1', '否')])
+    pro_is_brand = RadioField('是否有地区： ', choices=[('0', '是'), ('1', '否')])
     pro_has_enum = RadioField('是否可枚举： ', choices=[('0', '是'), ('1', '否')])
     pro_has_input = RadioField('属性录入方式： ', choices=[('0', '手工录入'), ('1', '从下面的列表中选择（一行代表一个可选值）')])
     pro_is_key = RadioField('属性值可选值列表： ', choices=[('0', '是'), ('1', '否')])

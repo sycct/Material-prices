@@ -356,6 +356,9 @@ class MaterialItem(db.Model):
     i_ref_pn = db.relationship('MaterialProductName', backref='MaterialItem')
     i_catalog_id = db.Column(db.Integer, db.ForeignKey('classification_catalog.id'))
     item_since = db.Column(db.DateTime, default=datetime.utcnow)
+    i_has_brand = db.Column(db.Boolean)
+    i_has_area = db.Column(db.Boolean)
+    i_has_date = db.Column(db.Boolean)
 
     def to_json(self):
         json_item = {
@@ -405,13 +408,6 @@ class MaterialProductName(db.Model):
     pro_id = db.Column(db.Integer, primary_key=True)
     pro_name = db.Column(db.VARCHAR(50))
     pro_fk_id = db.Column(db.Integer, db.ForeignKey('material_item.i_id'), index=True)
-    pro_has_otherName = db.Column(db.CHAR(2), default=0)
-    pro_is_brand = db.Column(db.Boolean, default=1)
-    pro_has_enum = db.Column(db.CHAR(2), default=0)
-    pro_has_input = db.Column(db.CHAR(2), default=0)
-    pro_is_key = db.Column(db.CHAR(2), default=0)
-    pro_is_sale = db.Column(db.CHAR(2), default=0)
-    pro_is_must = db.Column(db.CHAR(2), default=0)
     pn_rel_pv = db.relationship('MaterialProductValue', backref='material_pro_name')
     pn_rel_pp = db.relationship('MaterialProductProperty', backref='material_pro_name')
 
