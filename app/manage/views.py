@@ -3,7 +3,7 @@ from ..decorators import admin_required
 from . import manage
 from flask_login import login_required, current_user
 from ..models import User, MaterialClassification, Permission, ClassificationCatalog, MaterialItem, \
-    MaterialClassificationBrand, MaterialProductName, MaterialProductValue
+    MaterialClassificationBrand, MaterialProductName, MaterialProductValue, CH_REGION
 from config import Config
 from werkzeug.utils import secure_filename
 import os
@@ -15,7 +15,6 @@ from pypinyin import lazy_pinyin
 from flask import jsonify
 from twilio.rest import Client
 from sqlalchemy import and_
-from sqlalchemy.orm import sessionmaker
 
 
 @manage.route('/index', methods=['GET', 'POST'])
@@ -815,7 +814,7 @@ def user_add_material_details():
     for item in get_material_pro_name:
         pro_name_list.append({'id': item.pro_id, 'name': item.pro_name})
     # check is brand
-    is_brand = get_material_pro_name.first().pro_is_brand
+    is_brand = MaterialItem.query.filter_by(i_id=item_id).first().i_has_brand
     brand_list = []
     if is_brand is True:
         # 存在品牌，查询品牌表，附加到列表
@@ -823,9 +822,34 @@ def user_add_material_details():
         for b_item in brand_item:
             brand_list.append({'id': b_item.b_id, 'name': b_item.b_name})
 
+    # check is area
+    is_area = MaterialItem.query.filter_by(i_id=item_id).first().i_has_area
+    area_province_list = []
+    if is_area is True:
+        # check material item table
+        # if table is True ,append list
+        area_list = CH_REGION.query.filter_by(REGION_TYPE=1)
+        for area_item in area_list:
+            area_province_list.append({'id': area_item.ID, 'name': area_item.REGION_NAME})
     return render_template('manage/user_add_material_details.html', user_info=user_info, name=title,
                            pageName=page_name, description=page_name, pageFeatures=page_features,
-                           pro_name=pro_name_list, pro_brand=brand_list, pro_value=collection_dict)
+                           pro_name=pro_name_list, pro_brand=brand_list, pro_value=collection_dict,
+                           area_province_list=area_province_list)
+
+
+@manage.route('/ajax_get_city', methods=['GET', 'POST'])
+@login_required
+def ajax_get_city():
+    get_province_id = request.values.get('province_id', 0)
+    if get_province_id is None:
+        return '0'
+    else:
+        city_list = []
+        get_city = CH_REGION.query.filter_by(PARENT_ID=get_province_id)
+        for item in get_city:
+            city_list.append({'id': item.ID, 'name': item.REGION_NAME})
+
+    return jsonify(city_list)
 
 
 @manage.route('/sms_test', methods=['GET', 'POST'])

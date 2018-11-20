@@ -1,5 +1,6 @@
 $(function () {
     select_init();
+    get_city();
     $('#material_parent').change(function () {
         select_item();
         check_material_child('parent_clear');
@@ -8,6 +9,10 @@ $(function () {
         check_material_child();
         get_child_val();
     });
+    $('#value_to_pro_province').change(function () {
+        get_city();
+    })
+
     change_link();
 });
 
@@ -88,5 +93,27 @@ function change_link() {
         }
         var brand_link = $('#add_material_brand a').attr('href');
         $('#add_material_brand a').attr('href', brand_link + get_uri)
+    }
+}
+
+function get_city() {
+    var get_province = $('#value_to_pro_province option:selected').val();
+    if (get_province !== null && get_province !== undefined) {
+        $.ajax({
+            type: 'GET',
+            url: '/manage/ajax_get_city',
+            data: {'province_id': get_province},
+            contentType: "json",
+            success: function (data) {
+                var html = '';
+                $('#value_to_pro_city').empty();
+                for (var i = 0; i < data.length; i++) {
+                    html += '<option value="' + data[i].id + '">' + data[i].name + '</option>'
+                }
+                $('#value_to_pro_city').append(html)
+            }
+        })
+    } else {
+        return false;
     }
 }

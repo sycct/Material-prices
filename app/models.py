@@ -332,7 +332,6 @@ class MaterialClassificationBrand(db.Model):
     b_id = db.Column(db.Integer, primary_key=True)
     b_name = db.Column(db.VARCHAR(50), index=True)
     b_rel_id = db.Column(db.Integer, db.ForeignKey('material_item.i_id'))
-    material_product = db.relationship('MaterialProduct', backref='MaterialClassificationBrand', lazy='dynamic')
     brand_since = db.Column(db.DateTime, default=datetime.utcnow)
 
     def to_json(self):
@@ -375,11 +374,7 @@ class MaterialProduct(db.Model):
     __tablename__ = 'material_product'
     p_id = db.Column(db.Integer, primary_key=True)
     p_name = db.Column(db.VARCHAR(50), default=None)
-    b_name = db.Column(db.VARCHAR(50), db.ForeignKey('material_brand.b_name'), default=None, index=True)
-    p_fk_p = db.Column(db.Integer, db.ForeignKey('material_product.p_id'), default=None, index=True)
     p_fk_i = db.Column(db.Integer, db.ForeignKey('material_item.i_id'), default=None, index=True)
-    p_rel_p = db.relationship('MaterialProduct')
-    p_rel_pp = db.relationship('MaterialProductProperty', backref='material_product')
 
 
 # 产品属性
@@ -396,10 +391,33 @@ class MaterialProductSKU(db.Model):
     __tablename__ = 'material_product_sku'
     ps_id = db.Column(db.Integer, primary_key=True)
     pd_fk_id = db.Column(db.Integer, db.ForeignKey('material_product.p_id'), default=None, index=True)
-    pd_num = db.Column(db.Integer, default=None)
-    pd_price = db.Column(db.DECIMAL(10, 4), default=None)
-    pd_name = db.Column(db.VARCHAR(50), default=None)
     pd_properties = db.Column(db.VARCHAR(300), default=None)
+
+
+# product info
+class MaterialProductPrice(db.Model):
+    __tablename__ = 'material_product_price'
+    pi_id = db.Column(db.Integer, primary_key=True)
+    # FIXME 反向引用，加载记录方式
+    pi_sku_id = db.Column(db.Integer, db.ForeignKey('material_product_sku.ps_id'))
+    # TODO built date table
+    pi_date_id = db.Column(db.Integer, db.ForeignKey('common_date.c_id'))
+    pi_province_id = db.Column(db.Integer, db.ForeignKey('CH_REGION.ID'))
+    pi_city_id = db.Column(db.Integer, db.ForeignKey('CH_REGION.ID'))
+    # 不包含税金价格表（除税价）
+    pi_does_not_including_tax_price = db.Column(db.DECIMAL(10, 4))
+    # 税率
+    # FIXME 数据类型是否正确
+    pi_tax_rate = db.Column(db.DECIMAL(4, 2))
+
+
+# date
+class CommonDate(db.Model):
+    __tablename__ = 'common_date'
+    c_id = db.Column(db.Integer, primary_key=True, index=True)
+    # FIXME 数据类型是否正确
+    year = db.Column(db.SmallInteger)
+    month = db.Column(db.SmallInteger)
 
 
 # 产品名称
