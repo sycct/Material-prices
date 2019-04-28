@@ -1,4 +1,4 @@
-from datetime import tzinfo, timedelta, datetime
+from datetime import datetime
 import hashlib
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
@@ -7,6 +7,7 @@ import bleach
 from flask import current_app, request, url_for
 from flask_login import UserMixin, AnonymousUserMixin
 from app.exceptions import ValidationError
+
 from . import db, login_manager
 
 
@@ -280,24 +281,6 @@ class User(UserMixin, db.Model):
         return '<User %r>' % self.username
 
 
-class CH_REGION(db.Model):
-    __tablename__ = 'CH_REGION'
-    ID = db.Column(db.Integer, primary_key=True)
-    PARENT_ID = db.Column(db.Integer)
-    REGION_ID = db.Column(db.Integer)
-    REGION_PARENT_ID = db.Column(db.Integer)
-    REGION_NAME = db.Column(db.String(100))
-    REGION_TYPE = db.Column(db.Integer)
-    ZIPCODE = db.Column(db.String(50))
-    QUHAO = db.Column(db.String(50))
-    Status = db.Column(db.Boolean)
-    city_region = db.relationship('User', foreign_keys=[User.city_region_id],
-                                  backref=db.backref('city_regions', lazy='joined'),
-                                  lazy='dynamic')
-    province_region = db.relationship('User', foreign_keys=[User.province_region_id],
-                                      backref=db.backref('province_regions', lazy='joined'), lazy='dynamic')
-
-
 # 材料类别
 class MaterialClassification(db.Model):
     __tablename__ = 'material_classification'
@@ -375,6 +358,8 @@ class MaterialProduct(db.Model):
     p_id = db.Column(db.Integer, primary_key=True)
     p_name = db.Column(db.VARCHAR(50), default=None)
     p_fk_i = db.Column(db.Integer, db.ForeignKey('material_item.i_id'), default=None, index=True)
+    sk_ref_pro = db.relationship('MaterialProductSKU', backref='material_product')
+    pro_ref_item = db.relationship('MaterialProductProperty', backref='material_product')
 
 
 # 产品属性
@@ -392,6 +377,7 @@ class MaterialProductSKU(db.Model):
     ps_id = db.Column(db.Integer, primary_key=True)
     pd_fk_id = db.Column(db.Integer, db.ForeignKey('material_product.p_id'), default=None, index=True)
     pd_properties = db.Column(db.VARCHAR(300), default=None)
+    price_ref_sku = db.relationship('MaterialProductPrice', backref='material_product_sku')
 
 
 # product info
@@ -418,6 +404,7 @@ class CommonDate(db.Model):
     # FIXME 数据类型是否正确
     year = db.Column(db.SmallInteger)
     month = db.Column(db.SmallInteger)
+    price_ref_date = db.relationship('MaterialProductPrice', backref='common_date')
 
 
 # 产品名称
@@ -437,6 +424,7 @@ class MaterialProductValue(db.Model):
     pv_name = db.Column(db.VARCHAR(50))
     pv_fk_pid = db.Column(db.Integer, db.ForeignKey('material_pro_name.pro_id'), index=True)
     pv_rel_pp = db.relationship('MaterialProductProperty', backref='material_product_value')
+    pro_ref_value = db.relationship('MaterialProductProperty', backref='material_product_value')
 
 
 class AnonymousUser(AnonymousUserMixin):
@@ -544,3 +532,23 @@ class PageRelated(db.Model):
 
 
 db.event.listen(Comment.body, 'set', Comment.on_changed_body)
+
+
+class CH_REGION(db.Model):
+    __tablename__ = 'CH_REGION'
+    ID = db.Column(db.Integer, primary_key=True)
+    PARENT_ID = db.Column(db.Integer)
+    REGION_ID = db.Column(db.Integer)
+    REGION_PARENT_ID = db.Column(db.Integer)
+    REGION_NAME = db.Column(db.String(100))
+    REGION_TYPE = db.Column(db.Integer)
+    ZIPCODE = db.Column(db.String(50))
+    QUHAO = db.Column(db.String(50))
+    Status = db.Column(db.Boolean)
+    city_region = db.relationship('User', foreign_keys=[User.city_region_id],
+                                  backref=db.backref('city_regions', lazy='joined'),
+                                  lazy='dynamic')
+    province_region = db.relationship('User', foreign_keys=[User.province_region_id],
+                                      backref=db.backref('province_regions', lazy='joined'), lazy='dynamic')
+    price_ref_region = db.relationship('MaterialProductPrice', backref='CH_REGION',
+                                       foreign_keys=[MaterialProductPrice.pi_province_id])
